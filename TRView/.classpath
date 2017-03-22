@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.apache.log4j_1.2.15.v201012070815.jar" sourcepath="/opt/eclipse/plugins/org.apache.log4j_1.2.15.v201012070815.jar"/>
+	<classpathentry kind="lib" path="/home/mcoufal/.eclipse/org.eclipse.platform_4.6.1_1473617060_linux_gtk_x86_64/plugins/org.jboss.reddeer.common_1.2.1.Final.jar" sourcepath="/home/mcoufal/.eclipse/org.eclipse.platform_4.6.1_1473617060_linux_gtk_x86_64/plugins/org.jboss.reddeer.common.source_1.2.1.Final.jar">
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/condition/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/context/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/exception/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/logging/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/matcher/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/platform/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/properties/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/userprofile/*"/>
+			<accessrule kind="accessible" pattern="org/jboss/reddeer/common/wait/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="src" path="/com.mcoufal.inrunjunit"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.105.1.v20160907-0248.jar" sourcepath="/opt/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64.source_3.105.1.v20160907-0248.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
