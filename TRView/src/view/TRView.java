@@ -52,6 +52,21 @@ public class TRView {
 	private static Label lblServerIP;
 	private static Label lblPort;
 	private static Label lblRuns;
+	
+	/**
+	 * @return the lblRuns
+	 */
+	public static Label getLblRuns() {
+		return lblRuns;
+	}
+
+	/**
+	 * @return the lblRuns
+	 */
+	public static Tree getTree() {
+		return tree;
+	}
+
 	private static Button btnConnect;
 	private static Label lblErrors;
 	private static Label lblFailures;
@@ -66,7 +81,8 @@ public class TRView {
 	 */
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		log.info("TRView app started");
-
+		// save reference to this app to get access to variables
+		//app = new TRView();
 		// set up variables
 		oldData = null;
 		initialDataParsed = false;
@@ -90,31 +106,47 @@ public class TRView {
 
 		// application runtime
 		while (!shlErrors.isDisposed()) {
+			display.readAndDispatch(); // TODO: how to handle return value
+										// properly?
+			// if (!display.readAndDispatch()) {
+			// display.sleep();
+			// }
+
 			// start to parse and display results
 			if (resClient != null && resClient.initialDataSetRecieved()) {
 				// parse initial data
 				if (initialDataParsed == false) {
 					ResultsParser.parseAndDisplay(resClient.getInitialDataSet());
+					// TODO: method redraw all components
+					TRView.getTree().redraw();
+					TRView.getLblRuns().redraw();
 					initialDataParsed = true;
 				}
 				// parse new data
 				ResultsData newData = resClient.getData();
 				// no data, no processing
-				if (newData == null)
-					continue;
-				// process new data only
-				if (!newData.equals(oldData)) {
-					ResultsParser.parseAndDisplay(newData);
-					oldData = newData;
+				if (newData != null) {
+					// process new data only
+					// TODO: Ideally, try some thread sync trick like
+					// Display.syncExec() from ResultsClient thread to parse
+					// results! Or find another way how to handle this - at
+					// least some FIFO system - we are losing data!
+					if (!newData.equals(oldData)) {
+						ResultsParser.parseAndDisplay(newData);
+						// TODO: method redraw all components
+						TRView.getTree().redraw();
+						TRView.getLblRuns().redraw();
+						oldData = newData;
+					}
 				}
 			}
-
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
 		}
+		log.debug("Main application shell is disposed!");
 	}
 
+	/**
+	 * TODO: maybe will need to reference all variables as app.[get]<variable>
+	 */
 	private static void createGUI() {
 		log.info("Creating GUI");
 		// shell and display

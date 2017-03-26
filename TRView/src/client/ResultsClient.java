@@ -65,7 +65,7 @@ public class ResultsClient extends Thread {
 			log.error("Error while creating input object stream");
 			e.printStackTrace();
 		}
-
+		
 		// receive initial results data set
 		try {
 			initialData = (List<ResultsData>) fromServer.readObject();

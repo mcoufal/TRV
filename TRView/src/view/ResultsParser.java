@@ -2,10 +2,12 @@ package view;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
 
 import com.mcoufal.inrunjunit.server.ResultsData;
 import com.mcoufal.inrunjunit.server.StringTestCaseElement;
+import com.mcoufal.inrunjunit.server.StringTestElement;
 import com.mcoufal.inrunjunit.server.StringTestRunSession;
 
 /**
@@ -17,7 +19,7 @@ import com.mcoufal.inrunjunit.server.StringTestRunSession;
 public class ResultsParser {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ResultsParser.class);
-		
+
 	/**
 	 * This method processes test results in initial data set from ResultsServer
 	 * and displays them in TRView.
@@ -90,6 +92,8 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
+		log.info("parsing SESSION FINISHED - availible data:");
+		// testRunSession.print();
 
 	}
 
@@ -101,6 +105,21 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
+		log.info("parsing SESSION STARTED - availible data:");
+		testRunSession.print();
+
+		// local variables
+		int numberOfRuns = testRunSession.getChildrenElements().size();
+		log.debug("numberOfChildren: " + numberOfRuns);
+
+		// parsing
+		TRView.getLblRuns().setText("0/" + numberOfRuns);
+		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
+		t1.setText(testRunSession.getTestRunName());
+		for (StringTestElement element : testRunSession.getChildrenElements()) {
+			TreeItem t2 = new TreeItem(t1, 0);
+			t2.setText(element.getTestElement());
+		}
 
 	}
 
@@ -112,7 +131,20 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
+		log.info("parsing SESSION LAUNCHED - availible data:");
+		testRunSession.print();
+		// local variables
+		int numberOfRuns = testRunSession.getChildrenElements().size();
+		log.debug("numberOfChildren: " + numberOfRuns);
 
+		// parsing
+		/*TRView.getLblRuns().setText("0/" + numberOfRuns);
+		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
+		t1.setText(testRunSession.getTestRunName());
+		for (StringTestElement element : testRunSession.getChildrenElements()) {
+			TreeItem t2 = new TreeItem(t1, 0);
+			t2.setText(element.getTestElement());
+		}*/
 	}
 
 }
