@@ -65,42 +65,45 @@ public class ResultsParser {
 	/**
 	 * This method parses StringTestCaseElement received in CASE_FINISHED phase
 	 * and displays results in TRView according to the phase.
-	 * 
+	 * TODO
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseFinished(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
+		log.info("parsing CASE FINISHED - availible data:");
+		testCaseElement.print();
 
 	}
 
 	/**
 	 * This method parses StringTestCaseElement received in CASE_STARTED phase
 	 * and displays results in TRView according to the phase.
-	 * 
+	 * TODO
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
-
+		log.info("parsing CASE STARTED - availible data:");
+		testCaseElement.print();
 	}
 
 	/**
 	 * This method parses StringTestRunSession received in SESSION_FINISHED
 	 * phase and displays results in TRView according to the phase.
-	 * 
+	 * TODO
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
 		log.info("parsing SESSION FINISHED - availible data:");
-		// testRunSession.print();
+		testRunSession.print();
 
 	}
 
 	/**
 	 * This method parses StringTestRunSession received in SESSION_STARTED phase
 	 * and displays results in TRView according to the phase.
-	 * 
+	 * TODO
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
@@ -126,7 +129,7 @@ public class ResultsParser {
 	/**
 	 * This method parses StringTestRunSession received in SESSION_LAUNCHED
 	 * phase and displays results in TRView according to the phase.
-	 * 
+	 * TODO
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {

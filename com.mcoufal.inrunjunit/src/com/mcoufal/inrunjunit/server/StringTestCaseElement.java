@@ -15,13 +15,53 @@ import com.mcoufal.inrunjunit.listener.JUnitListenerEP;
 public class StringTestCaseElement implements Serializable {
 	// set up logger
 	private final static Logger log = Logger.getLogger(StringTestCaseElement.class);
+	private String testCaseElement;
+	private String testClassName;
+	private String testMethodName;
+	private Double elapsedTime;
+	private String failureTrace;
+	private String parentContainer;
+	private String progressState;
+	private StringResult testResultWithChildren;
+	private StringResult testResultNoChildren;
+	private String testRunSession;
 	
 	/**
 	 * initialize, handle nulls, comments
 	 * @param testCaseElement
 	 */
 	public StringTestCaseElement(ITestCaseElement testCaseElement) {
-		// TODO: convert session to string representation
+		if (testCaseElement.toString() != null) this.testCaseElement = testCaseElement.toString();
+		else this.testCaseElement = null;
+		testClassName = testCaseElement.getTestClassName();
+		testMethodName = testCaseElement.getTestMethodName();
+		elapsedTime = testCaseElement.getElapsedTimeInSeconds();
+		if (testCaseElement.getFailureTrace() != null) failureTrace = testCaseElement.getFailureTrace().toString();
+		else failureTrace = null;
+		if (testCaseElement.getParentContainer() != null) parentContainer = testCaseElement.getParentContainer().toString();
+		else parentContainer = null;
+		if (testCaseElement.getProgressState() != null) progressState = testCaseElement.getProgressState().toString();
+		else progressState = null;
+		testResultWithChildren = new StringResult(testCaseElement.getTestResult(true));
+		testResultNoChildren = new StringResult(testCaseElement.getTestResult(false));
+		if (testCaseElement.getTestRunSession() != null) testRunSession = testCaseElement.getTestRunSession().toString();
+		else testRunSession = null;
+	}
+	
+	/**
+	 * TODO
+	 */
+	public void print(){
+		System.out.println("[testCaseElement]" + testCaseElement);
+		System.out.println("[testClassName]" + testClassName);
+		System.out.println("[testMethodName]" + testMethodName);
+		System.out.println("[elapsedTime]" + elapsedTime);
+		System.out.println("[failureTrace]" + failureTrace);
+		System.out.println("[parentContainer]" + parentContainer);
+		System.out.println("[progressState]" + progressState);
+		System.out.println("[testResultWithChildren]" + testResultWithChildren);
+		System.out.println("[testResultNoChildren]" + testResultNoChildren);
+		System.out.println("[testRunSession]" + testRunSession);
 	}
 
 	public static void printCaseElement(ITestCaseElement testCaseElement) {
