@@ -8,6 +8,8 @@ import java.util.List;
 import org.jboss.reddeer.common.logging.Logger;
 import com.mcoufal.inrunjunit.server.ResultsData;
 
+import view.TRView;
+
 /**
  * ResultsClient class connects to and communicates with ResultsServer. First,
  * ResultsClient establishes connection with ResultsServer and after that it is
@@ -20,7 +22,7 @@ import com.mcoufal.inrunjunit.server.ResultsData;
 public class ResultsClient extends Thread {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ResultsClient.class);
-	public List<ResultsData> initialData = null;
+	public List<ResultsData> resultsList = null;
 	public static ResultsData recievedData = null;
 	public static ObjectInputStream fromServer;
 	private static String IPaddr;
@@ -44,6 +46,7 @@ public class ResultsClient extends Thread {
 	/**
 	 * Thread run of client - getting results from results server.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		log.info("ResultsClient started: connecting to '" + IPaddr + "' at port " + portNum);
@@ -65,11 +68,11 @@ public class ResultsClient extends Thread {
 			log.error("Error while creating input object stream");
 			e.printStackTrace();
 		}
-		
+
 		// receive initial results data set
 		try {
-			initialData = (List<ResultsData>) fromServer.readObject();
-			log.debug("Received initial data set: " + initialData.toString());
+			resultsList = (List<ResultsData>) fromServer.readObject();
+			log.debug("Received initial data set: " + resultsList.toString());
 		} catch (ClassNotFoundException | IOException e) {
 			log.error("Failed to read data from server!");
 			e.printStackTrace();
@@ -79,6 +82,15 @@ public class ResultsClient extends Thread {
 		while (alive) {
 			try { // recieve results data
 				recievedData = (ResultsData) fromServer.readObject();
+				resultsList.add(recievedData);
+				// TODO: thread sync or List?? consult
+				TRView.getDisplay().syncExec(new Runnable() {
+					@Override
+					public void run() {
+						TRView.getLblErrors().setText("Remove");
+					}
+				});
+
 				log.debug("Received: " + recievedData.toString() + " : " + recievedData.getPhase());
 			} catch (ClassNotFoundException | IOException e) {
 				log.error("Failed to read data from server!");
@@ -91,7 +103,6 @@ public class ResultsClient extends Thread {
 			fromServer.close();
 			sock.close();
 		} catch (IOException e) {
-			// TODO : log
 			log.error("Failed to close client's sockets!");
 			e.printStackTrace();
 		}
@@ -120,16 +131,17 @@ public class ResultsClient extends Thread {
 	 * ClientHandler. List of ResultsData contains all data collected from
 	 * JUnitListenerEP before client connected to ResultsServer.
 	 * 
-	 * @return list of test's ResultsData or empty list if no data were processed before connecting.
+	 * @return list of test's ResultsData or empty list if no data were
+	 *         processed before connecting.
 	 */
-	public List<ResultsData> getInitialDataSet() {
-		return initialData;
+	public List<ResultsData> getDataSet() {
+		return resultsList;
 	}
-	
+
 	/**
 	 * @return true if initial data set was received, false otherwise
 	 */
 	public Boolean initialDataSetRecieved() {
-		return initialData == null ? false : true;
+		return resultsList == null ? false : true;
 	}
 }
