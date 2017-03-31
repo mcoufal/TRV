@@ -2,12 +2,13 @@ package view;
 
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
 
 import com.mcoufal.inrunjunit.server.ResultsData;
 import com.mcoufal.inrunjunit.server.StringTestCaseElement;
-import com.mcoufal.inrunjunit.server.StringTestElement;
 import com.mcoufal.inrunjunit.server.StringTestRunSession;
 
 /**
@@ -64,8 +65,8 @@ public class ResultsParser {
 
 	/**
 	 * This method parses StringTestCaseElement received in CASE_FINISHED phase
-	 * and displays results in TRView according to the phase.
-	 * TODO
+	 * and displays results in TRView according to the phase. TODO
+	 *
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseFinished(StringTestCaseElement testCaseElement) {
@@ -73,24 +74,61 @@ public class ResultsParser {
 		log.info("parsing CASE FINISHED - availible data:");
 		testCaseElement.print();
 
+		// parsing
+
+		// highlighting
+		TreeItem treeItems[] = TRView.getTree().getItems();
+		for (TreeItem treeItem : treeItems) {
+			if (treeItem.getText().equals(testCaseElement.getTestMethodName())) {
+				treeItem.setBackground(null); // TODO: no BG?
+			}
+		}
+
+		// errors and failures
+		if (testCaseElement.getTestResultNoChildren().equals("Error")) {
+			int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
+			errNum++;
+			TRView.getTxtErrors().setText(Integer.toString(errNum));
+		} else if (testCaseElement.getTestResultNoChildren().equals("Failure")) {
+			int failNum = Integer.parseInt(TRView.getTxtLblFailures().getText());
+			failNum++;
+			TRView.getTxtLblFailures().setText(Integer.toString(failNum));
+		}
+		// TODO: what about other states?
+
 	}
 
 	/**
 	 * This method parses StringTestCaseElement received in CASE_STARTED phase
-	 * and displays results in TRView according to the phase.
-	 * TODO
+	 * and displays results in TRView according to the phase. TODO
+	 *
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
 		log.info("parsing CASE STARTED - availible data:");
 		testCaseElement.print();
+
+		// parsing
+		String lblRuns = null;
+		String lblRunsArray[] = TRView.getTxtRuns().getText().split("/");
+		int lblRunsRunned = Integer.parseInt(lblRunsArray[0]);
+
+		// increase lblRuns
+		lblRunsRunned++;
+		lblRuns = lblRunsRunned + "/" + lblRunsArray[1];
+		TRView.getTxtRuns().setText(lblRuns);
+
+		// highlight current item
+		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
+		t1.setText(testCaseElement.getTestMethodName());
+		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_CYAN));
 	}
 
 	/**
 	 * This method parses StringTestRunSession received in SESSION_FINISHED
-	 * phase and displays results in TRView according to the phase.
-	 * TODO
+	 * phase and displays results in TRView according to the phase. TODO
+	 *
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
@@ -102,8 +140,8 @@ public class ResultsParser {
 
 	/**
 	 * This method parses StringTestRunSession received in SESSION_STARTED phase
-	 * and displays results in TRView according to the phase.
-	 * TODO
+	 * and displays results in TRView according to the phase. TODO
+	 *
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
@@ -114,40 +152,30 @@ public class ResultsParser {
 		// local variables
 		int numberOfRuns = testRunSession.getChildrenElements().size();
 		log.debug("numberOfChildren: " + numberOfRuns);
-
-		// parsing
-		TRView.getLblRuns().setText("0/" + numberOfRuns);
-		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
-		t1.setText(testRunSession.getTestRunName());
-		for (StringTestElement element : testRunSession.getChildrenElements()) {
-			TreeItem t2 = new TreeItem(t1, 0);
-			t2.setText(element.getTestElement());
-		}
-
 	}
 
 	/**
 	 * This method parses StringTestRunSession received in SESSION_LAUNCHED
-	 * phase and displays results in TRView according to the phase.
+	 * phase and displays results in TRView according to the phase. TODO
+	 *
 	 * TODO
+	 *
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
-		// TODO Auto-generated method stub
 		log.info("parsing SESSION LAUNCHED - availible data:");
 		testRunSession.print();
 		// local variables
 		int numberOfRuns = testRunSession.getChildrenElements().size();
 		log.debug("numberOfChildren: " + numberOfRuns);
-
+		TRView.getTxtRuns().setText("0/?");
 		// parsing
-		/*TRView.getLblRuns().setText("0/" + numberOfRuns);
-		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
-		t1.setText(testRunSession.getTestRunName());
-		for (StringTestElement element : testRunSession.getChildrenElements()) {
-			TreeItem t2 = new TreeItem(t1, 0);
-			t2.setText(element.getTestElement());
-		}*/
+		/*
+		 * TRView.getLblRuns().setText("0/" + numberOfRuns); TreeItem t1 = new
+		 * TreeItem(TRView.getTree(), 0);
+		 * t1.setText(testRunSession.getTestRunName()); for (StringTestElement
+		 * element : testRunSession.getChildrenElements()) { TreeItem t2 = new
+		 * TreeItem(t1, 0); t2.setText(element.getTestElement()); }
+		 */
 	}
-
 }
