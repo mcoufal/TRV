@@ -68,8 +68,36 @@ public class StringTestRunSession implements Serializable {
 
 		/* SPACE FOR TESTING */
 		try {
-			log.debug("TESTING:");
-			log.debug("ITestElement: " + session.getParentContainer());
+			log.debug("***TESTING:***");
+			log.debug("Launched project: " + session.getLaunchedProject());
+			log.debug("getElementType: " + session.getLaunchedProject().getElementName());
+			log.debug("getElementType: " + session.getLaunchedProject().getElementType());
+			log.debug("getHandleIdentifier: " + session.getLaunchedProject().getHandleIdentifier());
+			log.debug("getProject: " + session.getLaunchedProject().getProject());
+			log.debug("getRawClasspath: " + session.getLaunchedProject().getRawClasspath());
+			log.debug("getPackageFragmentRoots: " + session.getLaunchedProject().getPackageFragmentRoots());
+			log.debug("getOutputLocation: " + session.getLaunchedProject().getOutputLocation());
+			log.debug("getResolvedClasspath[no-ignore]: " + session.getLaunchedProject().getResolvedClasspath(false));
+			log.debug("getResolvedClasspath[ignore]: " + session.getLaunchedProject().getResolvedClasspath(true));
+			log.debug("getAllPackageFragmentRoots: " + session.getLaunchedProject().getAllPackageFragmentRoots());
+			log.debug("getBuffer: " + session.getLaunchedProject().getBuffer());
+			log.debug("getChildren: " + session.getLaunchedProject().getChildren());
+			log.debug("getCorrespondingResource: " + session.getLaunchedProject().getCorrespondingResource());
+			log.debug("getJavaModel: " + session.getLaunchedProject().getJavaModel());
+			log.debug("getJavaProject: " + session.getLaunchedProject().getJavaProject());
+			log.debug("getNonJavaResources: " + session.getLaunchedProject().getNonJavaResources());
+			log.debug("getOpenable: " + session.getLaunchedProject().getOpenable());
+			log.debug("getOptions[no-inheritance]: " + session.getLaunchedProject().getOptions(false));
+			log.debug("getOptions[inheritance]: " + session.getLaunchedProject().getOptions(true));
+			log.debug("getPackageFragments: " + session.getLaunchedProject().getPackageFragments());
+			log.debug("getParent: " + session.getLaunchedProject().getParent());
+			log.debug("getPath: " + session.getLaunchedProject().getPath());
+			log.debug("getPrimaryElement: " + session.getLaunchedProject().getPrimaryElement());
+			log.debug("getReferencedClasspathEntries: " + session.getLaunchedProject().getReferencedClasspathEntries());
+			log.debug("getRequiredProjectNames: " + session.getLaunchedProject().getRequiredProjectNames());
+			log.debug("getResource: " + session.getLaunchedProject().getResource());
+			log.debug("getSchedulingRule: " + session.getLaunchedProject().getSchedulingRule());
+			log.debug("getUnderlyingResource: " + session.getLaunchedProject().getUnderlyingResource());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.error("Something went wrong in TESTING phase of InRunJunit:\n");

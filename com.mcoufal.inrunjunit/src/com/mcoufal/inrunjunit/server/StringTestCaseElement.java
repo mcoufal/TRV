@@ -49,7 +49,7 @@ public class StringTestCaseElement implements Serializable {
 	}
 	
 	/**
-	 * TODO
+	 * Prints string representations of StringTestCaseElement to standard output.
 	 */
 	public void print(){
 		System.out.println("[testCaseElement]" + testCaseElement);
@@ -64,6 +64,80 @@ public class StringTestCaseElement implements Serializable {
 		System.out.println("[testRunSession]" + testRunSession);
 	}
 
+	/**
+	 * @return the testCaseElement
+	 */
+	public String getTestCaseElement() {
+		return testCaseElement;
+	}
+
+	/**
+	 * @return the testClassName
+	 */
+	public String getTestClassName() {
+		return testClassName;
+	}
+
+	/**
+	 * @return the testMethodName
+	 */
+	public String getTestMethodName() {
+		return testMethodName;
+	}
+
+	/**
+	 * @return the elapsedTime
+	 */
+	public Double getElapsedTime() {
+		return elapsedTime;
+	}
+
+	/**
+	 * @return the failureTrace
+	 */
+	public String getFailureTrace() {
+		return failureTrace;
+	}
+
+	/**
+	 * @return the parentContainer
+	 */
+	public String getParentContainer() {
+		return parentContainer;
+	}
+
+	/**
+	 * @return the progressState
+	 */
+	public String getProgressState() {
+		return progressState;
+	}
+
+	/**
+	 * @return the testResultWithChildren
+	 */
+	public StringResult getTestResultWithChildren() {
+		return testResultWithChildren;
+	}
+
+	/**
+	 * @return the testResultNoChildren
+	 */
+	public StringResult getTestResultNoChildren() {
+		return testResultNoChildren;
+	}
+
+	/**
+	 * @return the testRunSession
+	 */
+	public String getTestRunSession() {
+		return testRunSession;
+	}
+
+	/**
+	 * TODO: remove when done
+	 * @param testCaseElement
+	 */
 	public static void printCaseElement(ITestCaseElement testCaseElement) {
 		System.out.println("Test Case Element: " + testCaseElement.toString());
 		System.out.println("Test Class Name: " + testCaseElement.getTestClassName());
