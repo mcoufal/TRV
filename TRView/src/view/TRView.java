@@ -43,30 +43,15 @@ public class TRView {
 	// variables for GUI
 	private static Text txtServerIP;
 	private static Text txtPort;
-	private static Text text;
-	private static Text text_1;
-	private static Text text_2;
-	private static Text text_3;
+	private static Text txtRuns;
+	private static Text txtErrors;
+	private static Text txtFailures;
+	private static Text txtTrace;
 	private static Display display;
 	private static Shell shlErrors;
 	private static Label lblServerIP;
 	private static Label lblPort;
 	private static Label lblRuns;
-	
-	/**
-	 * @return the lblRuns
-	 */
-	public static Label getLblRuns() {
-		return lblRuns;
-	}
-
-	/**
-	 * @return the lblRuns
-	 */
-	public static Tree getTree() {
-		return tree;
-	}
-
 	private static Button btnConnect;
 	private static Label lblErrors;
 	private static Label lblFailures;
@@ -82,7 +67,7 @@ public class TRView {
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		log.info("TRView app started");
 		// save reference to this app to get access to variables
-		//app = new TRView();
+		// app = new TRView();
 		// set up variables
 		oldData = null;
 		initialDataParsed = false;
@@ -116,10 +101,9 @@ public class TRView {
 			if (resClient != null && resClient.initialDataSetRecieved()) {
 				// parse initial data
 				if (initialDataParsed == false) {
-					ResultsParser.parseAndDisplay(resClient.getInitialDataSet());
-					// TODO: method redraw all components
-					TRView.getTree().redraw();
-					TRView.getLblRuns().redraw();
+					ResultsParser.parseAndDisplay(resClient.getDataSet());
+					// redraw all components
+					redrawAllComponents();
 					initialDataParsed = true;
 				}
 				// parse new data
@@ -145,7 +129,27 @@ public class TRView {
 	}
 
 	/**
-	 * TODO: maybe will need to reference all variables as app.[get]<variable>
+	 * Redraws all components.
+	 */
+	private static void redrawAllComponents() {
+		txtServerIP.redraw();
+		txtPort.redraw();
+		txtRuns.redraw();
+		txtErrors.redraw();
+		txtFailures.redraw();
+		txtTrace.redraw();
+		shlErrors.redraw();
+		lblServerIP.redraw();
+		lblPort.redraw();
+		lblRuns.redraw();
+		btnConnect.redraw();
+		lblErrors.redraw();
+		lblFailures.redraw();
+		tree.redraw();
+	}
+
+	/**
+	 * Initiates GUI.
 	 */
 	private static void createGUI() {
 		log.info("Creating GUI");
@@ -173,28 +177,31 @@ public class TRView {
 		lblRuns = new Label(shlErrors, SWT.NONE);
 		lblRuns.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRuns.setText("Runs:");
-		text = new Text(shlErrors, SWT.BORDER);
-		text.setEnabled(false);
-		text.setEditable(false);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtRuns = new Text(shlErrors, SWT.BORDER);
+		txtRuns.setEnabled(false);
+		txtRuns.setEditable(false);
+		txtRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtRuns.setText("0/0");
 
 		lblErrors = new Label(shlErrors, SWT.NONE);
 		lblErrors.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblErrors.setText("Errors:");
-		text_1 = new Text(shlErrors, SWT.BORDER);
-		text_1.setEnabled(false);
-		text_1.setEditable(false);
-		text_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtErrors = new Text(shlErrors, SWT.BORDER);
+		txtErrors.setEnabled(false);
+		txtErrors.setEditable(false);
+		txtErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtErrors.setText("0");
 
 		lblFailures = new Label(shlErrors, SWT.NONE);
 		lblFailures.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFailures.setText("Failures:");
-		text_2 = new Text(shlErrors, SWT.BORDER);
-		text_2.setEditable(false);
-		text_2.setEnabled(false);
-		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFailures = new Text(shlErrors, SWT.BORDER);
+		txtFailures.setEditable(false);
+		txtFailures.setEnabled(false);
+		txtFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFailures.setText("0");
 
-		// tree structere of test suites and test cases
+		// tree structure of test suites and test cases
 		tree = new Tree(shlErrors, SWT.BORDER);
 		tree.setEnabled(false);
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
@@ -203,12 +210,125 @@ public class TRView {
 		Label lblTrace = new Label(shlErrors, SWT.NONE);
 		lblTrace.setText("Trace:");
 
-		text_3 = new Text(shlErrors, SWT.BORDER);
-		text_3.setEnabled(false);
-		text_3.setEditable(false);
-		text_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 6, 3));
+		txtTrace = new Text(shlErrors, SWT.BORDER);
+		txtTrace.setEnabled(false);
+		txtTrace.setEditable(false);
+		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 6, 3));
 
 		shlErrors.open();
 		shlErrors.layout();
+	}
+
+	/**
+	 * @return the lblRuns
+	 */
+	public static Label getLblRuns() {
+		return lblRuns;
+	}
+
+	/**
+	 * @return the lblRuns
+	 */
+	public static Tree getTree() {
+		return tree;
+	}
+
+	/**
+	 * @return the txtServerIP
+	 */
+	public static Text getTxtServerIP() {
+		return txtServerIP;
+	}
+
+	/**
+	 * @return the txtPort
+	 */
+	public static Text getTxtPort() {
+		return txtPort;
+	}
+
+	/**
+	 * @return the text
+	 */
+	public static Text getTxtRuns() {
+		return txtRuns;
+	}
+
+	/**
+	 * @return the txtLblErrors
+	 */
+	public static Text getTxtErrors() {
+		return txtErrors;
+	}
+
+	/**
+	 * @return the txtLblFailures
+	 */
+	public static Text getTxtLblFailures() {
+		return txtFailures;
+	}
+
+	/**
+	 * @return the txtTrace
+	 */
+	public static Text getTxtTrace() {
+		return txtTrace;
+	}
+
+	/**
+	 * @return the display
+	 */
+	public static Display getDisplay() {
+		return display;
+	}
+
+	/**
+	 * @return the shlErrors
+	 */
+	public static Shell getShlErrors() {
+		return shlErrors;
+	}
+
+	/**
+	 * @return the lblServerIP
+	 */
+	public static Label getLblServerIP() {
+		return lblServerIP;
+	}
+
+	/**
+	 * @return the lblPort
+	 */
+	public static Label getLblPort() {
+		return lblPort;
+	}
+
+	/**
+	 * @return the btnConnect
+	 */
+	public static Button getBtnConnect() {
+		return btnConnect;
+	}
+
+	/**
+	 * @return the lblErrors
+	 */
+	public static Label getLblErrors() {
+		return lblErrors;
+	}
+
+	/**
+	 * @return the lblFailures
+	 */
+	public static Label getLblFailures() {
+		return lblFailures;
+	}
+
+	/**
+	 * @param lblRuns
+	 *            the lblRuns to set
+	 */
+	public static void setLblRuns(Label lblRuns) {
+		TRView.lblRuns = lblRuns;
 	}
 }
