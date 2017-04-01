@@ -4,16 +4,21 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
 
 import com.mcoufal.inrunjunit.server.ResultsData;
@@ -46,7 +51,7 @@ public class TRView {
 	private static Text txtRuns;
 	private static Text txtErrors;
 	private static Text txtFailures;
-	private static Text txtTrace;
+	private static StyledText txtTrace;
 	private static Display display;
 	private static Shell shlErrors;
 	private static Label lblServerIP;
@@ -75,7 +80,9 @@ public class TRView {
 		// create GUI
 		createGUI();
 
-		// Event listeners
+		/*--- Event listeners ---*/
+
+		// connect button
 		btnConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -86,6 +93,35 @@ public class TRView {
 				resClient = new ResultsClient(serverIP, portNum);
 				resClient.start();
 				tree.setEnabled(true);
+			}
+		});
+
+		// tree node selection
+		tree.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+
+				// highlight clicked item and cancel other highlighting
+				TreeItem t = (TreeItem) event.item;
+				for (TreeItem currentNode : tree.getItems()) {
+					if (t.getText().equals(currentNode.getText())) {
+						t.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION));
+					} else {
+						t.setBackground(null);
+					}
+				}
+
+				// show stack trace if available
+				for (ResultsData data : resClient.getDataSet()) {
+					if (data.getTestCaseElement() == null)
+						continue;
+					// check if same item
+					if (t.getText().equals(data.getTestCaseElement().getTestMethodName())) {
+						String trace = data.getTestCaseElement().getFailureTrace();
+						if (trace == null)
+							trace = "TEST: Nothing in trace.\nHey multiple\nlines.";
+						txtTrace.setText(trace);
+					}
+				}
 			}
 		});
 
@@ -155,9 +191,11 @@ public class TRView {
 		log.info("Creating GUI");
 		// shell and display
 		display = Display.getDefault();
-		shlErrors = new Shell();
+		shlErrors = new Shell(SWT.BORDER | SWT.CLOSE | SWT.ON_TOP | SWT.RESIZE);
 		shlErrors.setSize(450, 296);
 		shlErrors.setLayout(new GridLayout(6, false));
+		Rectangle r = display.getBounds();
+		shlErrors.setLocation(r.width - 450, r.height - 296);
 
 		// server options: IP address, port number, connect button
 		lblServerIP = new Label(shlErrors, SWT.HORIZONTAL);
@@ -210,10 +248,10 @@ public class TRView {
 		Label lblTrace = new Label(shlErrors, SWT.NONE);
 		lblTrace.setText("Trace:");
 
-		txtTrace = new Text(shlErrors, SWT.BORDER);
+		txtTrace = new StyledText(shlErrors, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
 		txtTrace.setEnabled(false);
 		txtTrace.setEditable(false);
-		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 6, 3));
+		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
 
 		shlErrors.open();
 		shlErrors.layout();
@@ -271,7 +309,7 @@ public class TRView {
 	/**
 	 * @return the txtTrace
 	 */
-	public static Text getTxtTrace() {
+	public static StyledText getTxtTrace() {
 		return txtTrace;
 	}
 

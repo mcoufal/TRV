@@ -9,15 +9,27 @@ import java.io.Serializable;
  */
 public class StringResult implements Serializable {
 	
+	/**
+	 * @return string representation of Result
+	 */
+	public String getResult() {
+		return status;
+	}
+
 	private String status = null;
 
+	/**
+	 * @return string representation of Result
+	 */
 	@Override
 	public String toString() {
 		return status;
 	}
 
 	/**
-	 * TODO
+	 * Constructor.
+	 *
+	 * Converts result to string representation.
 	 * @param result
 	 */
 	public StringResult(org.eclipse.jdt.junit.model.ITestElement.Result result) {

@@ -36,7 +36,7 @@ public class StringTestCaseElement implements Serializable {
 		testClassName = testCaseElement.getTestClassName();
 		testMethodName = testCaseElement.getTestMethodName();
 		elapsedTime = testCaseElement.getElapsedTimeInSeconds();
-		if (testCaseElement.getFailureTrace() != null) failureTrace = testCaseElement.getFailureTrace().toString();
+		if (testCaseElement.getFailureTrace() != null) failureTrace = testCaseElement.getFailureTrace().getTrace();
 		else failureTrace = null;
 		if (testCaseElement.getParentContainer() != null) parentContainer = testCaseElement.getParentContainer().toString();
 		else parentContainer = null;

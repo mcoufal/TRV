@@ -80,7 +80,7 @@ public class ResultsClient extends Thread {
 
 		// TODO: communication
 		while (alive) {
-			try { // recieve results data
+			try { // receive results data
 				recievedData = (ResultsData) fromServer.readObject();
 				resultsList.add(recievedData);
 				// TODO: thread sync or List?? consult

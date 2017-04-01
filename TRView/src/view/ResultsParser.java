@@ -72,7 +72,7 @@ public class ResultsParser {
 	private static void parseAndDisplayCaseFinished(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
 		log.info("parsing CASE FINISHED - availible data:");
-		testCaseElement.print();
+		//testCaseElement.print();
 
 		// parsing
 
@@ -80,19 +80,36 @@ public class ResultsParser {
 		TreeItem treeItems[] = TRView.getTree().getItems();
 		for (TreeItem treeItem : treeItems) {
 			if (treeItem.getText().equals(testCaseElement.getTestMethodName())) {
-				treeItem.setBackground(null); // TODO: no BG?
+				// clear background
+				treeItem.setBackground(null);
+				if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")){
+					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
+				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")){
+					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")){
+					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
+				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")){
+					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GREEN));
+				} else { // "Undefined"
+					log.debug("inside Undefined");
+					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+				}
 			}
 		}
 
 		// errors and failures
-		if (testCaseElement.getTestResultNoChildren().equals("Error")) {
+		if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")) {
 			int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
 			errNum++;
 			TRView.getTxtErrors().setText(Integer.toString(errNum));
-		} else if (testCaseElement.getTestResultNoChildren().equals("Failure")) {
+		} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")) {
 			int failNum = Integer.parseInt(TRView.getTxtLblFailures().getText());
 			failNum++;
 			TRView.getTxtLblFailures().setText(Integer.toString(failNum));
+		} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")) {
+			// TODO
+		} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")) {
+			// TODO
 		}
 		// TODO: what about other states?
 
@@ -122,7 +139,7 @@ public class ResultsParser {
 		// highlight current item
 		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
 		t1.setText(testCaseElement.getTestMethodName());
-		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_CYAN));
+		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
 	}
 
 	/**
@@ -134,7 +151,7 @@ public class ResultsParser {
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
 		log.info("parsing SESSION FINISHED - availible data:");
-		testRunSession.print();
+		//testRunSession.print();
 
 	}
 
@@ -147,7 +164,7 @@ public class ResultsParser {
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
 		log.info("parsing SESSION STARTED - availible data:");
-		testRunSession.print();
+		//testRunSession.print();
 
 		// local variables
 		int numberOfRuns = testRunSession.getChildrenElements().size();
@@ -164,7 +181,7 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
 		log.info("parsing SESSION LAUNCHED - availible data:");
-		testRunSession.print();
+		//testRunSession.print();
 		// local variables
 		int numberOfRuns = testRunSession.getChildrenElements().size();
 		log.debug("numberOfChildren: " + numberOfRuns);
