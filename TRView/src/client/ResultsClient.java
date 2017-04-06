@@ -8,8 +8,10 @@ import java.util.List;
 import org.jboss.reddeer.common.logging.Logger;
 import com.mcoufal.inrunjunit.server.ResultsData;
 
+import view.ResultsParser;
 import view.TRView;
-
+// TODO : configuration file
+// TODO : thread sync
 /**
  * ResultsClient class connects to and communicates with ResultsServer. First,
  * ResultsClient establishes connection with ResultsServer and after that it is
@@ -23,7 +25,7 @@ public class ResultsClient extends Thread {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ResultsClient.class);
 	public List<ResultsData> resultsList = null;
-	public static ResultsData recievedData = null;
+	public static ResultsData receivedData = null;
 	public static ObjectInputStream fromServer;
 	private static String IPaddr;
 	private static int portNum;
@@ -73,6 +75,14 @@ public class ResultsClient extends Thread {
 		try {
 			resultsList = (List<ResultsData>) fromServer.readObject();
 			log.debug("Received initial data set: " + resultsList.toString());
+			// parse and display
+			TRView.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					ResultsParser.parseAndDisplay(resultsList);
+					TRView.redrawAllComponents();
+				}
+			});
 		} catch (ClassNotFoundException | IOException e) {
 			log.error("Failed to read data from server!");
 			e.printStackTrace();
@@ -81,17 +91,18 @@ public class ResultsClient extends Thread {
 		// TODO: communication
 		while (alive) {
 			try { // receive results data
-				recievedData = (ResultsData) fromServer.readObject();
-				resultsList.add(recievedData);
-				// TODO: thread sync or List?? consult
+				receivedData = (ResultsData) fromServer.readObject();
+				resultsList.add(receivedData);
+				// parse and display
 				TRView.getDisplay().syncExec(new Runnable() {
 					@Override
 					public void run() {
-						TRView.getLblErrors().setText("Remove");
+						ResultsParser.parseAndDisplay(receivedData);
+						TRView.redrawAllComponents();
 					}
 				});
 
-				log.debug("Received: " + recievedData.toString() + " : " + recievedData.getPhase());
+				log.debug("Received: " + receivedData.toString() + " : " + receivedData.getPhase());
 			} catch (ClassNotFoundException | IOException e) {
 				log.error("Failed to read data from server!");
 				e.printStackTrace();
@@ -123,7 +134,7 @@ public class ResultsClient extends Thread {
 	 * @return test's ResultsData or null if no data were received so far.
 	 */
 	public ResultsData getData() {
-		return recievedData;
+		return receivedData;
 	}
 
 	/**

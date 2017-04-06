@@ -39,11 +39,6 @@ public class TRView {
 	private static int portNum;
 	// client for receiving results from results server
 	private static ResultsClient resClient = null;
-	// TODO: There may be some better way to do it, but for now:
-	// variable used to determine if data is changed
-	private static ResultsData oldData;
-	// TODO;
-	private static Boolean initialDataParsed;
 
 	// variables for GUI
 	private static Text txtServerIP;
@@ -71,11 +66,6 @@ public class TRView {
 	 */
 	public static void main(String[] args) throws UnknownHostException, IOException {
 		log.info("TRView app started");
-		// save reference to this app to get access to variables
-		// app = new TRView();
-		// set up variables
-		oldData = null;
-		initialDataParsed = false;
 
 		// create GUI
 		createGUI();
@@ -96,7 +86,8 @@ public class TRView {
 			}
 		});
 
-		// tree node selection
+		// TODO: node selection: how about something automatic (SWT.SELECT or sth like that)
+		//tree node selection
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 
@@ -127,47 +118,20 @@ public class TRView {
 
 		// application runtime
 		while (!shlErrors.isDisposed()) {
-			display.readAndDispatch(); // TODO: how to handle return value
-										// properly?
+			display.readAndDispatch();
+			// TODO: how to handle return value properly?
 			// if (!display.readAndDispatch()) {
 			// display.sleep();
 			// }
-
-			// start to parse and display results
-			if (resClient != null && resClient.initialDataSetRecieved()) {
-				// parse initial data
-				if (initialDataParsed == false) {
-					ResultsParser.parseAndDisplay(resClient.getDataSet());
-					// redraw all components
-					redrawAllComponents();
-					initialDataParsed = true;
-				}
-				// parse new data
-				ResultsData newData = resClient.getData();
-				// no data, no processing
-				if (newData != null) {
-					// process new data only
-					// TODO: Ideally, try some thread sync trick like
-					// Display.syncExec() from ResultsClient thread to parse
-					// results! Or find another way how to handle this - at
-					// least some FIFO system - we are losing data!
-					if (!newData.equals(oldData)) {
-						ResultsParser.parseAndDisplay(newData);
-						// TODO: method redraw all components
-						TRView.getTree().redraw();
-						TRView.getLblRuns().redraw();
-						oldData = newData;
-					}
-				}
-			}
 		}
 		log.debug("Main application shell is disposed!");
 	}
 
 	/**
+	 * TODO: is public (should be here some warning?)
 	 * Redraws all components.
 	 */
-	private static void redrawAllComponents() {
+	public static void redrawAllComponents() {
 		txtServerIP.redraw();
 		txtPort.redraw();
 		txtRuns.redraw();
@@ -191,7 +155,7 @@ public class TRView {
 		log.info("Creating GUI");
 		// shell and display
 		display = Display.getDefault();
-		shlErrors = new Shell(SWT.BORDER | SWT.CLOSE | SWT.ON_TOP | SWT.RESIZE);
+		shlErrors = new Shell(SWT.BORDER | SWT.CLOSE | SWT.RESIZE);
 		shlErrors.setSize(450, 296);
 		shlErrors.setLayout(new GridLayout(6, false));
 		Rectangle r = display.getBounds();
