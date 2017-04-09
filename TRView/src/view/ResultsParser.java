@@ -3,6 +3,7 @@ package view;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
@@ -76,7 +77,7 @@ public class ResultsParser {
 
 		// parsing
 
-		// highlighting
+		// highlighting and changing icons
 		TreeItem treeItems[] = TRView.getTree().getItems();
 		for (TreeItem treeItem : treeItems) {
 			if (treeItem.getText().equals(testCaseElement.getTestMethodName())) {
@@ -84,20 +85,26 @@ public class ResultsParser {
 				treeItem.setBackground(null);
 				if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
+					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testerr.png"));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testfail.png"));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
+					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testignored.png"));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")){
-					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GREEN));
+					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
+					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testok.png"));
 				} else { // "Undefined"
 					log.debug("inside Undefined");
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testassumptionfailed"));
 				}
 			}
 		}
 
 		// errors and failures
+		// TODO: add to and if(s) above!
 		if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")) {
 			int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
 			errNum++;
@@ -139,6 +146,7 @@ public class ResultsParser {
 		// highlight current item
 		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
 		t1.setText(testCaseElement.getTestMethodName());
+		t1.setImage(new Image(TRView.getDisplay(), "icons/testrun.png"));
 		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
 	}
 

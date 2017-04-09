@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -51,10 +53,10 @@ public class TRView {
 	private static Shell shlErrors;
 	private static Label lblServerIP;
 	private static Label lblPort;
-	private static Label lblRuns;
+	private static CLabel lblRuns;
 	private static Button btnConnect;
-	private static Label lblErrors;
-	private static Label lblFailures;
+	private static CLabel lblErrors;
+	private static CLabel lblFailures;
 	private static Tree tree;
 
 	/**
@@ -176,27 +178,30 @@ public class TRView {
 		btnConnect.setText("Connect");
 
 		// runs, errors, failures
-		lblRuns = new Label(shlErrors, SWT.NONE);
+		lblRuns = new CLabel(shlErrors, SWT.NONE);
 		lblRuns.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRuns.setText("Runs:");
+		lblRuns.setImage(new Image(display, "icons/test.png"));
 		txtRuns = new Text(shlErrors, SWT.BORDER);
 		txtRuns.setEnabled(false);
 		txtRuns.setEditable(false);
 		txtRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		txtRuns.setText("0/0");
 
-		lblErrors = new Label(shlErrors, SWT.NONE);
+		lblErrors = new CLabel(shlErrors, SWT.NONE);
 		lblErrors.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblErrors.setText("Errors:");
+		lblErrors.setImage(new Image(display, "icons/testerr.png"));
 		txtErrors = new Text(shlErrors, SWT.BORDER);
 		txtErrors.setEnabled(false);
 		txtErrors.setEditable(false);
 		txtErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		txtErrors.setText("0");
 
-		lblFailures = new Label(shlErrors, SWT.NONE);
+		lblFailures = new CLabel(shlErrors, SWT.NONE);
 		lblFailures.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblFailures.setText("Failures:");
+		lblFailures.setImage(new Image(display, "icons/testfail.png"));
 		txtFailures = new Text(shlErrors, SWT.BORDER);
 		txtFailures.setEditable(false);
 		txtFailures.setEnabled(false);
@@ -209,8 +214,9 @@ public class TRView {
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
 
 		// trace
-		Label lblTrace = new Label(shlErrors, SWT.NONE);
+		CLabel lblTrace = new CLabel(shlErrors, SWT.NONE);
 		lblTrace.setText("Trace:");
+		lblTrace.setImage(new Image(display, "icons/stkfrm_obj.png"));
 
 		txtTrace = new StyledText(shlErrors, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
 		txtTrace.setEnabled(false);
@@ -224,7 +230,7 @@ public class TRView {
 	/**
 	 * @return the lblRuns
 	 */
-	public static Label getLblRuns() {
+	public static CLabel getLblRuns() {
 		return lblRuns;
 	}
 
@@ -315,22 +321,14 @@ public class TRView {
 	/**
 	 * @return the lblErrors
 	 */
-	public static Label getLblErrors() {
+	public static CLabel getLblErrors() {
 		return lblErrors;
 	}
 
 	/**
 	 * @return the lblFailures
 	 */
-	public static Label getLblFailures() {
+	public static CLabel getLblFailures() {
 		return lblFailures;
-	}
-
-	/**
-	 * @param lblRuns
-	 *            the lblRuns to set
-	 */
-	public static void setLblRuns(Label lblRuns) {
-		TRView.lblRuns = lblRuns;
 	}
 }
