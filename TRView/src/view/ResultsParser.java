@@ -74,6 +74,8 @@ public class ResultsParser {
 		// TODO Auto-generated method stub
 		log.info("parsing CASE FINISHED - availible data:");
 		//testCaseElement.print();
+		int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
+		int failNum = Integer.parseInt(TRView.getTxtLblFailures().getText());
 
 		// parsing
 
@@ -86,9 +88,13 @@ public class ResultsParser {
 				if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testerr.png"));
+					errNum++;
+					TRView.getTxtErrors().setText(Integer.toString(errNum));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testfail.png"));
+					failNum++;
+					TRView.getTxtLblFailures().setText(Integer.toString(failNum));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testignored.png"));
@@ -102,24 +108,6 @@ public class ResultsParser {
 				}
 			}
 		}
-
-		// errors and failures
-		// TODO: add to and if(s) above!
-		if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")) {
-			int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
-			errNum++;
-			TRView.getTxtErrors().setText(Integer.toString(errNum));
-		} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")) {
-			int failNum = Integer.parseInt(TRView.getTxtLblFailures().getText());
-			failNum++;
-			TRView.getTxtLblFailures().setText(Integer.toString(failNum));
-		} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")) {
-			// TODO
-		} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")) {
-			// TODO
-		}
-		// TODO: what about other states?
-
 	}
 
 	/**
