@@ -1,8 +1,6 @@
 package com.mcoufal.inrunjunit.server;
 
 import java.io.Serializable;
-import org.jboss.reddeer.common.logging.Logger;
-
 import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 
 /**
@@ -15,8 +13,6 @@ import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
 public class ResultsData implements Serializable {
-	// set up logger
-	private final static Logger log = Logger.getLogger(ResultsData.class);
 	// serial ID used for serialization
 	private static final long serialVersionUID = 1L;
 	// phase where data were caught

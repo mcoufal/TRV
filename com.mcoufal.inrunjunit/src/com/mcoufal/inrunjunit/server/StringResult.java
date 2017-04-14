@@ -7,6 +7,7 @@ import java.io.Serializable;
  *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
+@SuppressWarnings("serial")
 public class StringResult implements Serializable {
 	
 	/**

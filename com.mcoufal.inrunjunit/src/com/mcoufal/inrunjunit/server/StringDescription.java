@@ -24,6 +24,7 @@ public class StringDescription {
 	
 	public StringDescription(Description desc) {
 		//TODO: initialize variables!
+		log.debug("initializing " + this.getClass().getName());
 		sMethodName = desc.getMethodName();
 		sClassName = desc.getClassName();
 		sDisplayName = desc.getDisplayName();
@@ -36,8 +37,22 @@ public class StringDescription {
 		for (Description childDesc : desc.getChildren()){
 			childrenDescription.add(new StringDescription(childDesc));
 		}
-		// see what is in description
-		// printDesc(desc);
+	}
+
+	/**
+	 * TODO
+	 */
+	public void print(){
+		System.out.println(sMethodName);
+		System.out.println(sClassName);
+		System.out.println(sDisplayName);
+		System.out.println(bIsEmpty);
+		System.out.println(bIsSuite);
+		System.out.println(bIsTest);
+		System.out.println(testCount);
+		for (StringDescription desc : childrenDescription){
+			System.out.println(desc);
+		}
 	}
 
 	/**/

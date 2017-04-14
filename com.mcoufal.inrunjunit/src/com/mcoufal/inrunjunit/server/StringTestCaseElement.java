@@ -5,13 +5,12 @@ import java.io.Serializable;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.jboss.reddeer.common.logging.Logger;
 
-import com.mcoufal.inrunjunit.listener.JUnitListenerEP;
-
 /**
  * TODO: comments, getters
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  *
  */
+@SuppressWarnings("serial")
 public class StringTestCaseElement implements Serializable {
 	// set up logger
 	private final static Logger log = Logger.getLogger(StringTestCaseElement.class);
@@ -31,6 +30,7 @@ public class StringTestCaseElement implements Serializable {
 	 * @param testCaseElement
 	 */
 	public StringTestCaseElement(ITestCaseElement testCaseElement) {
+		log.debug("initializing " + this.getClass().getName());
 		if (testCaseElement.toString() != null) this.testCaseElement = testCaseElement.toString();
 		else this.testCaseElement = null;
 		testClassName = testCaseElement.getTestClassName();

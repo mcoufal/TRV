@@ -4,13 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.jboss.reddeer.common.logging.Logger;
-
-import com.mcoufal.inrunjunit.listener.JUnitListenerEP;
 
 /**
  * TODO: comments, getters
@@ -18,6 +14,7 @@ import com.mcoufal.inrunjunit.listener.JUnitListenerEP;
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  *
  */
+@SuppressWarnings("serial")
 public class StringTestRunSession implements Serializable {
 	// set up logger
 	private final static Logger log = Logger.getLogger(StringTestRunSession.class);

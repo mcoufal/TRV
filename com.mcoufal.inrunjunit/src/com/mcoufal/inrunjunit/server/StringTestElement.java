@@ -3,7 +3,6 @@ package com.mcoufal.inrunjunit.server;
 import java.io.Serializable;
 
 import org.eclipse.jdt.junit.model.ITestElement;
-import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.jboss.reddeer.common.logging.Logger;
 
 /**
@@ -12,6 +11,7 @@ import org.jboss.reddeer.common.logging.Logger;
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  *
  */
+@SuppressWarnings("serial")
 public class StringTestElement implements Serializable {
 	// set up logger
 	private final static Logger log = Logger.getLogger(StringTestElement.class);
