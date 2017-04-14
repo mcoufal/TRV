@@ -88,21 +88,11 @@ public class TRView {
 			}
 		});
 
-		// TODO: node selection: how about something automatic (SWT.SELECT or sth like that)
-		//tree node selection
+		// tree node selection - show stack trace
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 
-				// highlight clicked item and cancel other highlighting
 				TreeItem t = (TreeItem) event.item;
-				for (TreeItem currentNode : tree.getItems()) {
-					if (t.getText().equals(currentNode.getText())) {
-						t.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION));
-					} else {
-						t.setBackground(null);
-					}
-				}
-
 				// show stack trace if available
 				for (ResultsData data : resClient.getDataSet()) {
 					if (data.getTestCaseElement() == null)
@@ -110,8 +100,11 @@ public class TRView {
 					// check if same item
 					if (t.getText().equals(data.getTestCaseElement().getTestMethodName())) {
 						String trace = data.getTestCaseElement().getFailureTrace();
-						if (trace == null)
-							trace = "TEST: Nothing in trace.\nHey multiple\nlines.";
+						if (trace == null){
+							trace = "no trace";
+							txtTrace.setEnabled(false);
+						}
+						else txtTrace.setEnabled(true);
 						txtTrace.setText(trace);
 					}
 				}
@@ -120,11 +113,9 @@ public class TRView {
 
 		// application runtime
 		while (!shlErrors.isDisposed()) {
-			display.readAndDispatch();
-			// TODO: how to handle return value properly?
-			// if (!display.readAndDispatch()) {
-			// display.sleep();
-			// }
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
 		}
 		log.debug("Main application shell is disposed!");
 	}

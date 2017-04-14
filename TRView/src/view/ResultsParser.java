@@ -119,6 +119,7 @@ public class ResultsParser {
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
 		log.info("parsing CASE STARTED - availible data:");
+		log.debug(String.format("BEFORE: scroll location: [%s]", TRView.getTree().getVerticalBar().getSelection()));
 		testCaseElement.print();
 
 		// parsing
@@ -136,6 +137,13 @@ public class ResultsParser {
 		t1.setText(testCaseElement.getTestMethodName());
 		t1.setImage(new Image(TRView.getDisplay(), "icons/testrun.png"));
 		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
+
+		TRView.getTree().redraw();
+		// TODO: scroll down to currently running test case
+		log.debug(String.format("AFTER: active item location: [%s,%s]", t1.getBounds().x, t1.getBounds().y));
+		log.debug(String.format("AFTER: scroll location: [%s]", TRView.getTree().getVerticalBar().getSelection()));
+
+		//TRView.getTree().getVerticalBar().setSelection();
 	}
 
 	/**
