@@ -1,0 +1,99 @@
+%=========================================================================%
+% - - - KAPITOLA 3: J U N I T                                             %
+\chapter{Testovací rámec JUnit}                                           %
+%=========================================================================%
+JUnit je jednoduchý nástroj pro psaní testů a testování aplikací. Jeho vývoj je založen na otevřeném zdrojovém kódu (\emph{angl. open-source}), a proto lze najít další nástroje, které rámec JUnit používají nebo z něj vycházejí. Cílem JUnit je poskytovat nástroj, který by umožňoval \todo{citace?}:
+\begin{description}
+  \item[Jednoduchost psaní testů]
+  Programátor nemusí psát zbytečně mnoho kódu, zbytek za něj vykoná rámec JUnit.
+  \item[Snadné pochopení rámce JUnit]
+  Rámec by měl být pro Javu přirozený, tak aby se programátor naučil s rámcem pracovat co nejrychleji.
+  \item[Rychlé provedení testů]
+  Spouštění jednotlivých testovacích případů by mělo probíhat bez zbytečných odkladů tak, aby šetřilo programátorům čas.
+  \item[Izolované provedení testů]
+  Rámec by měl poskytovat izolaci jednotlivých testovacích případů, která zajišťuje dostatečnou stabilitu testovacích sad.
+  \item[Skládat a provádět různé kombinace testů]
+  Lze spustit například testy se stejným štítkem\,(\emph{angl. tag}) nebo jen vybrané testy v sadě.
+\end{description}
+
+Bohužel jsou některé z těchto podmínek v rozporu mezi sebou a tak nelze splnit všechny z těchto požadavků naplno. V této kapitole je popsán testovací rámec JUnit, jeho architektura, aplikační rozhraní, vybraná existující rozšíření a zásuvné moduly postavené na tomto rámci. 
+
+
+  \section{Architektura rámce JUnit}
+  %=================================
+  V roce 1999 publikoval Kent Beck svůj rámec pro jednotkové testování pro programovací jazyk \emph{Smalltalk} -- SmalltalkUnit (zkráceně SUnit). Idea tohoto rámce spočívá v nalezení ideální kombinace mezi jednoduchostí a užitečností. Později Erich Gamma přepsal SUnit do jazyka Java a vytvořil tak JUnit. Posléze tak začaly vznikat mnohé obdoby rámce JUnit podporující mnohé programovací jazyky \cite{UnitTestFrameworks}:
+  
+  \begin{description}
+   \item[CppUnit:] pro jazyk C++
+   \item[CUnit:] pro jazyk C
+   \item[NUnit:] pro jazyk .NET, včetně C\#, VB.NET, J\# a Managed C++
+   \item[PyUnit:] pro jayzk Python
+   \item[vbUnit:] pro jazyk Visula Basic
+   \item[utPLSQL:] pro jazyk PL/SQL od firmy Oracle
+   \item[MinUnit:] minimalistická verze pro jazyk C
+  \end{description}
+
+
+    \subsection{xUnit}
+    %*****************
+    Všechny rámce založené na xUnit se drží stejných základů. Klíčovými třídami v každém rámci jsou třídy TestCase, TestRunner, TestFixture, TestSuite a TestResult \cite{UnitTestFrameworks}.
+
+    \begin{description}
+      \item[TestCase] je základní třídou reprezentující jednotkový test. Všechny jednotkové testy jsou odvozeny od této třídy a dědí její vlastnosti.
+      \item[TestRunner] je třída spouštějící jednotlivé testy a zpracovávající jednotlivé výsledky. Existují dva základní typy runnerů -- grafický a textový. Nejdůležitější metodou je metoda run(), která spouští runner a testy zadané jako parametr této metody.
+      \item[TestFixture] 
+      \item[TestSuite] asm sad 
+      \item[TestResult] amskd mksa 
+    \end{description}
+
+
+    \subsection{JUnit}
+    %*****************
+    % Popis architektury / implementace JUnit 
+    \todo{Lorem ipsum dolor sit amet} viz obr \ref{fig:junit_arch}.
+
+    \todo{Lze vybírat spuštěné testy dle štítků?}
+    
+    \begin{figure}[!h]
+      \includegraphics[width=\textwidth, center]{obrazky-figures/placeholder.pdf}
+      \caption{Architektura testovacího rámce JUnit.}
+      \label{fig:junit_arch}
+    \end{figure}
+
+
+  \section{Rozhraní pro programování aplikací rámce JUnit}
+  %=======================================================
+  \todo{Lorem isusm dolor sit amet.}
+    
+    \subsection{Testovací třídy v rámci JUnit}
+    Testovací třída v rámci Junit je třída obsahující jednotlivé testovací případy. Jednotlivé testovací případy jsou od ostatních metod odlišeny anotací \texttt{@Test} \cite{vogella:JUnit}. Díky tomu rámec JUnit pozná jednotlivé testy, které má spustit.
+    
+    \subsection{Testovací sady v rámci JUnit}
+    Díky vytváření testovacích sad lze seskupovat různé testovací třídy dle potřeby programátora. Testovací sada se definuje pomocí anotace \texttt{@SuiteClasses}. Jako parametr anotace je zadán seznam jednotlivých testovacích tříd, které do testovací sady patří. Spuštěním testovací sady se tak spustí všechny testovací třídy.
+    \todo{Anotace RunWith - dopsat text + je nejaky implicitni runner, nebo je treba zadavat vzdy explicitne?}
+    
+    \subsection{Parametrizované testovací třídy}
+    \todo{Lorem ipsum dolor sit amet.}
+    
+    \subsection{Přeskočení testovacího případu}
+    \todo{Lorem ipsum dolor sit amet.}
+
+  \section{Rozšíření rámce JUnit}
+  %==============================
+  \todo{Lorem ipsum dolor sit amet.}
+
+  \section{Zásuvné moduly Eclipse IDE rozšiřující rámec JUnit}
+  %===========================================================
+  \todo{Lorem ipsum dolor sit amet.}
+  % Zminit jake moduly rozsiruji JUnit a jak, detailneji popsat jen ten co pouziji.
+    \subsection{Zásuvný modul org.junit.???}
+    %***************************************
+    \todo{Lorem ipsum dolor sit amet.}
+    \subsubsection{JUnit ui}
+    %-----------------------
+    % Tady by mela byt popsana zakladni struktura daneho pluginu + Tridy dulezite z hlediska implementace 
+    \todo{Lorem ipsum dolor sit amet.}
+    \subsubsection{JUnit core}
+    %-------------------------
+    % Tady by mela byt popsana zakladni struktura daneho pluginu + Tridy dulezite z hlediska implementace
+    \todo{Lorem ipsum dolor sit amet.}
