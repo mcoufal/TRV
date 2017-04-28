@@ -131,17 +131,17 @@
 
 %Abstrakt (cesky, slovensky ci anglicky) / Abstract (in czech, slovak or english)
 \abstract[cs]{
-Cílem této práce je především návrh a implementace nástrojů umožňujících zobrazovat stav průběhu testů testované instance vývojového prostředí Eclipse. Řeší tak problém zobrazení výsledků právě probíhajících testů grafického uživatelského rozhraní, a to i při běhu na vzdálených platformách. Práce také obsahuje popis struktury vývojového prostředí Eclipse IDE\,(\emph{Integrated Development Environment}) a  popis nástroje JUnit, který je k implementaci zmíněných nástrojů využit.
+Cílem této práce je především návrh a implementace nástrojů umožňujících zobrazovat stav průběhu testů testované instance vývojového prostředí Eclipse. Řeší tak problém zobrazení výsledků právě probíhajících testů grafického uživatelského rozhraní, a to i při běhu na vzdálených platformách. Práce také obsahuje popis struktury vývojového prostředí Eclipse IDE\,(\emph{Integrated Development Environment}) a  popis nástroje JUnit, který je k~implementaci zmíněných nástrojů využit.
 Zobrazení potřebných výsledků uživateli je dosaženo pomocí dvou implementovaných aplikací. První je zásuvný modul pro vývojové prostředí Eclipse, který zjišťuje stav probíhajícího testování a zároveň zastává funkci serveru pro posílání potřebných informací připojeným klientům. Druhá aplikace slouží jako klient přijímající informace ze serveru. Tyto informace zpracovává a zobrazuje je do okna uživateli.
 \todo{Jaké jsou konkrétní výsledky? Jak dobře je problém vyřešen?}
 \todo{Čím je to užitečné vědě/čtenáři?}
-Při testování grafického uživatelského rozhraní hraje roli spousta proměnných. Často jen změna komponenty nebo konfigurace platformy, na které testujeme, může způsobit selhání testu. Tento nástroj umožňuje detailnější pohled na probíhající testy. To může být užitečné jak v případě vytváření testů, tak v případě analýzy již hotových testů\,--\,lze snáze odhalit v jakém místě by se mohla nacházet chyba.
+Při testování grafického uživatelského rozhraní hraje roli spousta proměnných. Často jen změna komponenty nebo konfigurace platformy, na které testujeme, může způsobit selhání testu. Tento nástroj umožňuje detailnější pohled na probíhající testy. To může být užitečné jak v~případě vytváření testů, tak v~případě analýzy již hotových testů\,--\,lze snáze odhalit v~jakém místě by se mohla nacházet chyba.
 }
 
 \abstract[en]{
 Aim of this paper is design and implementation of tools which allow to display testing progress of Eclipse instance. This resolves problem of viewing currently running graphical user interface test results, even when running tests on a remote platforms. This thesis also contains description of Eclipse IDE\,(\emph{Integrated Development Environment}) and JUnit architecture. 
 Displaying results to end user is achieved by implementing two separate applications. First one is Eclipse plug-in that collects test run information and creates server to send those information to all connected clients. Second application is used to display results of a test run. Results are received by client part of the application.
-\todo{dopsat az bude hotove v CJ}
+\todo{dopsat az bude hotove v~CJ}
 Automatic graphical user interface testing may be very fragile and it depends on various aspects. Even little change in component or platform configuration can lead to a test failure. Implemented applications allow to take a closer look at currently running tests. That is useful to locate error both when creating a new test or analysing already implemented one.
 }
 
