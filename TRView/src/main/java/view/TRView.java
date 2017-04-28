@@ -1,4 +1,4 @@
-package view;
+package main.java.view;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -25,7 +25,7 @@ import org.jboss.reddeer.common.logging.Logger;
 
 import com.mcoufal.inrunjunit.server.ResultsData;
 
-import client.ResultsClient;
+import main.java.client.ResultsClient;
 
 /**
  * TODO: comments
@@ -48,6 +48,7 @@ public class TRView {
 	private static Text txtRuns;
 	private static Text txtErrors;
 	private static Text txtFailures;
+	private static Text txtIgnored;
 	private static StyledText txtTrace;
 	private static Display display;
 	private static Shell shlErrors;
@@ -57,6 +58,7 @@ public class TRView {
 	private static Button btnConnect;
 	private static CLabel lblErrors;
 	private static CLabel lblFailures;
+	private static CLabel lblIgnored;
 	private static Tree tree;
 
 	/**
@@ -111,10 +113,23 @@ public class TRView {
 			}
 		});
 
+		int scrollPos = 0;
+		int lastScrollPos = scrollPos;
 		// application runtime
 		while (!shlErrors.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
+			//if (!display.readAndDispatch()) {
+			//	display.sleep();
+			//}
+			display.readAndDispatch();
+			scrollPos = getTree().getVerticalBar().getSelection();
+			if (scrollPos != lastScrollPos){
+				lastScrollPos = scrollPos;
+				log.debug(String.format("vert bar selection: [%s]", TRView.getTree().getVerticalBar().getSelection()));
+				log.debug(String.format("my gues: [%s]", TRView.getTree().getVerticalBar().getMaximum() - TRView.getTree().getVerticalBar().getThumb()));
+				log.debug(String.format("vert bar maximum: [%s]", TRView.getTree().getVerticalBar().getMaximum()));
+				log.debug(String.format("vert bar thumb: [%s]", TRView.getTree().getVerticalBar().getThumb()));
+				log.debug(String.format("vert bar size[width, height]: [%s,%s]", TRView.getTree().getVerticalBar().getSize().x, TRView.getTree().getVerticalBar().getSize().y));
+				log.debug(String.format("vert bar thumb bounds[x,y,width,height]: [%s,%s,%s,%s]", TRView.getTree().getVerticalBar().getThumbBounds().x, TRView.getTree().getVerticalBar().getThumbBounds().y, TRView.getTree().getVerticalBar().getThumbBounds().width, TRView.getTree().getVerticalBar().getThumbBounds().height));
 			}
 		}
 		log.debug("Main application shell is disposed!");
@@ -146,63 +161,82 @@ public class TRView {
 	 */
 	private static void createGUI() {
 		log.info("Creating GUI");
+
 		// shell and display
 		display = Display.getDefault();
-		shlErrors = new Shell(SWT.BORDER | SWT.CLOSE | SWT.RESIZE);
+		shlErrors = new Shell(SWT.RESIZE | SWT.CLOSE | SWT.ON_TOP);
 		shlErrors.setSize(450, 296);
-		shlErrors.setLayout(new GridLayout(6, false));
+		shlErrors.setLayout(new GridLayout(8, false));
 		Rectangle r = display.getBounds();
 		shlErrors.setLocation(r.width - 450, r.height - 296);
 
-		// server options: IP address, port number, connect button
+		// IP address
 		lblServerIP = new Label(shlErrors, SWT.HORIZONTAL);
-		lblServerIP.setAlignment(SWT.CENTER);
+		lblServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
 		lblServerIP.setText("Server IP:");
 		txtServerIP = new Text(shlErrors, SWT.BORDER);
+		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 
+		// port number
 		lblPort = new Label(shlErrors, SWT.NONE);
+		lblPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
 		lblPort.setText("Port:");
 		txtPort = new Text(shlErrors, SWT.BORDER);
+		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 
+		// connect button
 		btnConnect = new Button(shlErrors, SWT.NONE);
 		btnConnect.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 2, 1));
 		btnConnect.setText("Connect");
 
-		// runs, errors, failures
+		// runs
 		lblRuns = new CLabel(shlErrors, SWT.NONE);
-		lblRuns.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblRuns.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lblRuns.setText("Runs:");
 		lblRuns.setImage(new Image(display, "icons/test.png"));
 		txtRuns = new Text(shlErrors, SWT.BORDER);
 		txtRuns.setEnabled(false);
 		txtRuns.setEditable(false);
-		txtRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		txtRuns.setText("0/0");
 
+		// errors
 		lblErrors = new CLabel(shlErrors, SWT.NONE);
-		lblErrors.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblErrors.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lblErrors.setText("Errors:");
 		lblErrors.setImage(new Image(display, "icons/testerr.png"));
 		txtErrors = new Text(shlErrors, SWT.BORDER);
 		txtErrors.setEnabled(false);
 		txtErrors.setEditable(false);
-		txtErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		txtErrors.setText("0");
 
+		// failures
 		lblFailures = new CLabel(shlErrors, SWT.NONE);
-		lblFailures.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblFailures.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
 		lblFailures.setText("Failures:");
 		lblFailures.setImage(new Image(display, "icons/testfail.png"));
 		txtFailures = new Text(shlErrors, SWT.BORDER);
 		txtFailures.setEditable(false);
 		txtFailures.setEnabled(false);
-		txtFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		txtFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		txtFailures.setText("0");
+
+		// ignored
+		lblIgnored = new CLabel(shlErrors, SWT.NONE);
+		lblIgnored.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblIgnored.setText("Ignored:");
+		lblIgnored.setImage(new Image(display, "icons/testignored.gif"));
+		txtIgnored = new Text(shlErrors, SWT.BORDER);
+		txtIgnored.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtIgnored.setEnabled(false);
+		txtIgnored.setEditable(false);
+		txtIgnored.setText("0");
 
 		// tree structure of test suites and test cases
 		tree = new Tree(shlErrors, SWT.BORDER);
 		tree.setEnabled(false);
-		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
+		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 
 		// trace
 		CLabel lblTrace = new CLabel(shlErrors, SWT.NONE);
@@ -212,7 +246,7 @@ public class TRView {
 		txtTrace = new StyledText(shlErrors, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
 		txtTrace.setEnabled(false);
 		txtTrace.setEditable(false);
-		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
+		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 
 		shlErrors.open();
 		shlErrors.layout();
@@ -247,24 +281,31 @@ public class TRView {
 	}
 
 	/**
-	 * @return the text
+	 * @return the txtRuns
 	 */
 	public static Text getTxtRuns() {
 		return txtRuns;
 	}
 
 	/**
-	 * @return the txtLblErrors
+	 * @return the txtErrors
 	 */
 	public static Text getTxtErrors() {
 		return txtErrors;
 	}
 
 	/**
-	 * @return the txtLblFailures
+	 * @return the txtFailures
 	 */
-	public static Text getTxtLblFailures() {
+	public static Text getTxtFailures() {
 		return txtFailures;
+	}
+
+	/**
+	 * @return the txtIgnored
+	 */
+	public static Text getTxtIgnored() {
+		return txtIgnored;
 	}
 
 	/**

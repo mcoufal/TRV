@@ -1,4 +1,4 @@
-package client;
+package main.java.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,8 +8,8 @@ import java.util.List;
 import org.jboss.reddeer.common.logging.Logger;
 import com.mcoufal.inrunjunit.server.ResultsData;
 
-import view.ResultsParser;
-import view.TRView;
+import main.java.view.ResultsParser;
+import main.java.view.TRView;
 // TODO : configuration file
 // TODO : thread sync
 /**

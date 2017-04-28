@@ -1,4 +1,4 @@
-package view;
+package main.java.view;
 
 import java.util.List;
 
@@ -75,7 +75,8 @@ public class ResultsParser {
 		log.info("parsing CASE FINISHED - availible data:");
 		//testCaseElement.print();
 		int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
-		int failNum = Integer.parseInt(TRView.getTxtLblFailures().getText());
+		int failNum = Integer.parseInt(TRView.getTxtFailures().getText());
+		int ignoredNum = Integer.parseInt(TRView.getTxtFailures().getText());
 
 		// parsing
 
@@ -94,10 +95,12 @@ public class ResultsParser {
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testfail.png"));
 					failNum++;
-					TRView.getTxtLblFailures().setText(Integer.toString(failNum));
+					TRView.getTxtFailures().setText(Integer.toString(failNum));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testignored.png"));
+					ignoredNum++;
+					TRView.getTxtIgnored().setText(Integer.toString(ignoredNum));
 				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testok.png"));
@@ -119,7 +122,7 @@ public class ResultsParser {
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
 		log.info("parsing CASE STARTED - availible data:");
-		log.debug(String.format("BEFORE: scroll location: [%s]", TRView.getTree().getVerticalBar().getSelection()));
+		//log.debug(String.format("BEFORE: scroll location: [%s]", TRView.getTree().getVerticalBar().getSelection()));
 		testCaseElement.print();
 
 		// parsing
@@ -139,11 +142,8 @@ public class ResultsParser {
 		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
 
 		TRView.getTree().redraw();
-		// TODO: scroll down to currently running test case
-		log.debug(String.format("AFTER: active item location: [%s,%s]", t1.getBounds().x, t1.getBounds().y));
-		log.debug(String.format("AFTER: scroll location: [%s]", TRView.getTree().getVerticalBar().getSelection()));
-
-		//TRView.getTree().getVerticalBar().setSelection();
+		// TODO: scroll to currently running test case (so it is visible)
+		TRView.getTree().getVerticalBar().setSelection(TRView.getTree().getVerticalBar().getMaximum() - TRView.getTree().getVerticalBar().getThumb());
 	}
 
 	/**
