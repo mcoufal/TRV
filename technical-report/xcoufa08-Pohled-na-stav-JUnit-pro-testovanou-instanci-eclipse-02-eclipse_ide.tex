@@ -3,7 +3,7 @@
 \chapter{Vývojové prostředí Eclipse}                                      %
 \label{chapter:eclipse_ide}
 %=========================================================================%
-Eclipse IDE je integrované vývojové prostředí poskytující podporu pro mnoho programovacích jazyků, jako jsou například Java, C, C++, Javascript a PHP.  Je záložen na modulové architektuře, která umožňuje snadné rozšíření této platformy. Pro přidání nové funkcionality do vývojového prostředí stačí nainstalovat příslušný zásuvný modul (\emph{angl. plug-in}). Projekt Eclipse je udržován radou správců \emph{eclipse.org}, která vznikla z iniciativy společností \emph{Borland}, \emph{IBM}, \emph{MERANT}, \emph{QNX Software Systems}, \emph{Rational Software}, \emph{Red Hat}, \emph{SuSE}, \emph{TogetherSoft} a \emph{Webgain}. Cílem eclipse.org je tvorba univerzálního rozšiřitelného integrovaného vývojového prostředí, které poskytuje nástroje pro integraci různých platforem a zároveň potřebné nástroje pro jejich tvorbu a rozšíření \cite{eclipse-org}.
+Eclipse IDE je integrované vývojové prostředí poskytující podporu pro mnoho programovacích jazyků, jako jsou například Java, C, C++, JavaScript a PHP.  Je záložen na modulové architektuře, která umožňuje snadné rozšíření této platformy. Pro přidání nové funkcionality do vývojového prostředí stačí nainstalovat příslušný zásuvný modul (\emph{angl. plug-in}). Projekt Eclipse je udržován radou správců \emph{eclipse.org}, která vznikla z iniciativy společností \emph{Borland}, \emph{IBM}, \emph{MERANT}, \emph{QNX Software Systems}, \emph{Rational Software}, \emph{Red Hat}, \emph{SuSE}, \emph{TogetherSoft} a \emph{Webgain}. Cílem eclipse.org je tvorba univerzálního rozšiřitelného integrovaného vývojového prostředí, které poskytuje nástroje pro integraci různých platforem a zároveň potřebné nástroje pro jejich tvorbu a rozšíření \cite{eclipse-org}.
 
 V následující kapitole je popsána struktura Eclipse IDE a částí, ze kterých se skládá. Dále je zde popsán systém zásuvných modulů Eclipse IDE a jejich částí.
 
@@ -33,7 +33,7 @@ V následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
     \label{fig:eclipse_arch}
   \end{figure}
   
-  Na obrázku \ref{fig:eclipse_arch} jsou znázorněny základní komponenty platformy Eclipse. \emph{Workbench} představuje obálku, která umožňuje uživateli orientaci ve vývojovém prostředí. Definuje \emph{body rozšíření}\,(\emph{angl. extension points}), kde je možno k zásuvnému modulu přidat další, rozšiřující modul. Díky těmto bodům lze přidávat například komponenty grafického rozhraní, jako jsou pohledy, editory a menu. \emph{Pracovní plocha}\,(\emph{angl. Workspace}) definuje rozhraní pro programování aplikací\,(dále zkráceně API) za účelem vytváření a správy projektů, souborů a složek. Zde jsou projekty překládány a sestavovány. Pracovní plocha navíc obsahuje další informace k projektům, jako je například uživatelské nastavení. \emph{Help} poskytuje body rozšíření sloužící pro zobrazení nápovědy nebo dokumentace. Modul \emph{Team} definuje model pro vývoj aplikací v týmu, s podporou správy verzí aplikace a zdrojových kódů. Komponenta \emph{Platform Runtime} dynamicky vyhledává a spravuje informace o zásuvných modulech a jejich bodech rozšíření. \todo{Nedela runtime jeste neco? Z hlediska implementovane aplikace nas zajimaji 3 casti: workbench, swt a platform runtime?}
+  Na obrázku \ref{fig:eclipse_arch} jsou znázorněny základní komponenty platformy Eclipse. \emph{Workbench} představuje obálku, která umožňuje uživateli orientaci ve vývojovém prostředí. Definuje \emph{body rozšíření}\,(\emph{angl. extension points}), kde je možno k zásuvnému modulu přidat další, rozšiřující modul. Díky těmto bodům lze přidávat například komponenty grafického rozhraní, jako jsou pohledy, editory a menu. \emph{Pracovní plocha}\,(\emph{angl. Workspace}) definuje rozhraní pro programování aplikací\,(dále zkráceně API) za účelem vytváření a správy projektů, souborů a složek. Zde jsou projekty překládány a sestavovány. Pracovní plocha navíc obsahuje další informace k projektům, jako je například uživatelské nastavení. \emph{Help} poskytuje body rozšíření sloužící pro zobrazení nápovědy nebo dokumentace. Modul \emph{Team} definuje model pro vývoj aplikací v týmu, s podporou správy verzí aplikace a zdrojových kódů. Komponenta \emph{Platform Runtime} dynamicky vyhledává a spravuje informace o zásuvných modulech a jejich bodech rozšíření. \todo{Nedělá runtime ještě Něco? Z hlediska implementované aplikace nás zajímají 3 části: workbench, swt a platform runtime?}
 
     \subsection{Workbench}
     %*********************
@@ -55,7 +55,7 @@ V následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
       \subsubsection{Perspektivy}
       %--------------------------
-      Perspektivy slouží jako nástroj pro seskupení relevantních komponent v aktivním okně Workbench. Komponenty se seskupují podle úkonu, který bude uživatel vykonávat a  zároveň podle programovacího jazyka, ve kterém uživatel projekt vytváří. Eclipse IDE umožňuje přídání nových perspektiv pomocí zásuvných modulů a bodů rozšíření. Pokud je to žádoucí, lze také při přidání nového zásuvného modulu některou z již existujících perspektiv pouze upravit.
+      Perspektivy slouží jako nástroj pro seskupení relevantních komponent v aktivním okně Workbench. Komponenty se seskupují podle úkonu, který bude uživatel vykonávat a  zároveň podle programovacího jazyka, ve kterém uživatel projekt vytváří. Eclipse IDE umožňuje přidání nových perspektiv pomocí zásuvných modulů a bodů rozšíření. Pokud je to žádoucí, lze také při přidání nového zásuvného modulu některou z již existujících perspektiv pouze upravit.
 
       Pro přidání nové perspektivy, podobně jako u přidání nového pohledu, je nutno do manifestu zásuvného modulu přidat správný bod rozšíření\,--\,\texttt{org.eclipse.ui.perspectives}. Rozložení komponent v dané perspektivě je definováno ve třídě implementující rozhraní \texttt{IPerspectiveFactory} \cite{Plugins}. Přidat nové rozšíření zásuvného modulu implementující novou nebo upravenou perspektivu lze jednoduše pomocí nástrojů v záložce \emph{Extensions} u editoru zásuvného modulu. Chceme-li perspektivu pouze upravit, lze při tvorbě nové perspektivy vybrat některou z již existujících.
 
@@ -67,7 +67,7 @@ V následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
     \subsection{SWT}
     %***************
-    \todo{Popsat SWT? Je to vubec treba?}
+    \todo{Lorem ipsum dolor sit a met.}
     
     \subsection{Platform runtime}
     %***************
@@ -89,7 +89,7 @@ V následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
     %**************************************
     Manifesty zásuvného modulu jsou dva soubory\,--\,\texttt{MANIFEST.MF} a \texttt{plugin.xml}. První zmíněný obsahuje data nutná pro běh zásuvného modulu jako jsou \emph{identifikátor}, \emph{verze} a \emph{závislosti} zásuvného modulu. Druhý obsahuje data ve formátu XML popisující případná rozšíření a body rozšíření.
 
-      \subsubsection{Soubor 'MANIFEST.MF'}
+      \subsubsection{Soubor `MANIFEST.MF'}
       %-------------------------------------
       V každém souboru \texttt{MANIFEST.MF} zásuvného modulu se nacházejí záznamy pro jméno, identifikátor, verzi, spouštěč a poskytovatele balíčku zásuvného modulu. Dále se zde mohou vyskytovat záznamy s cestou k knihovnám\,(\emph{ClassPath}), exportovanými balíčky a závislostmi zásuvného modulu.
 
@@ -107,7 +107,7 @@ V následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
       Eclipse IDE vytváří pro každý načtený zásuvný modul novou instanci, která slouží k vyhledávání a načítání zásuvných modulů a používá \emph{záznam závislostí} v manifestu k určení viditelnosti ostatních zásuvných modulů. Záznam závislostí\,(\emph{Require-Bundle}) je seznam zásuvných modulů, které jsou pro daný zásuvný modul viditelné z hlediska vykonávání programu.
 
-      \subsubsection{Soubor 'plugin.xml'}
+      \subsubsection{Soubor `plugin.xml'}
       %------------------------------------
       V tomto manifestu zásuvného modulu mohou být uvedeny body rozšíření, na které je možno připojit nový zásuvný modul rozšiřující stávající funkcionalitu. Toto odloučení od rozšiřujících zásuvných modulů umožňuje existenci základního zásuvného modulu bez znalosti jakýchkoliv informací o ostatních zásuvných modulech. To zajišťuje snazší spolupráci při implementaci a znovupoužitelnost již implementovaných částí. Bod rozšíření obvykle definuje identifikátor, jméno a schéma\,(viz obrázek \ref{code:extension_point_declaration}). Schéma určuje, co musí rozšiřující zásuvný modul splnit pro správné rozšíření tohoto zásuvného modulu. Deklarace bodu rozšíření se vkládá do bloku s označením \texttt{<plugin>}. 
       
