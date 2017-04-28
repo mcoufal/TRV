@@ -1,5 +1,6 @@
 package com.mcoufal.inrunjunit.server;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,42 +66,42 @@ public class StringTestRunSession implements Serializable {
 
 		/* SPACE FOR TESTING */
 		try {
-			log.debug("***TESTING:***");
-			log.debug("Launched project: " + session.getLaunchedProject());
-			log.debug("getElementType: " + session.getLaunchedProject().getElementName());
-			log.debug("getElementType: " + session.getLaunchedProject().getElementType());
-			log.debug("getHandleIdentifier: " + session.getLaunchedProject().getHandleIdentifier());
-			log.debug("getProject: " + session.getLaunchedProject().getProject());
-			log.debug("getRawClasspath: " + session.getLaunchedProject().getRawClasspath());
-			log.debug("getPackageFragmentRoots: " + session.getLaunchedProject().getPackageFragmentRoots());
-			log.debug("getOutputLocation: " + session.getLaunchedProject().getOutputLocation());
-			log.debug("getResolvedClasspath[no-ignore]: " + session.getLaunchedProject().getResolvedClasspath(false));
-			log.debug("getResolvedClasspath[ignore]: " + session.getLaunchedProject().getResolvedClasspath(true));
-			log.debug("getAllPackageFragmentRoots: " + session.getLaunchedProject().getAllPackageFragmentRoots());
-			log.debug("getBuffer: " + session.getLaunchedProject().getBuffer());
-			log.debug("getChildren: " + session.getLaunchedProject().getChildren());
-			log.debug("getCorrespondingResource: " + session.getLaunchedProject().getCorrespondingResource());
-			log.debug("getJavaModel: " + session.getLaunchedProject().getJavaModel());
-			log.debug("getJavaProject: " + session.getLaunchedProject().getJavaProject());
-			log.debug("getNonJavaResources: " + session.getLaunchedProject().getNonJavaResources());
-			log.debug("getOpenable: " + session.getLaunchedProject().getOpenable());
-			log.debug("getOptions[no-inheritance]: " + session.getLaunchedProject().getOptions(false));
-			log.debug("getOptions[inheritance]: " + session.getLaunchedProject().getOptions(true));
-			log.debug("getPackageFragments: " + session.getLaunchedProject().getPackageFragments());
-			log.debug("getParent: " + session.getLaunchedProject().getParent());
-			log.debug("getPath: " + session.getLaunchedProject().getPath());
-			log.debug("getPrimaryElement: " + session.getLaunchedProject().getPrimaryElement());
-			log.debug("getReferencedClasspathEntries: " + session.getLaunchedProject().getReferencedClasspathEntries());
-			log.debug("getRequiredProjectNames: " + session.getLaunchedProject().getRequiredProjectNames());
-			log.debug("getResource: " + session.getLaunchedProject().getResource());
-			log.debug("getSchedulingRule: " + session.getLaunchedProject().getSchedulingRule());
-			log.debug("getUnderlyingResource: " + session.getLaunchedProject().getUnderlyingResource());
+			PrintWriter writer = new PrintWriter("test-run-session-file.log", "UTF-8");
+			writer.println("***TESTING:***");
+			writer.println("Launched project: " + session.getLaunchedProject());
+			writer.println("getElementType: " + session.getLaunchedProject().getElementName());
+			writer.println("getElementType: " + session.getLaunchedProject().getElementType());
+			writer.println("getHandleIdentifier: " + session.getLaunchedProject().getHandleIdentifier());
+			writer.println("getProject: " + session.getLaunchedProject().getProject());
+			writer.println("getRawClasspath: " + session.getLaunchedProject().getRawClasspath());
+			writer.println("getPackageFragmentRoots: " + session.getLaunchedProject().getPackageFragmentRoots());
+			writer.println("getOutputLocation: " + session.getLaunchedProject().getOutputLocation());
+			writer.println("getResolvedClasspath[no-ignore]: " + session.getLaunchedProject().getResolvedClasspath(false));
+			writer.println("getResolvedClasspath[ignore]: " + session.getLaunchedProject().getResolvedClasspath(true));
+			writer.println("getAllPackageFragmentRoots: " + session.getLaunchedProject().getAllPackageFragmentRoots());
+			writer.println("getBuffer: " + session.getLaunchedProject().getBuffer());
+			writer.println("getChildren: " + session.getLaunchedProject().getChildren());
+			writer.println("getCorrespondingResource: " + session.getLaunchedProject().getCorrespondingResource());
+			writer.println("getJavaModel: " + session.getLaunchedProject().getJavaModel());
+			writer.println("getJavaProject: " + session.getLaunchedProject().getJavaProject());
+			writer.println("getNonJavaResources: " + session.getLaunchedProject().getNonJavaResources());
+			writer.println("getOpenable: " + session.getLaunchedProject().getOpenable());
+			writer.println("getOptions[no-inheritance]: " + session.getLaunchedProject().getOptions(false));
+			writer.println("getOptions[inheritance]: " + session.getLaunchedProject().getOptions(true));
+			writer.println("getPackageFragments: " + session.getLaunchedProject().getPackageFragments());
+			writer.println("getParent: " + session.getLaunchedProject().getParent());
+			writer.println("getPath: " + session.getLaunchedProject().getPath());
+			writer.println("getPrimaryElement: " + session.getLaunchedProject().getPrimaryElement());
+			writer.println("getReferencedClasspathEntries: " + session.getLaunchedProject().getReferencedClasspathEntries());
+			writer.println("getRequiredProjectNames: " + session.getLaunchedProject().getRequiredProjectNames());
+			writer.println("getResource: " + session.getLaunchedProject().getResource());
+			writer.println("getSchedulingRule: " + session.getLaunchedProject().getSchedulingRule());
+			writer.println("getUnderlyingResource: " + session.getLaunchedProject().getUnderlyingResource());
+			writer.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			log.error("Something went wrong in TESTING phase of InRunJunit:\n");
 			e.printStackTrace();
 		}
-		/**/
 	}
 
 	public void print() {
