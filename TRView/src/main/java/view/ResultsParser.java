@@ -77,6 +77,7 @@ public class ResultsParser {
 		int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
 		int failNum = Integer.parseInt(TRView.getTxtFailures().getText());
 		int ignoredNum = Integer.parseInt(TRView.getTxtFailures().getText());
+		String itemText = null;
 
 		// parsing
 
@@ -86,6 +87,8 @@ public class ResultsParser {
 			if (treeItem.getText().equals(testCaseElement.getTestMethodName())) {
 				// clear background
 				treeItem.setBackground(null);
+				itemText = String.format("%s (%.3fs)", testCaseElement.getTestMethodName(), testCaseElement.getElapsedTime());
+				treeItem.setText(itemText);
 				if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")){
 					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
 					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testerr.png"));
