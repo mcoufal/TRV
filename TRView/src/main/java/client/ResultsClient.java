@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+
+import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 import com.mcoufal.inrunjunit.server.ResultsData;
 
 import main.java.view.ResultsParser;
@@ -102,7 +104,8 @@ public class ResultsClient extends Thread {
 					}
 				});
 
-				log.debug("Received: " + receivedData.toString() + " : " + receivedData.getPhase());
+				// end results client if session finished
+				if (receivedData.getPhase().equals(Phase.SESSION_FINISHED)) alive = false;
 			} catch (ClassNotFoundException | IOException e) {
 				log.error("Failed to read data from server!");
 				e.printStackTrace();
