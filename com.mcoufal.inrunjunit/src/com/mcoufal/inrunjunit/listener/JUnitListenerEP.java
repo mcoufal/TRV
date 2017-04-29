@@ -1,5 +1,7 @@
 package com.mcoufal.inrunjunit.listener;
 
+import java.io.IOException;
+
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
@@ -70,6 +72,13 @@ public class JUnitListenerEP extends TestRunListener {
 	public void sessionFinished(ITestRunSession session) {
 		log.info("Session '" + session.getTestRunName() + "' FINISHED");
 		server.sendData(session, Phase.SESSION_FINISHED);
+		server.interrupt();
+		try {
+			server.getServSock().close();
+		} catch (IOException e) {
+			log.error("Failed to initialize ResultsServer end!");
+			e.printStackTrace();
+		}
 	}
 
 	/**

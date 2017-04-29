@@ -62,12 +62,23 @@ public class ClientHandler extends Thread {
 			e.printStackTrace();
 		}
 
-		// TODO: communication! Add END
+		// TODO: communication, interrupt will be used when client ends to end thread
 		while (true) {
-			// TODO
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				break;
+			}
 		}
-		// TODO: close resources
-		// log.info("Ending client");
+
+		// close resources
+		resultsList.clear();
+		try {
+			outputStream.close();
+			clientSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

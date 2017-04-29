@@ -3,12 +3,12 @@ package com.mcoufal.inrunjunit.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.jboss.reddeer.common.logging.Logger;
+
 import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 
 /**
@@ -27,6 +27,8 @@ public class ResultsServer extends Thread {
 	private static List<ClientHandler> clientThreads = new ArrayList<ClientHandler>();
 	// list of all ResultsData from JUnitListenerEP
 	private static List<ResultsData> resultsList = new ArrayList<ResultsData>();
+	// server socket
+	private static ServerSocket servSock = null;
 
 	/**
 	 * Waiting for incoming client communication, creating new ClientHandlers
@@ -35,25 +37,35 @@ public class ResultsServer extends Thread {
 	@Override
 	public void run() {
 		log.info("Server thread is running...");
-		ServerSocket servSock = null;
 
+		// establish server socket
 		try {
-			// establish server socket
 			servSock = new ServerSocket(portNum);
+		} catch (IOException e) {
+			log.error("Failed to create server socket!");
+			e.printStackTrace();
+		}
 
-			// looking for clients
+		// looking for clients
+		try{
 			while (true) {
-				log.info("Waiting for new client...");
+				log.debug("Waiting for new client...");
 				ClientHandler newClient = new ClientHandler(servSock.accept(), resultsList);
 				clientThreads.add(newClient);
 				newClient.start();
 			}
 		} catch (IOException e) {
-			log.error("Failed to create server socket or connect with client!");
-			e.printStackTrace();
-			// TODO: destroy client list?
+			endConnections();
 		}
 
+		// close resources
+		resultsList.clear();
+		clientThreads.clear();
+		try {
+			servSock.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -66,15 +78,14 @@ public class ResultsServer extends Thread {
 	 * @param phase
 	 */
 	public void sendData(ITestCaseElement testCaseElement, Phase phase) {
-		log.info("Sending Result data to ClientHandlers");
+		log.info("Sending TestCaseElement data to ClientHandlers");
 		ResultsData data = new ResultsData(new StringTestCaseElement(testCaseElement), phase);
 
 		// add to list
 		resultsList.add(data);
 
-		Iterator<ClientHandler> allClients = clientThreads.iterator();
-		while (allClients.hasNext()) {
-			ClientHandler client = allClients.next();
+		// send to all clients
+		for (ClientHandler client : clientThreads) {
 			client.sendData(data);
 		}
 	}
@@ -89,28 +100,32 @@ public class ResultsServer extends Thread {
 	 * @param phase
 	 */
 	public void sendData(ITestRunSession testRunSession, Phase phase) {
-		log.info("Sending Failure data to ClientHandlers");
+		log.info("Sending TestRunSession data to ClientHandlers");
 		ResultsData data = new ResultsData(new StringTestRunSession(testRunSession), phase);
 
 		// add to list
 		resultsList.add(data);
 
-		Iterator<ClientHandler> allClients = clientThreads.iterator();
-		while (allClients.hasNext()) {
-			ClientHandler client = allClients.next();
+		// send to all clients
+		for (ClientHandler client : clientThreads) {
 			client.sendData(data);
 		}
 	}
 
 	/**
-	 * TODO: Will be this even necessary?
+	 * Returns server socket.
+	 * @return server socket
+	 */
+	public ServerSocket getServSock() {
+		return servSock;
+	}
+
+	/**
+	 * Ends all client handler threads.
 	 */
 	public void endConnections() {
-		Iterator<ClientHandler> allClients = clientThreads.iterator();
-		while (allClients.hasNext()) {
-			ClientHandler client = allClients.next();
-			// client.sendData("end");
-			client = null;
+		for (ClientHandler client : clientThreads) {
+			client.interrupt();
 		}
 	}
 
