@@ -8,7 +8,6 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -94,20 +93,6 @@ public class TRView {
 
 		/*--- Event listeners ---*/
 
-		// connect button
-		btnConnect.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				log.debug("Connect button mouse down");
-				// TODO : osetrit vstupy, destroy old clients?
-				serverIP = txtServerIP.getText();
-				portNum = Integer.parseInt(txtPort.getText());
-				resClient = new ResultsClient(serverIP, portNum);
-				resClient.start();
-				tree.setEnabled(true);
-			}
-		});
-
 		// tree node selection - show stack trace
 		tree.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
@@ -135,8 +120,8 @@ public class TRView {
 		// Menu -> TRView -> Connect...
 		connectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: !!!
-				// connect shell
+				createConnectShell();
+				// open connect shell
 				connectShell.open();
 				connectShell.layout();
 			}
@@ -192,23 +177,22 @@ public class TRView {
 	 * TODO: is public (should be here some warning?) Redraws all components.
 	 */
 	public static void redrawAllComponents() {
-		txtServerIP.redraw();
-		;
-		txtPort.redraw();
-		txtRuns.redraw();
-		txtErrors.redraw();
-		txtFailures.redraw();
-		txtIgnored.redraw();
-		txtTrace.redraw();
-		shell.redraw();
-		lblServerIP.redraw();
-		lblPort.redraw();
-		lblRuns.redraw();
-		btnConnect.redraw();
-		lblErrors.redraw();
-		lblFailures.redraw();
-		lblIgnored.redraw();
-		tree.redraw();
+		if(!txtServerIP.isDisposed()) txtServerIP.redraw();
+		if(!txtPort.isDisposed()) txtPort.redraw();
+		if(!txtRuns.isDisposed()) txtRuns.redraw();
+		if(!txtErrors.isDisposed()) txtErrors.redraw();
+		if(!txtFailures.isDisposed()) txtFailures.redraw();
+		if(!txtIgnored.isDisposed()) txtIgnored.redraw();
+		if(!txtTrace.isDisposed()) txtTrace.redraw();
+		if(!shell.isDisposed()) shell.redraw();
+		if(!lblServerIP.isDisposed()) lblServerIP.redraw();
+		if(!lblPort.isDisposed()) lblPort.redraw();
+		if(!lblRuns.isDisposed()) lblRuns.redraw();
+		if(!btnConnect.isDisposed()) btnConnect.redraw();
+		if(!lblErrors.isDisposed()) lblErrors.redraw();
+		if(!lblFailures.isDisposed()) lblFailures.redraw();
+		if(!lblIgnored.isDisposed()) lblIgnored.redraw();
+		if(!tree.isDisposed()) tree.redraw();
 	}
 
 	/**
@@ -313,8 +297,14 @@ public class TRView {
 		txtTrace.setEditable(false);
 		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 
-		// connect shell
-		connectShell =new Shell(SWT.CLOSE | SWT.ON_TOP);
+		// open and layout shell
+		shell.open();
+		shell.layout();
+	}
+
+	private static void createConnectShell() {
+		// create connect shell
+		connectShell = new Shell(SWT.CLOSE | SWT.ON_TOP);
 		connectShell.setSize(shell.getSize().x / 2, shell.getSize().y / 2);
 		Point childShellLocation = new Point(shell.getLocation().x + (shell.getSize().x / 2) - (connectShell.getSize().x / 2), shell.getLocation().y + (shell.getSize().y / 2) - (connectShell.getSize().y / 2));
 		connectShell.setLocation(childShellLocation);
@@ -325,23 +315,39 @@ public class TRView {
 		lblServerIP.setText("Server IP:");
 		txtServerIP = new Text(connectShell, SWT.BORDER);
 		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
-
 		// port number
 		lblPort = new Label(connectShell, SWT.NONE);
 		lblPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
 		lblPort.setText("Port:");
 		txtPort = new Text(connectShell, SWT.BORDER);
 		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
-
 		// connect button
 		btnConnect = new Button(connectShell, SWT.NONE);
 		btnConnect.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 2, 1));
 		btnConnect.setText("Connect");
 
-		// open and layout shell
-		shell.open();
-		shell.layout();
+		// connect button click listener
+		btnConnect.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				log.debug("Connect button mouse down");
+				// TODO : osetrit vstupy, destroy old clients?
+				// clear old data
+				tree.clearAll(true);
+				txtTrace.setText("");
+				tree.setEnabled(true);
+				// get server information
+				serverIP = txtServerIP.getText();
+				portNum = Integer.parseInt(txtPort.getText());
+				// create new client
+				resClient = new ResultsClient(serverIP, portNum);
+				resClient.start();
+				// close connect shell
+				connectShell.close();
+			}
+		});
 	}
+
 
 	/**
 	 * @return the lblRuns
