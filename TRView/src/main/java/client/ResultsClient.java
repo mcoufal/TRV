@@ -128,16 +128,6 @@ public class ResultsClient extends Thread {
 	}
 
 	/**
-	 * Gets most recent ResultsData received from ResultsServer via it's
-	 * ClientHandler.
-	 * 
-	 * @return test's ResultsData or null if no data were received so far.
-	 */
-	public ResultsData getData() {
-		return receivedData;
-	}
-
-	/**
 	 * Gets list of all ResultsData received from ResultsServer via it's
 	 * ClientHandler. List of ResultsData contains all data collected from
 	 * JUnitListenerEP before client connected to ResultsServer.
@@ -147,12 +137,5 @@ public class ResultsClient extends Thread {
 	 */
 	public List<ResultsData> getDataSet() {
 		return resultsList;
-	}
-
-	/**
-	 * @return true if initial data set was received, false otherwise
-	 */
-	public Boolean initialDataSetRecieved() {
-		return resultsList == null ? false : true;
 	}
 }
