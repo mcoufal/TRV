@@ -40,7 +40,7 @@ public class TRView {
 	// set up logger
 	private final static Logger log = Logger.getLogger(TRView.class);
 	// IP address of machine where results server runs
-	private static String serverIP;
+	private static String serverIP = null;
 	// port of results server service
 	private static int portNum;
 	// client for receiving results from results server
@@ -132,14 +132,43 @@ public class TRView {
 		// Menu -> TRView -> Re-connect
 		reconnectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: Unimplemented listener!
+				// initialize results client end
+				try {
+					if (resClient != null)
+						resClient.getObjectInputStream().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				// clear data
+				txtRuns.setText("0");
+				txtErrors.setText("0");
+				txtFailures.setText("0");
+				txtIgnored.setText("0");
+				tree.clearAll(true);
+				txtTrace.setText("");
+				tree.setEnabled(true);
+
+				// create new client
+				if (serverIP != null){
+					resClient = new ResultsClient(serverIP, portNum);
+					resClient.start();
+				}
 			}
 		});
 
 		// Menu -> TRView -> Disconnect
 		disconnectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: Unimplemented listener!
+				// initialize results client end
+				try {
+					if (resClient != null)
+						resClient.getObjectInputStream().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				resClient = null;
+				// TODO: currently running set to IGNORED or STH
 			}
 		});
 
@@ -163,7 +192,6 @@ public class TRView {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
-			log.debug(String.format("Shell size[width,height]=[%s,%s]", shell.getSize().x, shell.getSize().y));
 		}
 	}
 
