@@ -156,27 +156,11 @@ public class TRView {
 		});
 
 		/*--- application runtime ---*/
-
-		int scrollPos = 0;
-		int lastScrollPos = scrollPos;
-		// application runtime
 		while (!shell.isDisposed()) {
-			//if (!display.readAndDispatch()) {
-			//	display.sleep();
-			//}
-			display.readAndDispatch();
-			/*scrollPos = getTree().getVerticalBar().getSelection();
-			if (scrollPos != lastScrollPos){
-				lastScrollPos = scrollPos;
-				log.debug(String.format("vert bar selection: [%s]", TRView.getTree().getVerticalBar().getSelection()));
-				log.debug(String.format("my gues: [%s]", TRView.getTree().getVerticalBar().getMaximum() - TRView.getTree().getVerticalBar().getThumb()));
-				log.debug(String.format("vert bar maximum: [%s]", TRView.getTree().getVerticalBar().getMaximum()));
-				log.debug(String.format("vert bar thumb: [%s]", TRView.getTree().getVerticalBar().getThumb()));
-				log.debug(String.format("vert bar size[width, height]: [%s,%s]", TRView.getTree().getVerticalBar().getSize().x, TRView.getTree().getVerticalBar().getSize().y));
-				log.debug(String.format("vert bar thumb bounds[x,y,width,height]: [%s,%s,%s,%s]", TRView.getTree().getVerticalBar().getThumbBounds().x, TRView.getTree().getVerticalBar().getThumbBounds().y, TRView.getTree().getVerticalBar().getThumbBounds().width, TRView.getTree().getVerticalBar().getThumbBounds().height));
-			}*/
+			if (!display.readAndDispatch()) {
+				display.sleep();
+			}
 		}
-		log.debug("Main application shell is disposed!");
 	}
 
 	/**

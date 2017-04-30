@@ -139,11 +139,12 @@ public class ResultsParser {
 		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
 		t1.setText(testCaseElement.getTestMethodName());
 		t1.setImage(new Image(TRView.getDisplay(), "icons/testrun.png"));
-		t1.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_BLUE));
 
-		TRView.getTree().redraw();
-		// TODO: scroll to currently running test case (so it is visible)
-		TRView.getTree().getVerticalBar().setSelection(TRView.getTree().getVerticalBar().getMaximum() - TRView.getTree().getVerticalBar().getThumb());
+		// scroll to currently running test case (so it is visible)
+		TreeItem[] currentlySelected = TRView.getTree().getSelection();
+		TRView.getTree().select(t1);
+		TRView.getTree().showSelection();
+		TRView.getTree().setSelection(currentlySelected);
 	}
 
 	/**
