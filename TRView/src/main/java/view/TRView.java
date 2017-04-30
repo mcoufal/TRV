@@ -145,6 +145,12 @@ public class TRView {
 		exitItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
 				// TODO: initialize client end properly
+				try {
+					resClient.getObjectInputStream().close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				shell.dispose();
 			}
 		});

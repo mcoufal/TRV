@@ -12,8 +12,9 @@ import com.mcoufal.inrunjunit.server.ResultsData;
 
 import main.java.view.ResultsParser;
 import main.java.view.TRView;
+
 // TODO : configuration file
-// TODO : thread sync
+
 /**
  * ResultsClient class connects to and communicates with ResultsServer. First,
  * ResultsClient establishes connection with ResultsServer and after that it is
@@ -28,7 +29,7 @@ public class ResultsClient extends Thread {
 	private final static Logger log = Logger.getLogger(ResultsClient.class);
 	public List<ResultsData> resultsList = null;
 	public static ResultsData receivedData = null;
-	public static ObjectInputStream fromServer;
+	public static ObjectInputStream fromServer = null;
 	private static String IPaddr;
 	private static int portNum;
 	private static Boolean alive;
@@ -55,7 +56,6 @@ public class ResultsClient extends Thread {
 	public void run() {
 		log.info("ResultsClient started: connecting to '" + IPaddr + "' at port " + portNum);
 		Socket sock = null;
-		fromServer = null;
 
 		// create socket connection
 		try {
@@ -65,7 +65,7 @@ public class ResultsClient extends Thread {
 			e.printStackTrace();
 		}
 
-		// establish object stream
+		// establish input object stream
 		try {
 			fromServer = new ObjectInputStream(sock.getInputStream());
 		} catch (IOException e) {
@@ -76,58 +76,59 @@ public class ResultsClient extends Thread {
 		// receive initial results data set
 		try {
 			resultsList = (List<ResultsData>) fromServer.readObject();
-			log.debug("Received initial data set: " + resultsList.toString());
-			// parse and display
-			TRView.getDisplay().syncExec(new Runnable() {
-				@Override
-				public void run() {
-					ResultsParser.parseAndDisplay(resultsList);
-					TRView.redrawAllComponents();
-				}
-			});
 		} catch (ClassNotFoundException | IOException e) {
 			log.error("Failed to read data from server!");
 			e.printStackTrace();
 		}
 
+		// parse and display
+		TRView.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				ResultsParser.parseAndDisplay(resultsList);
+				TRView.redrawAllComponents();
+			}
+		});
+
 		// TODO: communication
 		while (alive) {
-			try { // receive results data
+			try {
 				receivedData = (ResultsData) fromServer.readObject();
-				resultsList.add(receivedData);
-				// parse and display
-				TRView.getDisplay().syncExec(new Runnable() {
-					@Override
-					public void run() {
-						ResultsParser.parseAndDisplay(receivedData);
-						TRView.redrawAllComponents();
-					}
-				});
-
-				// end results client if session finished
-				if (receivedData.getPhase().equals(Phase.SESSION_FINISHED)) alive = false;
-			} catch (ClassNotFoundException | IOException e) {
-				log.error("Failed to read data from server!");
-				e.printStackTrace();
+			} catch (ClassNotFoundException cnfe) {
+				log.error("Error while reading data from the server: " + cnfe.getMessage());
+				cnfe.printStackTrace();
+			} catch (IOException ioe) {
+				// end client
+				break;
 			}
+
+			// add received data to list
+			resultsList.add(receivedData);
+
+			// parse and display
+			TRView.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					ResultsParser.parseAndDisplay(receivedData);
+					TRView.redrawAllComponents();
+				}
+			});
+
+			// end results client if session finished
+			if (receivedData.getPhase().equals(Phase.SESSION_FINISHED)) alive = false;
 		}
 
 		// close resources
 		try {
 			fromServer.close();
+		} catch (IOException e) {
+			// empty
+		}
+		try {
 			sock.close();
 		} catch (IOException e) {
-			log.error("Failed to close client's sockets!");
-			e.printStackTrace();
+			// empty
 		}
-	}
-
-	/**
-	 * TODO: ending client
-	 */
-	public void end() {
-		log.info("Ending ResultsClient");
-		alive = false;
 	}
 
 	/**
@@ -140,5 +141,13 @@ public class ResultsClient extends Thread {
 	 */
 	public List<ResultsData> getDataSet() {
 		return resultsList;
+	}
+
+	/**
+	 * Returns input data stream used to get data from server.
+	 * @return input data stream ObjectInputStream.
+	 */
+	public ObjectInputStream getObjectInputStream(){
+		return fromServer;
 	}
 }

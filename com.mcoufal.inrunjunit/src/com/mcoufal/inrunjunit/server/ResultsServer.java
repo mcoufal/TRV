@@ -50,7 +50,7 @@ public class ResultsServer extends Thread {
 		try{
 			while (true) {
 				log.debug("Waiting for new client...");
-				ClientHandler newClient = new ClientHandler(servSock.accept(), resultsList);
+				ClientHandler newClient = new ClientHandler(this, servSock.accept(), resultsList);
 				clientThreads.add(newClient);
 				newClient.start();
 			}
@@ -120,12 +120,18 @@ public class ResultsServer extends Thread {
 		return servSock;
 	}
 
+	/*FIXME: will need synchronization!*/
+	public void handlerExit(ClientHandler handler) {
+		clientThreads.remove(handler);
+	}
+
 	/**
 	 * Ends all client handler threads.
 	 */
 	public void endConnections() {
 		for (ClientHandler client : clientThreads) {
-			client.interrupt();
+			// FIXME: end handler isn't enough, there is some blocking operation
+			client.endHandler();
 		}
 	}
 

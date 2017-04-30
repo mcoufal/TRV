@@ -72,11 +72,10 @@ public class JUnitListenerEP extends TestRunListener {
 	public void sessionFinished(ITestRunSession session) {
 		log.info("Session '" + session.getTestRunName() + "' FINISHED");
 		server.sendData(session, Phase.SESSION_FINISHED);
-		server.interrupt();
 		try {
 			server.getServSock().close();
 		} catch (IOException e) {
-			log.error("Failed to initialize ResultsServer end!");
+			log.error("Error while initializing ResultsServer end: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

@@ -72,8 +72,7 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplayCaseFinished(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
-		log.info("parsing CASE FINISHED - availible data:");
-		//testCaseElement.print();
+		log.info("parsing CASE FINISHED");
 		int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
 		int failNum = Integer.parseInt(TRView.getTxtFailures().getText());
 		int ignoredNum = Integer.parseInt(TRView.getTxtFailures().getText());
@@ -124,9 +123,7 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
 		// TODO Auto-generated method stub
-		log.info("parsing CASE STARTED - availible data:");
-		//log.debug(String.format("BEFORE: scroll location: [%s]", TRView.getTree().getVerticalBar().getSelection()));
-		testCaseElement.print();
+		log.info("parsing CASE STARTED");
 
 		// parsing
 		String lblRuns = null;
@@ -157,9 +154,7 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
-		log.info("parsing SESSION FINISHED - availible data:");
-		//testRunSession.print();
-
+		log.info("parsing SESSION FINISHED");
 	}
 
 	/**
@@ -170,8 +165,7 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
 		// TODO Auto-generated method stub
-		log.info("parsing SESSION STARTED - availible data:");
-		//testRunSession.print();
+		log.info("parsing SESSION STARTED");
 
 		// local variables
 		int numberOfRuns = testRunSession.getChildrenElements().size();
@@ -187,8 +181,8 @@ public class ResultsParser {
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
-		log.info("parsing SESSION LAUNCHED - availible data:");
-		//testRunSession.print();
+		log.info("parsing SESSION LAUNCHED");
+
 		// local variables
 		int numberOfRuns = testRunSession.getChildrenElements().size();
 		log.debug("numberOfChildren: " + numberOfRuns);

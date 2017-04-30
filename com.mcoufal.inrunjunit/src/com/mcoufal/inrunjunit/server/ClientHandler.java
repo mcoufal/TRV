@@ -17,31 +17,40 @@ import org.jboss.reddeer.common.logging.Logger;
 public class ClientHandler extends Thread {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ClientHandler.class);
+	// TODO: reference to this client handler -- usage for synchronization
+	private ClientHandler handler = null;
+	// TODO reference to results server -- usage for synchronization
+	private ResultsServer server = null;
 	// socket for communicating with client
 	private Socket clientSocket;
 	// output stream for sending ResultsData to client
-	private ObjectOutputStream outputStream;
+	private ObjectOutputStream toClient;
 	// list of ResultsData used to send initial data set after client connects
 	private List<ResultsData> resultsList;
+	// serves as ending indicator (if set to false, thread will be ended)
+	private Boolean alive;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param socket
 	 */
-	public ClientHandler(Socket socket, List<ResultsData> resultsList) {
+	public ClientHandler(ResultsServer server, Socket socket, List<ResultsData> resultsList) {
 		log.info("ClientHandler@" + this.getId() + " created");
+		this.handler = this;
+		this.server = server;
 		clientSocket = socket;
 		this.resultsList = resultsList;
 
 		// establish output stream
 		try {
-			outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+			toClient = new ObjectOutputStream(clientSocket.getOutputStream());
 		} catch (IOException e) {
 			log.error("ClientHandler@" + this.getId() + ": Failed to establish output stream to client: "
 					+ clientSocket.getInetAddress().getHostName());
 			e.printStackTrace();
 		}
+
 		log.info("ClientHandler@" + this.getId() + " initialized");
 	}
 
@@ -52,32 +61,37 @@ public class ClientHandler extends Thread {
 	public void run() {
 		log.info("ClientHandler@" + this.getId() + " started");
 		log.info("ClientHandler@" + this.getId() + ": Sending initial data set to client");
+		alive = true;
 
 		// TODO: send initial data set
 		try {
-			outputStream.writeObject(resultsList);
+			toClient.writeObject(resultsList);
 		} catch (IOException e) {
 			log.error("ClientHandler@" + this.getId() + ": Failed to send data to client: "
 					+ clientSocket.getInetAddress().getHostName());
 			e.printStackTrace();
 		}
 
-		// TODO: communication, interrupt will be used when client ends to end thread
-		while (true) {
+		// TODO: communication
+		while (alive) {
+			// space for communication with client
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				break;
+				e.printStackTrace();
 			}
 		}
 
 		// close resources
-		resultsList.clear();
 		try {
-			outputStream.close();
+			toClient.close();
+		} catch (IOException e) {
+			// empty
+		}
+		try {
 			clientSocket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			// empty
 		}
 	}
 
@@ -87,14 +101,30 @@ public class ClientHandler extends Thread {
 	 * @param desc
 	 * @param phase
 	 */
-	void sendData(ResultsData data) {
+	public void sendData(ResultsData data) {
 		log.info("ClientHandler@" + this.getId() + ": Sending data to client");
 		try {
-			outputStream.writeObject(data);
+			toClient.writeObject(data);
 		} catch (IOException e) {
-			log.error("ClientHandler@" + this.getId() + ": Failed to send data to client: "
-					+ clientSocket.getInetAddress().getHostName());
-			e.printStackTrace();
+			// try once more
+			try {
+				toClient.writeObject(data);
+			} catch (IOException e1) {
+				// client probably ended, remove from list of clients
+				log.info("ClientHandler@" + this.getId() + ": Failed to send data to client: "
+						+ clientSocket.getInetAddress().getHostName());
+				//log.info("Removing client from list of clients...");
+				// FIXME: needs to use synchronizations, else throws ConcurrentModificationException
+				//server.handlerExit(handler);
+				endHandler();
+			}
 		}
+	}
+
+	/**
+	 * Initializes end of this client handler.
+	 */
+	public void endHandler() {
+		alive = false;
 	}
 }
