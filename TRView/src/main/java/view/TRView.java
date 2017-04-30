@@ -61,6 +61,7 @@ public class TRView {
 	private static Label lblPort;
 	private static CLabel lblRuns;
 	private static Button btnConnect;
+	private static Button btnCancel;
 	private static CLabel lblErrors;
 	private static CLabel lblFailures;
 	private static CLabel lblIgnored;
@@ -77,6 +78,9 @@ public class TRView {
 	private static MenuItem exitItem;
 	private static MenuItem onTopItem;
 	private static MenuItem resizableItem;
+	// PREFERENCES
+	private static Point minimumShellSize = new Point(417,212);
+	private static Point defaultShellSize = new Point(474, 312);
 
 	/**
 	 * Launch the application.
@@ -132,6 +136,7 @@ public class TRView {
 		// Menu -> TRView -> Re-connect
 		reconnectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				// TODO: inicialize res client end shift to method
 				// initialize results client end
 				try {
 					if (resClient != null)
@@ -141,6 +146,7 @@ public class TRView {
 				}
 
 				// clear data
+				//TODO: shift this into method
 				txtRuns.setText("0");
 				txtErrors.setText("0");
 				txtFailures.setText("0");
@@ -160,6 +166,7 @@ public class TRView {
 		// Menu -> TRView -> Disconnect
 		disconnectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				// TODO: inicialize res client end shift to method
 				// initialize results client end
 				try {
 					if (resClient != null)
@@ -175,6 +182,7 @@ public class TRView {
 		// Menu -> TRView -> Exit
 		exitItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
+				// TODO: inicialize res client end shift to method
 				// initialize results client end
 				try {
 					if (resClient != null)
@@ -238,8 +246,6 @@ public class TRView {
 	 */
 	private static void createGUI() {
 		log.info("Creating GUI");
-		Point minimumShellSize = new Point(417,212);
-		Point defaultShellSize = new Point(474, 312);
 
 		// shell and display
 		display = Display.getDefault();
@@ -346,7 +352,7 @@ public class TRView {
 	private static void createConnectShell() {
 		// create connect shell
 		connectShell = new Shell(SWT.CLOSE | SWT.ON_TOP);
-		connectShell.setSize(shell.getSize().x / 2, shell.getSize().y / 2);
+		connectShell.setSize(defaultShellSize.x / 2, defaultShellSize.y / 2);
 		Point childShellLocation = new Point(
 				shell.getLocation().x + (shell.getSize().x / 2) - (connectShell.getSize().x / 2),
 				shell.getLocation().y + (shell.getSize().y / 2) - (connectShell.getSize().y / 2));
@@ -354,28 +360,41 @@ public class TRView {
 		connectShell.setLayout(new GridLayout(2, false));
 		// IP address
 		lblServerIP = new Label(connectShell, SWT.HORIZONTAL);
-		lblServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		lblServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 		lblServerIP.setText("Server IP:");
 		txtServerIP = new Text(connectShell, SWT.BORDER);
-		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
+		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 		// port number
 		lblPort = new Label(connectShell, SWT.NONE);
-		lblPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 1, 1));
+		lblPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 		lblPort.setText("Port:");
 		txtPort = new Text(connectShell, SWT.BORDER);
-		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 1, 1));
+		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
+		// cancel button
+		btnCancel = new Button(connectShell, SWT.NONE);
+		btnCancel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true, 1, 1));
+		btnCancel.setText("Cancel");
 		// connect button
 		btnConnect = new Button(connectShell, SWT.NONE);
-		btnConnect.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 2, 1));
+		btnConnect.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
 		btnConnect.setText("Connect");
+
+		// cancel button click listener
+		btnCancel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				// close connect shell
+				connectShell.close();
+			}
+		});
 
 		// connect button click listener
 		btnConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				log.debug("Connect button mouse down");
 				// TODO : osetrit vstupy, destroy old clients?
 				// clear old data
+				// TODO: create method, few things are missing (txt for errors, runs, ...)
 				tree.clearAll(true);
 				txtTrace.setText("");
 				tree.setEnabled(true);
