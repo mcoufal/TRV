@@ -103,14 +103,16 @@ public class TRView {
 					if (data.getTestCaseElement() == null)
 						continue;
 					// check if same item
-					// Note: the substring dance - we need just method name, not elapsed time
-					if (t.getText().substring(0, t.getText().lastIndexOf(' ')).equals(data.getTestCaseElement().getTestMethodName())) {
+					// Note: the substring dance - we need just method name, not
+					// elapsed time
+					if (t.getText().substring(0, t.getText().lastIndexOf(' '))
+							.equals(data.getTestCaseElement().getTestMethodName())) {
 						String trace = data.getTestCaseElement().getFailureTrace();
-						if (trace == null){
+						if (trace == null) {
 							trace = "no trace";
 							txtTrace.setEnabled(false);
-						}
-						else txtTrace.setEnabled(true);
+						} else
+							txtTrace.setEnabled(true);
 						txtTrace.setText(trace);
 					}
 				}
@@ -144,13 +146,14 @@ public class TRView {
 		// Menu -> TRView -> Exit
 		exitItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: initialize client end properly
+				// initialize results client end
 				try {
-					resClient.getObjectInputStream().close();
+					if (resClient != null)
+						resClient.getObjectInputStream().close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				// end GUI
 				shell.dispose();
 			}
 		});
@@ -160,6 +163,7 @@ public class TRView {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
+			log.debug(String.format("Shell size[width,height]=[%s,%s]", shell.getSize().x, shell.getSize().y));
 		}
 	}
 
@@ -167,22 +171,38 @@ public class TRView {
 	 * TODO: is public (should be here some warning?) Redraws all components.
 	 */
 	public static void redrawAllComponents() {
-		if(!txtServerIP.isDisposed()) txtServerIP.redraw();
-		if(!txtPort.isDisposed()) txtPort.redraw();
-		if(!txtRuns.isDisposed()) txtRuns.redraw();
-		if(!txtErrors.isDisposed()) txtErrors.redraw();
-		if(!txtFailures.isDisposed()) txtFailures.redraw();
-		if(!txtIgnored.isDisposed()) txtIgnored.redraw();
-		if(!txtTrace.isDisposed()) txtTrace.redraw();
-		if(!shell.isDisposed()) shell.redraw();
-		if(!lblServerIP.isDisposed()) lblServerIP.redraw();
-		if(!lblPort.isDisposed()) lblPort.redraw();
-		if(!lblRuns.isDisposed()) lblRuns.redraw();
-		if(!btnConnect.isDisposed()) btnConnect.redraw();
-		if(!lblErrors.isDisposed()) lblErrors.redraw();
-		if(!lblFailures.isDisposed()) lblFailures.redraw();
-		if(!lblIgnored.isDisposed()) lblIgnored.redraw();
-		if(!tree.isDisposed()) tree.redraw();
+		if (!txtServerIP.isDisposed())
+			txtServerIP.redraw();
+		if (!txtPort.isDisposed())
+			txtPort.redraw();
+		if (!txtRuns.isDisposed())
+			txtRuns.redraw();
+		if (!txtErrors.isDisposed())
+			txtErrors.redraw();
+		if (!txtFailures.isDisposed())
+			txtFailures.redraw();
+		if (!txtIgnored.isDisposed())
+			txtIgnored.redraw();
+		if (!txtTrace.isDisposed())
+			txtTrace.redraw();
+		if (!shell.isDisposed())
+			shell.redraw();
+		if (!lblServerIP.isDisposed())
+			lblServerIP.redraw();
+		if (!lblPort.isDisposed())
+			lblPort.redraw();
+		if (!lblRuns.isDisposed())
+			lblRuns.redraw();
+		if (!btnConnect.isDisposed())
+			btnConnect.redraw();
+		if (!lblErrors.isDisposed())
+			lblErrors.redraw();
+		if (!lblFailures.isDisposed())
+			lblFailures.redraw();
+		if (!lblIgnored.isDisposed())
+			lblIgnored.redraw();
+		if (!tree.isDisposed())
+			tree.redraw();
 	}
 
 	/**
@@ -190,14 +210,17 @@ public class TRView {
 	 */
 	private static void createGUI() {
 		log.info("Creating GUI");
+		Point minimumShellSize = new Point(417,212);
+		Point defaultShellSize = new Point(474, 312);
 
 		// shell and display
 		display = Display.getDefault();
-		shell = new Shell(SWT.RESIZE | SWT.CLOSE | SWT.BORDER | SWT.ON_TOP);
-		shell.setSize(450, 296);
-		shell.setLayout(new GridLayout(8, false));
 		Rectangle screenSize = display.getBounds();
-		shell.setLocation(screenSize.width - 450, screenSize.height - 296);
+		shell = new Shell(SWT.RESIZE | SWT.CLOSE | SWT.BORDER | SWT.ON_TOP);
+		shell.setLayout(new GridLayout(8, false));
+		shell.setMinimumSize(minimumShellSize);
+		shell.setSize(defaultShellSize);
+		shell.setLocation(screenSize.width - defaultShellSize.x, screenSize.height - defaultShellSize.y);
 
 		// TODO: menu bar
 		menuBar = new Menu(shell, SWT.BAR);
@@ -236,7 +259,7 @@ public class TRView {
 		txtRuns = new Text(shell, SWT.BORDER);
 		txtRuns.setEnabled(false);
 		txtRuns.setEditable(false);
-		txtRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtRuns.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		txtRuns.setText("0/0");
 
 		// errors
@@ -247,7 +270,7 @@ public class TRView {
 		txtErrors = new Text(shell, SWT.BORDER);
 		txtErrors.setEnabled(false);
 		txtErrors.setEditable(false);
-		txtErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtErrors.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		txtErrors.setText("0");
 
 		// failures
@@ -258,7 +281,7 @@ public class TRView {
 		txtFailures = new Text(shell, SWT.BORDER);
 		txtFailures.setEditable(false);
 		txtFailures.setEnabled(false);
-		txtFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtFailures.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		txtFailures.setText("0");
 
 		// ignored
@@ -267,7 +290,7 @@ public class TRView {
 		lblIgnored.setText("Ignored:");
 		lblIgnored.setImage(new Image(display, "icons/testignored.gif"));
 		txtIgnored = new Text(shell, SWT.BORDER);
-		txtIgnored.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		txtIgnored.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		txtIgnored.setEnabled(false);
 		txtIgnored.setEditable(false);
 		txtIgnored.setText("0");
@@ -296,7 +319,9 @@ public class TRView {
 		// create connect shell
 		connectShell = new Shell(SWT.CLOSE | SWT.ON_TOP);
 		connectShell.setSize(shell.getSize().x / 2, shell.getSize().y / 2);
-		Point childShellLocation = new Point(shell.getLocation().x + (shell.getSize().x / 2) - (connectShell.getSize().x / 2), shell.getLocation().y + (shell.getSize().y / 2) - (connectShell.getSize().y / 2));
+		Point childShellLocation = new Point(
+				shell.getLocation().x + (shell.getSize().x / 2) - (connectShell.getSize().x / 2),
+				shell.getLocation().y + (shell.getSize().y / 2) - (connectShell.getSize().y / 2));
 		connectShell.setLocation(childShellLocation);
 		connectShell.setLayout(new GridLayout(2, false));
 		// IP address
@@ -337,7 +362,6 @@ public class TRView {
 			}
 		});
 	}
-
 
 	/**
 	 * @return the lblRuns
