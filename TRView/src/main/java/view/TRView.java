@@ -282,7 +282,7 @@ public class TRView {
 		lblTrace.setText("Trace:");
 		lblTrace.setImage(new Image(display, "icons/stkfrm_obj.png"));
 
-		txtTrace = new StyledText(shell, SWT.BORDER | SWT.WRAP | SWT.H_SCROLL | SWT.CANCEL | SWT.MULTI);
+		txtTrace = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
 		txtTrace.setEnabled(false);
 		txtTrace.setEditable(false);
 		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
