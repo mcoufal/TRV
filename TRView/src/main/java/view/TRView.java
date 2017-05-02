@@ -351,7 +351,7 @@ public class TRView {
 
 	private static void createConnectShell() {
 		// create connect shell
-		connectShell = new Shell(SWT.CLOSE | SWT.ON_TOP);
+		connectShell = new Shell(SWT.CLOSE | SWT.BORDER | SWT.ON_TOP);
 		connectShell.setSize(defaultShellSize.x / 2, defaultShellSize.y / 2);
 		Point childShellLocation = new Point(
 				shell.getLocation().x + (shell.getSize().x / 2) - (connectShell.getSize().x / 2),
