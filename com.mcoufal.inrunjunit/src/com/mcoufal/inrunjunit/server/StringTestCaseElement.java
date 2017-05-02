@@ -6,9 +6,9 @@ import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.jboss.reddeer.common.logging.Logger;
 
 /**
- * TODO: comments, getters
- * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
+ * Creates StringTestCaseElement instance containing string data of ITestCaseElement object.
  *
+ * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
 @SuppressWarnings("serial")
 public class StringTestCaseElement implements Serializable {

@@ -3,18 +3,15 @@ package com.mcoufal.inrunjunit.server;
 import java.io.Serializable;
 
 import org.eclipse.jdt.junit.model.ITestElement;
-import org.jboss.reddeer.common.logging.Logger;
 
 /**
- * TODO: constructor, print_element fn(), comments, getters
+ * Creates StringTestElement instance containing string data of ITestElement object.
  * 
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  *
  */
 @SuppressWarnings("serial")
 public class StringTestElement implements Serializable {
-	// set up logger
-	private final static Logger log = Logger.getLogger(StringTestElement.class);
 	// define variables
 	private static String testElement;
 	private static double elapsedTime;
@@ -23,11 +20,10 @@ public class StringTestElement implements Serializable {
 	private static String progressState;
 	private static StringResult testResultNoChildren;
 	private static StringResult testResultWithChildren;
-	//private static StringTestRunSession testRunSession;
 	private static String testRunSession;
 	
 	/**
-	 * TODO: comment
+	 * Creates StringTestElement instance containing string data of ITestElement object.
 	 * 
 	 * @param element
 	 */
@@ -44,12 +40,11 @@ public class StringTestElement implements Serializable {
 		else progressState = null;
 		testResultNoChildren = new StringResult(element.getTestResult(false));
 		testResultWithChildren = new StringResult(element.getTestResult(true));
-		//testRunSession = new StringTestRunSession(element.getTestRunSession());
 		testRunSession = element.getTestRunSession().toString();
 	}
 	
 	/**
-	 * TODO
+	 * Prints all available StringTestElement data to stdout.
 	 */
 	public void print(){
 		System.out.println("[testElement]: " + testElement);
@@ -59,7 +54,6 @@ public class StringTestElement implements Serializable {
 		System.out.println("[progressState]: " + progressState);
 		if (testResultNoChildren != null) testResultNoChildren.print();
 		if (testResultWithChildren != null) testResultWithChildren.print();
-		//if (testRunSession != null) testRunSession.print();
 		System.out.println("[testRunSession]: " + testRunSession);
 	}
 
@@ -117,19 +111,5 @@ public class StringTestElement implements Serializable {
 	 */
 	public String getTestRunSession() {
 		return testRunSession;
-	}
-
-	/**
-	 * TODO: delete when done
-	 * 
-	 * @param element
-	 */
-	public static void printElement(ITestElement element) {
-		log.info("TestElement: '" + element + "'");
-		log.info("ElapsedTime: '" + element.getElapsedTimeInSeconds() + "'");
-		log.info("FailureTrace: '" + element.getFailureTrace() + "'");
-		// log.info("" + element.get + "'");
-		// log.info("" + element.toString() + "'");
-		// log.info("" + element.toString() + "'");
 	}
 }

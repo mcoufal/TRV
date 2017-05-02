@@ -55,15 +55,17 @@ public class ClientHandler extends Thread {
 	}
 
 	/**
-	 * TODO:
+	 * Main method of ClientHandler: sends initial data set to client and wait
+	 * for communication with client. Note that communication is not implemented
+	 * yet. When endHandler() method is called, communication is ended and all
+	 * client resources are closed.
 	 */
 	@Override
 	public void run() {
-		log.info("ClientHandler@" + this.getId() + " started");
-		log.info("ClientHandler@" + this.getId() + ": Sending initial data set to client");
+		log.debug("ClientHandler@" + this.getId() + " started");
 		alive = true;
 
-		// TODO: send initial data set
+		// send initial data set
 		try {
 			toClient.writeObject(resultsList);
 		} catch (IOException e) {
@@ -72,7 +74,7 @@ public class ClientHandler extends Thread {
 			e.printStackTrace();
 		}
 
-		// TODO: communication
+		// This cycle can be used for further communication with client.
 		while (alive) {
 			// space for communication with client
 			try {
@@ -96,7 +98,7 @@ public class ClientHandler extends Thread {
 	}
 
 	/**
-	 * Send ResultsData to client handled by ClientHandler's thread. 
+	 * Send ResultsData to client handled by ClientHandler's thread.
 	 * 
 	 * @param desc
 	 * @param phase
@@ -113,9 +115,10 @@ public class ClientHandler extends Thread {
 				// client probably ended, remove from list of clients
 				log.info("ClientHandler@" + this.getId() + ": Failed to send data to client: "
 						+ clientSocket.getInetAddress().getHostName());
-				//log.info("Removing client from list of clients...");
-				// FIXME: needs to use synchronizations, else throws ConcurrentModificationException
-				//server.handlerExit(handler);
+				// log.info("Removing client from list of clients...");
+				// FIXME: needs to use synchronizations, else throws
+				// ConcurrentModificationException
+				// server.handlerExit(handler);
 				endHandler();
 			}
 		}

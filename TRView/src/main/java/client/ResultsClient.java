@@ -13,7 +13,6 @@ import com.mcoufal.inrunjunit.server.ResultsData;
 import main.java.view.ResultsParser;
 import main.java.view.TRView;
 
-// TODO : configuration file
 
 /**
  * ResultsClient class connects to and communicates with ResultsServer. First,
@@ -86,11 +85,10 @@ public class ResultsClient extends Thread {
 			@Override
 			public void run() {
 				ResultsParser.parseAndDisplay(resultsList);
-				TRView.redrawAllComponents();
 			}
 		});
 
-		// TODO: communication
+		// Communication with server - receiving and sending data
 		while (alive) {
 			try {
 				receivedData = (ResultsData) fromServer.readObject();
@@ -110,7 +108,6 @@ public class ResultsClient extends Thread {
 				@Override
 				public void run() {
 					ResultsParser.parseAndDisplay(receivedData);
-					TRView.redrawAllComponents();
 				}
 			});
 

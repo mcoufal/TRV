@@ -31,8 +31,7 @@ import com.mcoufal.inrunjunit.server.ResultsData;
 import main.java.client.ResultsClient;
 
 /**
- * TODO: comments, all components in redraw method?, all (suitable) components
- * have their getters?
+ * This is main class of TRView.
  * 
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
@@ -79,7 +78,7 @@ public class TRView {
 	private static MenuItem onTopItem;
 	private static MenuItem resizableItem;
 	// PREFERENCES
-	private static Point minimumShellSize = new Point(417,212);
+	private static Point minimumShellSize = new Point(417, 212);
 	private static Point defaultShellSize = new Point(474, 312);
 
 	/**
@@ -136,27 +135,12 @@ public class TRView {
 		// Menu -> TRView -> Re-connect
 		reconnectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: inicialize res client end shift to method
 				// initialize results client end
-				try {
-					if (resClient != null)
-						resClient.getObjectInputStream().close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
+				endResultsClient();
 				// clear data
-				//TODO: shift this into method
-				txtRuns.setText("0");
-				txtErrors.setText("0");
-				txtFailures.setText("0");
-				txtIgnored.setText("0");
-				tree.clearAll(true);
-				txtTrace.setText("");
-				tree.setEnabled(true);
-
+				clearGuiData();
 				// create new client
-				if (serverIP != null){
+				if (serverIP != null) {
 					resClient = new ResultsClient(serverIP, portNum);
 					resClient.start();
 				}
@@ -166,30 +150,17 @@ public class TRView {
 		// Menu -> TRView -> Disconnect
 		disconnectItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: inicialize res client end shift to method
 				// initialize results client end
-				try {
-					if (resClient != null)
-						resClient.getObjectInputStream().close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				endResultsClient();
 				resClient = null;
-				// TODO: currently running set to IGNORED or STH
 			}
 		});
 
 		// Menu -> TRView -> Exit
 		exitItem.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				// TODO: inicialize res client end shift to method
 				// initialize results client end
-				try {
-					if (resClient != null)
-						resClient.getObjectInputStream().close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				endResultsClient();
 				// end GUI
 				shell.dispose();
 			}
@@ -204,9 +175,12 @@ public class TRView {
 	}
 
 	/**
-	 * TODO: is public (should be here some warning?) Redraws all components.
+	 * Redraws all needful components.
+	 *
+	 * Note: Needful are all components that may be changed while parsing
+	 * results.
 	 */
-	public static void redrawAllComponents() {
+	protected static void redrawAllComponents() {
 		if (!txtServerIP.isDisposed())
 			txtServerIP.redraw();
 		if (!txtPort.isDisposed())
@@ -256,7 +230,7 @@ public class TRView {
 		shell.setSize(defaultShellSize);
 		shell.setLocation(screenSize.width - defaultShellSize.x, screenSize.height - defaultShellSize.y);
 
-		// TODO: menu bar
+		// menu bar
 		menuBar = new Menu(shell, SWT.BAR);
 		trviewMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		trviewMenuHeader.setText("&TRView");
@@ -392,12 +366,11 @@ public class TRView {
 		btnConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				// TODO : osetrit vstupy, destroy old clients?
+				// TODO : osetrit vstupy
+				// end results client
+				endResultsClient();
 				// clear old data
-				// TODO: create method, few things are missing (txt for errors, runs, ...)
-				tree.clearAll(true);
-				txtTrace.setText("");
-				tree.setEnabled(true);
+				clearGuiData();
 				// get server information
 				serverIP = txtServerIP.getText();
 				portNum = Integer.parseInt(txtPort.getText());
@@ -408,6 +381,37 @@ public class TRView {
 				connectShell.close();
 			}
 		});
+	}
+
+	/**
+	 * Sets data of all components that are changed in ResultsParser to default
+	 * values.
+	 */
+	private static void clearGuiData() {
+		txtRuns.setText("0");
+		txtErrors.setText("0");
+		txtFailures.setText("0");
+		txtIgnored.setText("0");
+		txtTrace.setText("");
+		tree.clearAll(true);
+		tree.setEnabled(true);
+	}
+
+	/**
+	 * Initiates Results client end by causing IOException.
+	 *
+	 * Note: Results client's thread is probably waiting on readObject() method
+	 * and it is not interruptible. This method calls close on object input
+	 * stream.
+	 */
+	private static void endResultsClient() {
+		try {
+			if (resClient != null)
+				if (resClient.getObjectInputStream() != null)
+					resClient.getObjectInputStream().close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

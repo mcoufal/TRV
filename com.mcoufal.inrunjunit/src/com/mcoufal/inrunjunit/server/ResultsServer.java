@@ -21,8 +21,8 @@ import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 public class ResultsServer extends Thread {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ResultsServer.class);
-	// TODO: set up one port number: 7357 (TEST)
-	public static int portNum = 1234;
+	// set up one port number: 7357 (TEST)
+	public static int portNum = 7357;
 	// list of client connections
 	private static List<ClientHandler> clientThreads = new ArrayList<ClientHandler>();
 	// list of all ResultsData from JUnitListenerEP

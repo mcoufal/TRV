@@ -4,8 +4,6 @@ import java.io.Serializable;
 import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 
 /**
- * TODO: logs
- * 
  * This class is used to group test data from JUnitListenerEP and create string
  * representations of this data. Results data implements Serializable interface
  * in order to make sending via sockets simple.
