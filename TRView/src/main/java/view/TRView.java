@@ -338,12 +338,16 @@ public class TRView {
 		lblServerIP.setText("Server IP:");
 		txtServerIP = new Text(connectShell, SWT.BORDER);
 		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
+		// TODO: Pre-set values - DEBUG PURPOSES - DELETE WHEN DONE
+		txtServerIP.setText("127.0.0.1");
 		// port number
 		lblPort = new Label(connectShell, SWT.NONE);
 		lblPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 		lblPort.setText("Port:");
 		txtPort = new Text(connectShell, SWT.BORDER);
 		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
+		// TODO: Pre-set values - DEBUG PURPOSES - DELETE WHEN DONE
+		txtPort.setText("7357");
 		// cancel button
 		btnCancel = new Button(connectShell, SWT.NONE);
 		btnCancel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true, 1, 1));
