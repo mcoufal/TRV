@@ -13,7 +13,6 @@ import com.mcoufal.inrunjunit.server.ResultsData;
 import main.java.view.ResultsParser;
 import main.java.view.TRView;
 
-
 /**
  * ResultsClient class connects to and communicates with ResultsServer. First,
  * ResultsClient establishes connection with ResultsServer and after that it is
@@ -112,7 +111,8 @@ public class ResultsClient extends Thread {
 			});
 
 			// end results client if session finished
-			if (receivedData.getPhase().equals(Phase.SESSION_FINISHED)) alive = false;
+			if (receivedData.getPhase().equals(Phase.SESSION_FINISHED))
+				alive = false;
 		}
 
 		// close resources
@@ -142,9 +142,22 @@ public class ResultsClient extends Thread {
 
 	/**
 	 * Returns input data stream used to get data from server.
+	 *
 	 * @return input data stream ObjectInputStream.
 	 */
-	public ObjectInputStream getObjectInputStream(){
+	public ObjectInputStream getObjectInputStream() {
 		return fromServer;
+	}
+
+	/**
+	 * Initiates ResultsClient end.
+	 *
+	 * Note: ResultsClient instance may be jammed on readObject() method. In
+	 * this case calling this method won't have any effect until client receives
+	 * any data. For immediate ending close clients object input stream after
+	 * calling this method.
+	 */
+	public void endClient() {
+		alive = false;
 	}
 }

@@ -406,9 +406,12 @@ public class TRView {
 	 */
 	private static void endResultsClient() {
 		try {
-			if (resClient != null)
-				if (resClient.getObjectInputStream() != null)
+			if (resClient != null) {
+				resClient.endClient();
+				if (resClient.getObjectInputStream() != null) {
 					resClient.getObjectInputStream().close();
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
