@@ -175,10 +175,6 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
 		log.debug("parsing SESSION LAUNCHED");
-
-		// local variables
-		int numberOfRuns = testRunSession.getChildrenElements().size();
-		log.debug("numberOfChildren: " + numberOfRuns);
 		TRView.getTxtRuns().setText("0/?");
 		// parsing
 		/*
