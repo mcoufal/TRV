@@ -311,7 +311,7 @@ public class TRView {
 		txtIgnored.setText("  ");
 
 		// tree structure of test suites and test cases
-		tree = new Tree(shell, SWT.BORDER);
+		tree = new Tree(shell, SWT.SINGLE | SWT.BORDER);
 		tree.setEnabled(false);
 		tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
 
