@@ -6,7 +6,8 @@ import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.jboss.reddeer.common.logging.Logger;
 
 /**
- * Creates StringTestCaseElement instance containing string data of ITestCaseElement object.
+ * Creates StringTestCaseElement instance containing string data of
+ * ITestCaseElement object.
  *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
@@ -16,7 +17,7 @@ public class StringTestCaseElement implements Serializable {
 	private final static Logger log = Logger.getLogger(StringTestCaseElement.class);
 	private String testCaseElement;
 	private String testClassName;
-	private String testMethodName;
+	private StringTestCase testCase = null;
 	private Double elapsedTime;
 	private String failureTrace;
 	private String parentContainer;
@@ -24,37 +25,57 @@ public class StringTestCaseElement implements Serializable {
 	private StringResult testResultWithChildren;
 	private StringResult testResultNoChildren;
 	private String testRunSession;
-	
+
 	/**
-	 * initialize, handle nulls, comments
+	 * TODO: initialize, handle nulls, comments
+	 *
 	 * @param testCaseElement
 	 */
 	public StringTestCaseElement(ITestCaseElement testCaseElement) {
 		log.debug("initializing " + this.getClass().getName());
-		if (testCaseElement.toString() != null) this.testCaseElement = testCaseElement.toString();
-		else this.testCaseElement = null;
+		String testMethodName = null;
+		String testJavaFile = null;
+		String testPackageName = null;
+		String testSuiteName = null;
+
+		if (testCaseElement.toString() != null)
+			this.testCaseElement = testCaseElement.toString();
+		else
+			this.testCaseElement = null;
 		testClassName = testCaseElement.getTestClassName();
-		testMethodName = testCaseElement.getTestMethodName();
+		testJavaFile = testClassName.substring(testClassName.lastIndexOf(".") + 1);
+		testPackageName = testClassName.substring(0, testClassName.lastIndexOf("."));
+		testMethodName = testCaseElement.getTestMethodName().substring(0,
+				testCaseElement.getTestMethodName().indexOf(' '));
 		elapsedTime = testCaseElement.getElapsedTimeInSeconds();
-		if (testCaseElement.getFailureTrace() != null) failureTrace = testCaseElement.getFailureTrace().getTrace();
-		else failureTrace = null;
-		if (testCaseElement.getParentContainer() != null) parentContainer = testCaseElement.getParentContainer().toString();
-		else parentContainer = null;
-		if (testCaseElement.getProgressState() != null) progressState = testCaseElement.getProgressState().toString();
-		else progressState = null;
+		if (testCaseElement.getFailureTrace() != null)
+			failureTrace = testCaseElement.getFailureTrace().getTrace();
+		else
+			failureTrace = null;
+		if (testCaseElement.getParentContainer() != null)
+			parentContainer = testCaseElement.getParentContainer().toString();
+		else
+			parentContainer = null;
+		if (testCaseElement.getProgressState() != null)
+			progressState = testCaseElement.getProgressState().toString();
+		else
+			progressState = null;
 		testResultWithChildren = new StringResult(testCaseElement.getTestResult(true));
 		testResultNoChildren = new StringResult(testCaseElement.getTestResult(false));
-		if (testCaseElement.getTestRunSession() != null) testRunSession = testCaseElement.getTestRunSession().toString();
-		else testRunSession = null;
+		if (testCaseElement.getTestRunSession() != null) {
+			testRunSession = testCaseElement.getTestRunSession().toString();
+			testSuiteName = testRunSession.substring(0, testRunSession.indexOf(' '));
+		}
+		testCase = new StringTestCase(testMethodName, testJavaFile, testPackageName, testSuiteName);
 	}
-	
+
 	/**
-	 * Prints string representations of StringTestCaseElement to standard output.
+	 * Prints string representations of StringTestCaseElement to standard
+	 * output.
 	 */
-	public void print(){
+	public void print() {
 		System.out.println("[testCaseElement]" + testCaseElement);
 		System.out.println("[testClassName]" + testClassName);
-		System.out.println("[testMethodName]" + testMethodName);
 		System.out.println("[elapsedTime]" + elapsedTime);
 		System.out.println("[failureTrace]" + failureTrace);
 		System.out.println("[parentContainer]" + parentContainer);
@@ -79,10 +100,10 @@ public class StringTestCaseElement implements Serializable {
 	}
 
 	/**
-	 * @return the testMethodName
+	 * @return the testCase
 	 */
-	public String getTestMethodName() {
-		return testMethodName;
+	public StringTestCase getTestCase() {
+		return testCase;
 	}
 
 	/**
@@ -136,6 +157,7 @@ public class StringTestCaseElement implements Serializable {
 
 	/**
 	 * TODO: remove when done
+	 *
 	 * @param testCaseElement
 	 */
 	public static void printCaseElement(ITestCaseElement testCaseElement) {
@@ -143,9 +165,12 @@ public class StringTestCaseElement implements Serializable {
 		System.out.println("Test Class Name: " + testCaseElement.getTestClassName());
 		System.out.println("Test Method Name: " + testCaseElement.getTestMethodName());
 		System.out.println("Elapsed Time: " + testCaseElement.getElapsedTimeInSeconds() + "s");
-		//System.out.println("<Failure Trace>: " + testCaseElement.getFailureTrace().toString());
-		//System.out.println("<Parent Container>: " + testCaseElement.getParentContainer().toString());
-		//System.out.println("<Progress State>: " + testCaseElement.getProgressState().toString());
+		// System.out.println("<Failure Trace>: " +
+		// testCaseElement.getFailureTrace().toString());
+		// System.out.println("<Parent Container>: " +
+		// testCaseElement.getParentContainer().toString());
+		// System.out.println("<Progress State>: " +
+		// testCaseElement.getProgressState().toString());
 		System.out.println("<Test Result>(with children): " + testCaseElement.getTestResult(true).toString());
 		System.out.println("<Test Result>(without children): " + testCaseElement.getTestResult(false).toString());
 		System.out.println("<Test Run Session>: " + testCaseElement.getTestRunSession().toString());

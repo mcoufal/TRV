@@ -29,6 +29,8 @@ public class ResultsServer extends Thread {
 	private static List<ResultsData> resultsList = new ArrayList<ResultsData>();
 	// server socket
 	private static ServerSocket servSock = null;
+	// TODO: comment
+	private Boolean alive = true;
 
 	/**
 	 * Waiting for incoming client communication, creating new ClientHandlers
@@ -47,20 +49,22 @@ public class ResultsServer extends Thread {
 		}
 
 		// looking for clients
-		try{
-			while (true) {
+		while (alive) {
+			try {
 				log.debug("Waiting for new client...");
 				ClientHandler newClient = new ClientHandler(this, servSock.accept(), resultsList);
 				clientThreads.add(newClient);
 				newClient.start();
+			} catch (IOException e) {
+				endConnections();
+				resultsList.clear();
+				clientThreads.clear();
+				// TODO: resolve ending server!
+				alive = false;
 			}
-		} catch (IOException e) {
-			endConnections();
 		}
 
 		// close resources
-		resultsList.clear();
-		clientThreads.clear();
 		try {
 			servSock.close();
 		} catch (IOException e) {
@@ -113,14 +117,13 @@ public class ResultsServer extends Thread {
 	}
 
 	/**
-	 * Returns server socket.
 	 * @return server socket
 	 */
 	public ServerSocket getServSock() {
 		return servSock;
 	}
 
-	/*FIXME: will need synchronization!*/
+	/* FIXME: will need synchronization! */
 	public void handlerExit(ClientHandler handler) {
 		clientThreads.remove(handler);
 	}

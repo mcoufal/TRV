@@ -108,15 +108,22 @@ public class TRView {
 					// check if same item
 					// Note: the substring dance - we need just method name, not
 					// elapsed time
-					if (t.getText().substring(0, t.getText().lastIndexOf(' '))
-							.equals(data.getTestCaseElement().getTestMethodName())) {
-						String trace = data.getTestCaseElement().getFailureTrace();
-						if (trace == null) {
-							trace = "no trace";
-							txtTrace.setEnabled(false);
-						} else
-							txtTrace.setEnabled(true);
-						txtTrace.setText(trace);
+					int helpIndex = t.getText().lastIndexOf(' ');
+					if (helpIndex >= 0) {
+						if (t.getText().substring(0, helpIndex)
+								.equals(data.getTestCaseElement().getTestCase().getName())) {
+							String trace = data.getTestCaseElement().getFailureTrace();
+							if (trace == null) {
+								trace = "no trace";
+								txtTrace.setEnabled(false);
+							} else
+								txtTrace.setEnabled(true);
+							txtTrace.setText(trace);
+						}
+					}
+					// empty trace
+					else {
+						txtTrace.setText("");
 					}
 				}
 			}
@@ -267,8 +274,8 @@ public class TRView {
 		txtRuns = new Text(shell, SWT.BORDER);
 		txtRuns.setEnabled(false);
 		txtRuns.setEditable(false);
-		txtRuns.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-		txtRuns.setText("0/0");
+		txtRuns.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+		txtRuns.setText("       ");
 
 		// errors
 		lblErrors = new CLabel(shell, SWT.NONE);
@@ -279,7 +286,7 @@ public class TRView {
 		txtErrors.setEnabled(false);
 		txtErrors.setEditable(false);
 		txtErrors.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-		txtErrors.setText("0");
+		txtErrors.setText("  ");
 
 		// failures
 		lblFailures = new CLabel(shell, SWT.NONE);
@@ -290,7 +297,7 @@ public class TRView {
 		txtFailures.setEditable(false);
 		txtFailures.setEnabled(false);
 		txtFailures.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-		txtFailures.setText("0");
+		txtFailures.setText("  ");
 
 		// ignored
 		lblIgnored = new CLabel(shell, SWT.NONE);
@@ -301,7 +308,7 @@ public class TRView {
 		txtIgnored.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
 		txtIgnored.setEnabled(false);
 		txtIgnored.setEditable(false);
-		txtIgnored.setText("0");
+		txtIgnored.setText("  ");
 
 		// tree structure of test suites and test cases
 		tree = new Tree(shell, SWT.BORDER);

@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
 
 import com.mcoufal.inrunjunit.server.ResultsData;
+import com.mcoufal.inrunjunit.server.StringTestCase;
 import com.mcoufal.inrunjunit.server.StringTestCaseElement;
 import com.mcoufal.inrunjunit.server.StringTestRunSession;
 
@@ -42,7 +43,6 @@ public class ResultsParser {
 	 * @param newData
 	 */
 	public static void parseAndDisplay(ResultsData newData) {
-		log.info("parsing data from phase: " + newData.getPhase());
 		// parse and display based on current phase
 		switch (newData.getPhase()) {
 		case SESSION_LAUNCHED:
@@ -73,6 +73,7 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplayCaseFinished(StringTestCaseElement testCaseElement) {
 		log.debug("parsing CASE FINISHED");
+		StringTestCase tc = testCaseElement.getTestCase();
 		int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
 		int failNum = Integer.parseInt(TRView.getTxtFailures().getText());
 		int ignoredNum = Integer.parseInt(TRView.getTxtFailures().getText());
@@ -81,36 +82,32 @@ public class ResultsParser {
 		// parsing
 
 		// highlighting and changing icons
-		TreeItem treeItems[] = TRView.getTree().getItems();
-		for (TreeItem treeItem : treeItems) {
-			if (treeItem.getText().equals(testCaseElement.getTestMethodName())) {
-				// clear background
-				treeItem.setBackground(null);
-				itemText = String.format("%s (%.3fs)", testCaseElement.getTestMethodName(), testCaseElement.getElapsedTime());
-				treeItem.setText(itemText);
-				if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")){
-					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
-					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testerr.png"));
-					errNum++;
-					TRView.getTxtErrors().setText(Integer.toString(errNum));
-				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")){
-					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
-					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testfail.png"));
-					failNum++;
-					TRView.getTxtFailures().setText(Integer.toString(failNum));
-				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")){
-					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
-					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testignored.png"));
-					ignoredNum++;
-					TRView.getTxtIgnored().setText(Integer.toString(ignoredNum));
-				} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")){
-					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
-					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testok.png"));
-				} else { // "Undefined"
-					log.debug("inside Undefined");
-					treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-					treeItem.setImage(new Image(TRView.getDisplay(), "icons/testassumptionfailed"));
-				}
+		TreeItem treeItem = findTreeItemCaseName(tc, true);
+		if (treeItem != null) {
+			itemText = String.format("%s (%.3fs)", tc.getName(), testCaseElement.getElapsedTime());
+			treeItem.setText(itemText);
+			if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")) {
+				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
+				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testerr.png"));
+				errNum++;
+				TRView.getTxtErrors().setText(Integer.toString(errNum));
+			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")) {
+				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
+				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testfail.png"));
+				failNum++;
+				TRView.getTxtFailures().setText(Integer.toString(failNum));
+			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")) {
+				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
+				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testignored.png"));
+				ignoredNum++;
+				TRView.getTxtIgnored().setText(Integer.toString(ignoredNum));
+			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")) {
+				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
+				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testok.png"));
+			} else { // "Undefined"
+				log.debug("inside Undefined");
+				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testassumptionfailed"));
 			}
 		}
 	}
@@ -122,9 +119,9 @@ public class ResultsParser {
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
-		// TODO: If Tree display on start fails, add at least parent container and class name
 		log.info("parsing CASE STARTED");
-
+		StringTestCase tc = testCaseElement.getTestCase();
+		testCaseElement.print();
 		// parsing
 		String lblRuns = null;
 		String lblRunsArray[] = TRView.getTxtRuns().getText().split("/");
@@ -136,8 +133,7 @@ public class ResultsParser {
 		TRView.getTxtRuns().setText(lblRuns);
 
 		// highlight current item
-		TreeItem t1 = new TreeItem(TRView.getTree(), 0);
-		t1.setText(testCaseElement.getTestMethodName());
+		TreeItem t1 = findTreeItemCaseName(tc, true);
 		t1.setImage(new Image(TRView.getDisplay(), "icons/testrun.png"));
 
 		// scroll to currently running test case (so it is visible)
@@ -155,6 +151,18 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
 		log.info("parsing SESSION FINISHED");
+		String testRunName = testRunSession.getTestRunName();
+		TreeItem testSuiteItem = findTreeItemSuite(testRunName);
+		if (testSuiteItem != null)
+			if (testRunSession.getTestResultWithChildren().getResult().equals("OK")){
+				testSuiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuiteok.png"));
+			}
+			else if (testRunSession.getTestResultWithChildren().getResult().equals("Error")) {
+				testSuiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuiteerror.png"));
+			}
+			else if (testRunSession.getTestResultWithChildren().getResult().equals("Failure")) {
+				testSuiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuitefail.png"));
+			}
 	}
 
 	/**
@@ -165,6 +173,12 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
 		log.info("parsing SESSION STARTED");
+		for (TreeItem suiteNode : TRView.getTree().getItems()) {
+			if (suiteNode.getText().equals(testRunSession.getTestRunName())) {
+				suiteNode.setImage(new Image(TRView.getDisplay(), "icons/tsuiterun.png"));
+				suiteNode.setExpanded(true);
+			}
+		}
 	}
 
 	/**
@@ -175,14 +189,136 @@ public class ResultsParser {
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
 		log.debug("parsing SESSION LAUNCHED");
-		TRView.getTxtRuns().setText("0/?");
+		List<StringTestCase> testCases = testRunSession.getTestCases();
+		TreeItem parentNodeItem = null;
 		// parsing
-		/*
-		 * TRView.getLblRuns().setText("0/" + numberOfRuns); TreeItem t1 = new
-		 * TreeItem(TRView.getTree(), 0);
-		 * t1.setText(testRunSession.getTestRunName()); for (StringTestElement
-		 * element : testRunSession.getChildrenElements()) { TreeItem t2 = new
-		 * TreeItem(t1, 0); t2.setText(element.getTestElement()); }
-		 */
+		// number of runs
+		int numberOfRuns = testCases.size();
+		log.debug("NUMBER OF RUNS: " + numberOfRuns);
+		TRView.getTxtRuns().setText("0/" + numberOfRuns);
+		// create tree of a test run
+		// for every test case
+		for (StringTestCase tc : testCases) {
+			log.debug(String.format("parsing TC - [%s][%s][%s][%s]", tc.getName(), tc.getJavaFile(),
+					tc.getPackageName(), tc.getTestSuite()));
+			// test suite already exists
+			if (findTreeItemSuite(tc.getTestSuite()) != null) {
+				// package already exists
+				if (findTreeItemPackage(tc.getPackageName()) != null) {
+					// java file already exists
+					if (findTreeItemJavaFile(tc.getJavaFile()) != null) {
+						log.debug("Java File node already exists");
+						parentNodeItem = findTreeItemJavaFile(tc.getJavaFile());
+						TreeItem testCaseItem = new TreeItem(parentNodeItem, 0);
+						testCaseItem.setText(tc.getName());
+						testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+					}
+					// java file doesn't exists
+					else {
+						log.debug("Java File doesn't exist");
+						parentNodeItem = findTreeItemPackage(tc.getPackageName());
+						TreeItem javaFileItem = new TreeItem(parentNodeItem, 0);
+						javaFileItem.setText(tc.getJavaFile());
+						javaFileItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+						TreeItem testCaseItem = new TreeItem(javaFileItem, 0);
+						testCaseItem.setText(tc.getName());
+						testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+					}
+				}
+				// package doesn't exist
+				else {
+					log.debug("package doesn't exists");
+					parentNodeItem = findTreeItemSuite(tc.getTestSuite());
+					TreeItem packageItem = new TreeItem(parentNodeItem, 0);
+					packageItem.setText(tc.getPackageName());
+					packageItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+					TreeItem javaFileItem = new TreeItem(packageItem, 0);
+					javaFileItem.setText(tc.getJavaFile());
+					javaFileItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+					TreeItem testCaseItem = new TreeItem(javaFileItem, 0);
+					testCaseItem.setText(tc.getName());
+					testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+				}
+				// test suite doesn't exist
+			} else {
+				log.debug("Test suite node doesn't exist");
+				TreeItem suiteItem = new TreeItem(TRView.getTree(), 0);
+				suiteItem.setText(tc.getTestSuite());
+				suiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+				TreeItem packageItem = new TreeItem(suiteItem, 0);
+				packageItem.setText(tc.getPackageName());
+				packageItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+				TreeItem javaFileItem = new TreeItem(packageItem, 0);
+				javaFileItem.setText(tc.getJavaFile());
+				javaFileItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+				TreeItem testCaseItem = new TreeItem(javaFileItem, 0);
+				testCaseItem.setText(tc.getName());
+				testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+			}
+		}
+	}
+
+	private static TreeItem findTreeItemSuite(String testSuiteName) {
+		for (TreeItem suiteNode : TRView.getTree().getItems()) {
+			if (suiteNode.getText().equals(testSuiteName)) {
+				return suiteNode;
+			}
+		}
+		return null;
+	}
+
+	private static TreeItem findTreeItemPackage(String packageName) {
+		for (TreeItem suiteNode : TRView.getTree().getItems()) {
+			for (TreeItem packageNode : suiteNode.getItems()) {
+				if (packageNode.getText().equals(packageName)) {
+					return packageNode;
+				}
+			}
+		}
+		return null;
+	}
+
+	private static TreeItem findTreeItemJavaFile(String javaFileName) {
+		for (TreeItem suiteNode : TRView.getTree().getItems()) {
+			for (TreeItem packageNode : suiteNode.getItems()) {
+				for (TreeItem javaFileNode : packageNode.getItems()) {
+					if (javaFileNode.getText().equals(javaFileName)) {
+						return javaFileNode;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * TODO: Comment
+	 *
+	 * @param testCase
+	 * @param expandNodes
+	 * @return
+	 */
+	private static TreeItem findTreeItemCaseName(StringTestCase testCase, Boolean expandNodes) {
+		for (TreeItem suiteNode : TRView.getTree().getItems()) {
+			if (suiteNode.getText().equals(testCase.getTestSuite())) {
+				suiteNode.setExpanded(true);
+				for (TreeItem packageNode : suiteNode.getItems()) {
+					if (packageNode.getText().equals(testCase.getPackageName())) {
+						packageNode.setExpanded(true);
+						for (TreeItem javaFileNode : packageNode.getItems()) {
+							if (javaFileNode.getText().equals(testCase.getJavaFile())) {
+								javaFileNode.setExpanded(true);
+								for (TreeItem testCaseNode : javaFileNode.getItems()) {
+									if (testCaseNode.getText().equals(testCase.getName())) {
+										return testCaseNode;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
