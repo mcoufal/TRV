@@ -1,6 +1,7 @@
 package main.java.view;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.UnknownHostException;
 
 import org.eclipse.swt.SWT;
@@ -8,6 +9,7 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -20,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -61,6 +64,7 @@ public class TRView {
 	private static CLabel lblRuns;
 	private static Button btnConnect;
 	private static Button btnCancel;
+	private static Label lblWarning;
 	private static CLabel lblErrors;
 	private static CLabel lblFailures;
 	private static CLabel lblIgnored;
@@ -339,6 +343,11 @@ public class TRView {
 				shell.getLocation().y + (shell.getSize().y / 2) - (connectShell.getSize().y / 2));
 		connectShell.setLocation(childShellLocation);
 		connectShell.setLayout(new GridLayout(2, false));
+
+		// warning label
+		lblWarning = new Label(connectShell, SWT.CENTER);
+		lblWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 2, 1));
+
 		// IP address
 		lblServerIP = new Label(connectShell, SWT.HORIZONTAL);
 		lblServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
@@ -347,6 +356,7 @@ public class TRView {
 		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 		// TODO: Pre-set values - DEBUG PURPOSES - DELETE WHEN DONE
 		txtServerIP.setText("127.0.0.1");
+
 		// port number
 		lblPort = new Label(connectShell, SWT.NONE);
 		lblPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
@@ -355,10 +365,12 @@ public class TRView {
 		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
 		// TODO: Pre-set values - DEBUG PURPOSES - DELETE WHEN DONE
 		txtPort.setText("7357");
+
 		// cancel button
 		btnCancel = new Button(connectShell, SWT.NONE);
 		btnCancel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true, 1, 1));
 		btnCancel.setText("Cancel");
+
 		// connect button
 		btnConnect = new Button(connectShell, SWT.NONE);
 		btnConnect.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
@@ -377,19 +389,29 @@ public class TRView {
 		btnConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				// TODO : osetrit vstupy
 				// end results client
 				endResultsClient();
 				// clear old data
 				clearGuiData();
 				// get server information
 				serverIP = txtServerIP.getText();
-				portNum = Integer.parseInt(txtPort.getText());
-				// create new client
-				resClient = new ResultsClient(serverIP, portNum);
-				resClient.start();
-				// close connect shell
-				connectShell.close();
+				if (serverIP != null){
+					try{
+						portNum = Integer.parseInt(txtPort.getText());
+						// create new client
+						resClient = new ResultsClient(serverIP, portNum);
+						resClient.start();
+						// close connect shell
+						// connectShell.close();
+					} catch (NumberFormatException nfe){
+						lblWarning.setText("Port number is not valid!");
+						lblWarning.setForeground(display.getSystemColor(SWT.COLOR_RED));
+					}
+				}
+				else {
+					lblWarning.setText("IP Adress is not valid!");
+					lblWarning.setForeground(display.getSystemColor(SWT.COLOR_RED));
+				}
 			}
 		});
 	}
@@ -404,6 +426,7 @@ public class TRView {
 		txtFailures.setText("0");
 		txtIgnored.setText("0");
 		txtTrace.setText("");
+		// FIXME: call dispose on all TreeItems
 		tree.clearAll(true);
 		tree.setEnabled(true);
 	}
@@ -538,5 +561,19 @@ public class TRView {
 	 */
 	public static CLabel getLblFailures() {
 		return lblFailures;
+	}
+
+	/**
+	 * @return connect shell
+	 */
+	public static Shell getConnectShell() {
+		return connectShell;
+	}
+
+	/**
+	 * @return warning label
+	 */
+	public static Label getLblWarning() {
+		return lblWarning;
 	}
 }

@@ -3,8 +3,10 @@ package main.java.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.common.logging.Logger;
 
 import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
@@ -58,10 +60,48 @@ public class ResultsClient extends Thread {
 		// create socket connection
 		try {
 			sock = new Socket(IPaddr, portNum);
-		} catch (IOException e) {
-			log.error("Error while connecting to '" + IPaddr + "' at port " + portNum);
-			e.printStackTrace();
+		} catch (UnknownHostException uhe) {
+			// IP address couldn't be resolved
+			TRView.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					TRView.getLblWarning().setText("IP Adress is not valid!");
+					TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+				}
+			});
+			uhe.printStackTrace();
+			return;
+		} catch (IOException ioe) {
+			// connection can't be established
+			TRView.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					TRView.getLblWarning().setText("Can't connect to server!");
+					TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+				}
+			});
+			ioe.printStackTrace();
+			return;
+		} catch (IllegalArgumentException iae) {
+			// port number is out of range
+			TRView.getDisplay().syncExec(new Runnable() {
+				@Override
+				public void run() {
+					TRView.getLblWarning().setText("Port number is out of range!");
+					TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+				}
+			});
+			iae.printStackTrace();
+			return;
 		}
+
+		// connection established, close connect shell
+		TRView.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				TRView.getConnectShell().close();
+			}
+		});
 
 		// establish input object stream
 		try {
@@ -69,6 +109,7 @@ public class ResultsClient extends Thread {
 		} catch (IOException e) {
 			log.error("Error while creating input object stream");
 			e.printStackTrace();
+			alive = false;
 		}
 
 		// receive initial results data set
@@ -77,6 +118,7 @@ public class ResultsClient extends Thread {
 		} catch (ClassNotFoundException | IOException e) {
 			log.error("Failed to read data from server!");
 			e.printStackTrace();
+			alive = false;
 		}
 
 		// parse and display
