@@ -78,8 +78,8 @@ public class TRView {
 	private static MenuItem onTopItem;
 	private static MenuItem resizableItem;
 	// PREFERENCES
-	private static Point minimumShellSize = new Point(417, 212);
-	private static Point defaultShellSize = new Point(474, 312);
+	private static Point minimumShellSize = new Point(405, 212);
+	private static Point defaultShellSize = new Point(485, 312);
 
 	/**
 	 * Launch the application.
@@ -323,7 +323,7 @@ public class TRView {
 		txtTrace = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
 		txtTrace.setEnabled(false);
 		txtTrace.setEditable(false);
-		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1));
+		txtTrace.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 8, 2));
 
 		// open and layout shell
 		shell.open();
