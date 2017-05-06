@@ -40,8 +40,12 @@ public class StringTestRunSession implements Serializable {
 			testRunSession = session.toString();
 		else
 			testRunSession = null;
-		// FIXME: index out of range when running tests from package node
-		testRunName = session.getTestRunName().substring(0, session.getTestRunName().indexOf(' '));
+
+		int helpIndex = session.getTestRunName().indexOf(' ');
+		if (helpIndex > 0)
+			testRunName = session.getTestRunName().substring(0, helpIndex);
+		else
+			testRunName = session.getTestRunName();
 		elapsedTime = session.getElapsedTimeInSeconds();
 		failureTrace = session.getFailureTrace() != null ? session.getFailureTrace().getActual() : null;
 		testResultNoChildren = new StringResult(session.getTestResult(false));

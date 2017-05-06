@@ -30,7 +30,7 @@ public class TestRunSessionParser {
 	private Matcher matcherInner = null;
 	private final Pattern testCaseAnnotation = Pattern.compile("@Test");
 	private final Pattern testCaseName = Pattern.compile("\\s+(\\w+?)\\(\\)");
-	private final Pattern testCaseJavaFile = Pattern.compile("\\s+(.+)\\.java\\s+");
+	private final Pattern testCaseJavaFile = Pattern.compile("(?m)^\\s+(.+)\\.java$");
 	private final Pattern testCasePackageName = Pattern.compile("(.*?)\\s+\\[in\\s+.*\\s+\\[in\\s+(.*?)\\]\\]");
 	private final Pattern testCaseTestSuite = Pattern.compile("\\[in\\s+.*\\s+\\[in\\s+(.*?)\\]\\]");
 
@@ -48,9 +48,11 @@ public class TestRunSessionParser {
 								while (matcherOuter.find()) {
 									sTestCaseJavaFile = matcherOuter.group(1);
 									// find test suite
-									matcherInner = testCaseTestSuite.matcher(s);
-									if (matcherInner.find())
-										sTestCaseTestSuite = matcherInner.group(1);
+									int helpIndex = session.getTestRunName().indexOf(' ');
+									if (helpIndex > 0)
+										sTestCaseTestSuite = session.getTestRunName().substring(0, helpIndex);
+									else
+										sTestCaseTestSuite = session.getTestRunName();
 									// find test package
 									matcherInner = testCasePackageName.matcher(s);
 									if (matcherInner.find())
@@ -62,7 +64,7 @@ public class TestRunSessionParser {
 											+ sTestCaseJavaFile + ".java";
 									handleTestCasesinFile(pathToFile);
 								}
-								System.out.println("PATH toOSString: " + e.getPath().toOSString());
+								System.out.println("PATH toOSString: " + e.getCorrespondingResource().getFullPath());
 								System.out.println("getUnderlyingResource: " + e.getUnderlyingResource().getName());
 							}
 						}

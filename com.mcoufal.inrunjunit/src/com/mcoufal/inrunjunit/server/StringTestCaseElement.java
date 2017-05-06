@@ -37,6 +37,7 @@ public class StringTestCaseElement implements Serializable {
 		String testJavaFile = null;
 		String testPackageName = null;
 		String testSuiteName = null;
+		int helpIndex;
 
 		if (testCaseElement.toString() != null)
 			this.testCaseElement = testCaseElement.toString();
@@ -45,8 +46,14 @@ public class StringTestCaseElement implements Serializable {
 		testClassName = testCaseElement.getTestClassName();
 		testJavaFile = testClassName.substring(testClassName.lastIndexOf(".") + 1);
 		testPackageName = testClassName.substring(0, testClassName.lastIndexOf("."));
-		testMethodName = testCaseElement.getTestMethodName().substring(0,
-				testCaseElement.getTestMethodName().indexOf(' '));
+		helpIndex = testCaseElement.getTestMethodName().indexOf(' ');
+		if (helpIndex > 0) {
+			testMethodName = testCaseElement.getTestMethodName().substring(0, helpIndex);
+		}
+		else {
+			testMethodName = testCaseElement.getTestMethodName();
+		}
+
 		elapsedTime = testCaseElement.getElapsedTimeInSeconds();
 		if (testCaseElement.getFailureTrace() != null)
 			failureTrace = testCaseElement.getFailureTrace().getTrace();
