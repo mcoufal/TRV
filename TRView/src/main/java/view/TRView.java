@@ -78,8 +78,8 @@ public class TRView {
 	private static MenuItem onTopItem;
 	private static MenuItem resizableItem;
 	// PREFERENCES
-	private static Point minimumShellSize = new Point(405, 212);
-	private static Point defaultShellSize = new Point(485, 312);
+	private static final Point minimumShellSize = new Point(300, 212);
+	private static final Point defaultShellSize = new Point(400, 312);
 
 	/**
 	 * Launch the application.
@@ -267,48 +267,48 @@ public class TRView {
 		shell.setMenuBar(menuBar);
 
 		// runs
-		lblRuns = new CLabel(shell, SWT.NONE);
-		lblRuns.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblRuns = new CLabel(shell, SWT.RIGHT);
+		lblRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblRuns.setText("Runs:");
 		lblRuns.setImage(new Image(display, "icons/test.png"));
-		txtRuns = new Text(shell, SWT.BORDER);
+		txtRuns = new Text(shell, SWT.BORDER | SWT.CENTER);
 		txtRuns.setEnabled(false);
 		txtRuns.setEditable(false);
-		txtRuns.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-		txtRuns.setText("       ");
-
-		// errors
-		lblErrors = new CLabel(shell, SWT.NONE);
-		lblErrors.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
-		lblErrors.setText("Errors:");
-		lblErrors.setImage(new Image(display, "icons/testerr.png"));
-		txtErrors = new Text(shell, SWT.BORDER);
-		txtErrors.setEnabled(false);
-		txtErrors.setEditable(false);
-		txtErrors.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-		txtErrors.setText("  ");
+		txtRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtRuns.setText("");
 
 		// failures
-		lblFailures = new CLabel(shell, SWT.NONE);
-		lblFailures.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblFailures = new CLabel(shell, SWT.RIGHT);
+		lblFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblFailures.setText("Failures:");
 		lblFailures.setImage(new Image(display, "icons/testfail.png"));
-		txtFailures = new Text(shell, SWT.BORDER);
+		txtFailures = new Text(shell, SWT.BORDER | SWT.CENTER);
 		txtFailures.setEditable(false);
 		txtFailures.setEnabled(false);
-		txtFailures.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
-		txtFailures.setText("  ");
+		txtFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtFailures.setText("");
+
+		// errors
+		lblErrors = new CLabel(shell, SWT.RIGHT);
+		lblErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+		lblErrors.setText("Errors:");
+		lblErrors.setImage(new Image(display, "icons/testerr.png"));
+		txtErrors = new Text(shell, SWT.BORDER | SWT.CENTER);
+		txtErrors.setEnabled(false);
+		txtErrors.setEditable(false);
+		txtErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		txtErrors.setText("");
 
 		// ignored
-		lblIgnored = new CLabel(shell, SWT.NONE);
-		lblIgnored.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
+		lblIgnored = new CLabel(shell, SWT.RIGHT);
+		lblIgnored.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblIgnored.setText("Ignored:");
 		lblIgnored.setImage(new Image(display, "icons/testignored.gif"));
-		txtIgnored = new Text(shell, SWT.BORDER);
-		txtIgnored.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1));
+		txtIgnored = new Text(shell, SWT.BORDER | SWT.CENTER);
+		txtIgnored.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		txtIgnored.setEnabled(false);
 		txtIgnored.setEditable(false);
-		txtIgnored.setText("  ");
+		txtIgnored.setText("");
 
 		// tree structure of test suites and test cases
 		tree = new Tree(shell, SWT.SINGLE | SWT.BORDER);
