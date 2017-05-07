@@ -1,4 +1,4 @@
-package com.mcoufal.inrunjunit.server;
+package mcoufal.inrunjunit.server;
 
 import java.io.Serializable;
 import java.util.ArrayList;

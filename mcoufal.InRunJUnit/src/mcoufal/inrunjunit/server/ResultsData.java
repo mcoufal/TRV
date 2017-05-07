@@ -1,7 +1,8 @@
-package com.mcoufal.inrunjunit.server;
+package mcoufal.inrunjunit.server;
 
 import java.io.Serializable;
-import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
+
+import mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 
 /**
  * This class is used to group test data from JUnitListenerEP and create string

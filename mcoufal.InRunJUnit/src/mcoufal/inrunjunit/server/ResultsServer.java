@@ -1,4 +1,4 @@
-package com.mcoufal.inrunjunit.server;
+package mcoufal.inrunjunit.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,7 +9,7 @@ import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.jboss.reddeer.common.logging.Logger;
 
-import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
+import mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 
 /**
  * Represents server gathering test data from JUnitListener and sending this

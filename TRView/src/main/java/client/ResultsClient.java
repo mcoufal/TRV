@@ -9,11 +9,10 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.common.logging.Logger;
 
-import com.mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
-import com.mcoufal.inrunjunit.server.ResultsData;
-
 import main.java.view.ResultsParser;
 import main.java.view.TRView;
+import mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
+import mcoufal.inrunjunit.server.ResultsData;
 
 /**
  * ResultsClient class connects to and communicates with ResultsServer. First,

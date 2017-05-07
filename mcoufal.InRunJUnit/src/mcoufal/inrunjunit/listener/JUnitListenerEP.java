@@ -1,4 +1,4 @@
-package com.mcoufal.inrunjunit.listener;
+package mcoufal.inrunjunit.listener;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.jboss.reddeer.common.logging.Logger;
 
-import com.mcoufal.inrunjunit.server.ResultsServer;
+import mcoufal.inrunjunit.server.ResultsServer;
 
 /**
  * This class extends 'org.eclipse.jdt.junit.TestRunListener' and contributes to

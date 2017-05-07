@@ -26,9 +26,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
 
-import com.mcoufal.inrunjunit.server.ResultsData;
-
 import main.java.client.ResultsClient;
+import mcoufal.inrunjunit.server.ResultsData;
 
 /**
  * This is main class of TRView.

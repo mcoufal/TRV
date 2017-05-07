@@ -3,6 +3,6 @@
 
 <plugin>
    <extension point="org.eclipse.jdt.junit.testRunListeners">
-      <testRunListener class="com.mcoufal.inrunjunit.listener.JUnitListenerEP"/>
+      <testRunListener class="mcoufal.inrunjunit.listener.JUnitListenerEP"/>
    </extension>
 </plugin>

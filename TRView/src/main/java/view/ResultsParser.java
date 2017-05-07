@@ -7,10 +7,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.TreeItem;
 import org.jboss.reddeer.common.logging.Logger;
 
-import com.mcoufal.inrunjunit.server.ResultsData;
-import com.mcoufal.inrunjunit.server.StringTestCase;
-import com.mcoufal.inrunjunit.server.StringTestCaseElement;
-import com.mcoufal.inrunjunit.server.StringTestRunSession;
+import mcoufal.inrunjunit.server.ResultsData;
+import mcoufal.inrunjunit.server.StringTestCase;
+import mcoufal.inrunjunit.server.StringTestCaseElement;
+import mcoufal.inrunjunit.server.StringTestRunSession;
 
 /**
  * This class provides methods useful for parsing and displaying progress of a
