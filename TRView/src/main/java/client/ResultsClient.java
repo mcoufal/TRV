@@ -28,11 +28,11 @@ public class ResultsClient extends Thread {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ResultsClient.class);
 	public List<ResultsData> resultsList = null;
-	public static ResultsData receivedData = null;
-	public static ObjectInputStream fromServer = null;
-	private static String IPaddr;
-	private static int portNum;
-	private static Boolean alive;
+	public ResultsData receivedData = null;
+	public ObjectInputStream fromServer = null;
+	private String IPaddr;
+	private int portNum;
+	private Boolean alive;
 
 	/**
 	 * Constructor. Initializes IP address and port where is ResultsServer
@@ -43,7 +43,7 @@ public class ResultsClient extends Thread {
 	 */
 	public ResultsClient(String serverIP, int portNum) {
 		IPaddr = serverIP;
-		ResultsClient.portNum = portNum;
+		this.portNum = portNum;
 		alive = true;
 		log.info("ResultsClient created");
 	}

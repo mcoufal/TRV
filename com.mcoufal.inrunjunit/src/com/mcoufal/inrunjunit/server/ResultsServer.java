@@ -24,12 +24,12 @@ public class ResultsServer extends Thread {
 	// set up one port number: 7357 (TEST)
 	public static int portNum = 7357;
 	// list of client connections
-	private static List<ClientHandler> clientThreads = new ArrayList<ClientHandler>();
+	private List<ClientHandler> clientThreads = new ArrayList<ClientHandler>();
 	// list of all ResultsData from JUnitListenerEP
-	private static List<ResultsData> resultsList = new ArrayList<ResultsData>();
+	private List<ResultsData> resultsList = new ArrayList<ResultsData>();
 	// server socket
-	private static ServerSocket servSock = null;
-	// TODO: comment
+	private ServerSocket servSock = null;
+	// used to control server thread life cycle
 	private Boolean alive = true;
 
 	/**
@@ -59,7 +59,6 @@ public class ResultsServer extends Thread {
 				endConnections();
 				resultsList.clear();
 				clientThreads.clear();
-				// TODO: resolve ending server!
 				alive = false;
 			}
 		}

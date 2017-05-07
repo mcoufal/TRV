@@ -66,6 +66,7 @@ public class TestRunSessionParser {
 								}
 								System.out.println("PATH toOSString: " + e.getCorrespondingResource().getFullPath());
 								System.out.println("getUnderlyingResource: " + e.getUnderlyingResource().getName());
+								e.getOpenable().close();
 							}
 						}
 				}

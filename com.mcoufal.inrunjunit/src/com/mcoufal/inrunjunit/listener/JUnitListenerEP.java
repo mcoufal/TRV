@@ -23,7 +23,7 @@ public class JUnitListenerEP extends TestRunListener {
 	// set up logger
 	private final static Logger log = Logger.getLogger(JUnitListenerEP.class);
 	// Results server thread
-	public ResultsServer server;
+	public static ResultsServer server;
 
 	// phases that listener recognizes
 	public enum Phase {
@@ -38,10 +38,6 @@ public class JUnitListenerEP extends TestRunListener {
 	 */
 	public JUnitListenerEP() {
 		log.info("JUnitListenerEP created");
-		// ResultsServer is handled by new thread
-		server = new ResultsServer();
-		server.start();
-		log.info("JUnitListenerEP initialized");
 	}
 
 	/**
@@ -51,6 +47,9 @@ public class JUnitListenerEP extends TestRunListener {
 	@Override
 	public void sessionLaunched(ITestRunSession session) {
 		log.info("Session '" + session.getTestRunName() + "' LAUNCHED");
+		// ResultsServer is handled by new thread
+		server = new ResultsServer();
+		server.start();
 		server.sendData(session, Phase.SESSION_LAUNCHED);
 	}
 
@@ -78,6 +77,7 @@ public class JUnitListenerEP extends TestRunListener {
 			log.error("Error while initializing ResultsServer end: " + e.getMessage());
 			e.printStackTrace();
 		}
+		server = null;
 	}
 
 	/**
