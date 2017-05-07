@@ -88,26 +88,26 @@ public class ResultsParser {
 			treeItem.setText(itemText);
 			if (testCaseElement.getTestResultNoChildren().getResult().equals("Error")) {
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_RED));
-				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testerr.png"));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testerr.png")));
 				errNum++;
 				TRView.getTxtErrors().setText(Integer.toString(errNum));
 			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Failure")) {
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_RED));
-				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testfail.png"));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testfail.png")));
 				failNum++;
 				TRView.getTxtFailures().setText(Integer.toString(failNum));
 			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")) {
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
-				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testignored.png"));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testignored.png")));
 				ignoredNum++;
 				TRView.getTxtIgnored().setText(Integer.toString(ignoredNum));
 			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")) {
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
-				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testok.png"));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testok.png")));
 			} else { // "Undefined"
 				log.debug("inside Undefined");
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-				treeItem.setImage(new Image(TRView.getDisplay(), "icons/testassumptionfailed"));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testassumptionfailed")));
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class ResultsParser {
 
 		// highlight current item
 		TreeItem t1 = findTreeItemCaseName(tc, true);
-		t1.setImage(new Image(TRView.getDisplay(), "icons/testrun.png"));
+		t1.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testrun.png")));
 
 		// scroll to currently running test case (so it is visible)
 		TreeItem[] currentlySelected = TRView.getTree().getSelection();
@@ -155,13 +155,13 @@ public class ResultsParser {
 		TreeItem testSuiteItem = findTreeItemSuite(testRunName);
 		if (testSuiteItem != null)
 			if (testRunSession.getTestResultWithChildren().getResult().equals("OK")){
-				testSuiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuiteok.png"));
+				testSuiteItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuiteok.png")));
 			}
 			else if (testRunSession.getTestResultWithChildren().getResult().equals("Error")) {
-				testSuiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuiteerror.png"));
+				testSuiteItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuiteerror.png")));
 			}
 			else if (testRunSession.getTestResultWithChildren().getResult().equals("Failure")) {
-				testSuiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuitefail.png"));
+				testSuiteItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuitefail.png")));
 			}
 	}
 
@@ -175,7 +175,7 @@ public class ResultsParser {
 		log.info("parsing SESSION STARTED");
 		for (TreeItem suiteNode : TRView.getTree().getItems()) {
 			if (suiteNode.getText().equals(testRunSession.getTestRunName())) {
-				suiteNode.setImage(new Image(TRView.getDisplay(), "icons/tsuiterun.png"));
+				suiteNode.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuiterun.png")));
 				suiteNode.setExpanded(true);
 			}
 		}
@@ -192,10 +192,13 @@ public class ResultsParser {
 		List<StringTestCase> testCases = testRunSession.getTestCases();
 		TreeItem parentNodeItem = null;
 		// parsing
-		// number of runs
+		// set number of runs, errors, failures and ignored
 		int numberOfRuns = testCases.size();
 		log.debug("NUMBER OF RUNS: " + numberOfRuns);
 		TRView.getTxtRuns().setText("0/" + numberOfRuns);
+		TRView.getTxtErrors().setText("0");
+		TRView.getTxtFailures().setText("0");
+		TRView.getTxtIgnored().setText("0");
 		// create tree of a test run
 		// for every test case
 		for (StringTestCase tc : testCases) {
@@ -211,7 +214,7 @@ public class ResultsParser {
 						parentNodeItem = findTreeItemJavaFile(tc.getJavaFile());
 						TreeItem testCaseItem = new TreeItem(parentNodeItem, 0);
 						testCaseItem.setText(tc.getName());
-						testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+						testCaseItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/test.png")));
 					}
 					// java file doesn't exists
 					else {
@@ -219,10 +222,10 @@ public class ResultsParser {
 						parentNodeItem = findTreeItemPackage(tc.getPackageName());
 						TreeItem javaFileItem = new TreeItem(parentNodeItem, 0);
 						javaFileItem.setText(tc.getJavaFile());
-						javaFileItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+						javaFileItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
 						TreeItem testCaseItem = new TreeItem(javaFileItem, 0);
 						testCaseItem.setText(tc.getName());
-						testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+						testCaseItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/test.png")));
 					}
 				}
 				// package doesn't exist
@@ -231,29 +234,29 @@ public class ResultsParser {
 					parentNodeItem = findTreeItemSuite(tc.getTestSuite());
 					TreeItem packageItem = new TreeItem(parentNodeItem, 0);
 					packageItem.setText(tc.getPackageName());
-					packageItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+					packageItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
 					TreeItem javaFileItem = new TreeItem(packageItem, 0);
 					javaFileItem.setText(tc.getJavaFile());
-					javaFileItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+					javaFileItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
 					TreeItem testCaseItem = new TreeItem(javaFileItem, 0);
 					testCaseItem.setText(tc.getName());
-					testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+					testCaseItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/test.png")));
 				}
 				// test suite doesn't exist
 			} else {
 				log.debug("Test suite node doesn't exist");
 				TreeItem suiteItem = new TreeItem(TRView.getTree(), 0);
 				suiteItem.setText(tc.getTestSuite());
-				suiteItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+				suiteItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
 				TreeItem packageItem = new TreeItem(suiteItem, 0);
 				packageItem.setText(tc.getPackageName());
-				packageItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+				packageItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
 				TreeItem javaFileItem = new TreeItem(packageItem, 0);
 				javaFileItem.setText(tc.getJavaFile());
-				javaFileItem.setImage(new Image(TRView.getDisplay(), "icons/tsuite.png"));
+				javaFileItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
 				TreeItem testCaseItem = new TreeItem(javaFileItem, 0);
 				testCaseItem.setText(tc.getName());
-				testCaseItem.setImage(new Image(TRView.getDisplay(), "icons/test.png"));
+				testCaseItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/test.png")));
 			}
 		}
 	}

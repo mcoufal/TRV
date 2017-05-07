@@ -1,7 +1,6 @@
 package main.java.view;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.UnknownHostException;
 
 import org.eclipse.swt.SWT;
@@ -9,7 +8,6 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -22,7 +20,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -274,7 +271,7 @@ public class TRView {
 		lblRuns = new CLabel(shell, SWT.RIGHT);
 		lblRuns.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblRuns.setText("Runs:");
-		lblRuns.setImage(new Image(display, "icons/test.png"));
+		lblRuns.setImage(new Image(display, TRView.class.getResourceAsStream("/test.png")));
 		txtRuns = new Text(shell, SWT.BORDER | SWT.CENTER);
 		txtRuns.setEnabled(false);
 		txtRuns.setEditable(false);
@@ -285,7 +282,7 @@ public class TRView {
 		lblFailures = new CLabel(shell, SWT.RIGHT);
 		lblFailures.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblFailures.setText("Failures:");
-		lblFailures.setImage(new Image(display, "icons/testfail.png"));
+		lblFailures.setImage(new Image(display, TRView.class.getResourceAsStream("/testfail.png")));
 		txtFailures = new Text(shell, SWT.BORDER | SWT.CENTER);
 		txtFailures.setEditable(false);
 		txtFailures.setEnabled(false);
@@ -296,7 +293,7 @@ public class TRView {
 		lblErrors = new CLabel(shell, SWT.RIGHT);
 		lblErrors.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblErrors.setText("Errors:");
-		lblErrors.setImage(new Image(display, "icons/testerr.png"));
+		lblErrors.setImage(new Image(display, TRView.class.getResourceAsStream("/testerr.png")));
 		txtErrors = new Text(shell, SWT.BORDER | SWT.CENTER);
 		txtErrors.setEnabled(false);
 		txtErrors.setEditable(false);
@@ -307,7 +304,7 @@ public class TRView {
 		lblIgnored = new CLabel(shell, SWT.RIGHT);
 		lblIgnored.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 		lblIgnored.setText("Ignored:");
-		lblIgnored.setImage(new Image(display, "icons/testignored.gif"));
+		lblIgnored.setImage(new Image(display, TRView.class.getResourceAsStream("/testignored.gif")));
 		txtIgnored = new Text(shell, SWT.BORDER | SWT.CENTER);
 		txtIgnored.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		txtIgnored.setEnabled(false);
@@ -322,7 +319,7 @@ public class TRView {
 		// trace
 		CLabel lblTrace = new CLabel(shell, SWT.NONE);
 		lblTrace.setText("Trace:");
-		lblTrace.setImage(new Image(display, "icons/stkfrm_obj.png"));
+		lblTrace.setImage(new Image(display, TRView.class.getResourceAsStream("/stkfrm_obj.png")));
 
 		txtTrace = new StyledText(shell, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
 		txtTrace.setEnabled(false);
@@ -421,12 +418,11 @@ public class TRView {
 	 * values.
 	 */
 	private static void clearGuiData() {
-		txtRuns.setText("0");
-		txtErrors.setText("0");
-		txtFailures.setText("0");
-		txtIgnored.setText("0");
+		txtRuns.setText("");
+		txtErrors.setText("");
+		txtFailures.setText("");
+		txtIgnored.setText("");
 		txtTrace.setText("");
-		// FIXME: call dispose on all TreeItems
 		for (TreeItem item : tree.getItems()) {
 			disposeTreeItemsRecurse(item);
 		}
@@ -434,6 +430,10 @@ public class TRView {
 		tree.setEnabled(true);
 	}
 
+	/**
+	 * Disposes all items in tree structure given by node TreeItem.
+	 * @param item
+	 */
 	private static void disposeTreeItemsRecurse(TreeItem item) {
 		if (item == null) return;
 		for (TreeItem child : item.getItems()) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="icons"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
@@ -21,8 +22,8 @@
 			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="src" path="/com.mcoufal.inrunjunit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/opt/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64_3.105.1.v20160907-0248.jar" sourcepath="/opt/eclipse/plugins/org.eclipse.swt.gtk.linux.x86_64.source_3.105.1.v20160907-0248.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mcoufal.InRunJUnit"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
