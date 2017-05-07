@@ -32,7 +32,6 @@ public class TestRunSessionParser {
 	private final Pattern testCaseName = Pattern.compile("\\s+(\\w+?)\\(\\)");
 	private final Pattern testCaseJavaFile = Pattern.compile("(?m)^\\s+(.+)\\.java$");
 	private final Pattern testCasePackageName = Pattern.compile("(.*?)\\s+\\[in\\s+.*\\s+\\[in\\s+(.*?)\\]\\]");
-	private final Pattern testCaseTestSuite = Pattern.compile("\\[in\\s+.*\\s+\\[in\\s+(.*?)\\]\\]");
 
 	public TestRunSessionParser(ITestRunSession session) {
 		// get test case information: name, java file, package and test suite

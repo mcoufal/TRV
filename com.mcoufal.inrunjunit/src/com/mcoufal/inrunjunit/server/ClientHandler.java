@@ -18,9 +18,9 @@ public class ClientHandler extends Thread {
 	// set up logger
 	private final static Logger log = Logger.getLogger(ClientHandler.class);
 	// TODO: reference to this client handler -- usage for synchronization
-	private ClientHandler handler = null;
+	// private ClientHandler handler = null;
 	// TODO reference to results server -- usage for synchronization
-	private ResultsServer server = null;
+	// private ResultsServer server = null;
 	// socket for communicating with client
 	private Socket clientSocket;
 	// output stream for sending ResultsData to client
@@ -37,8 +37,8 @@ public class ClientHandler extends Thread {
 	 */
 	public ClientHandler(ResultsServer server, Socket socket, List<ResultsData> resultsList) {
 		log.info("ClientHandler@" + this.getId() + " created");
-		this.handler = this;
-		this.server = server;
+		//this.handler = this;
+		//this.server = server;
 		clientSocket = socket;
 		this.resultsList = resultsList;
 
