@@ -427,8 +427,19 @@ public class TRView {
 		txtIgnored.setText("0");
 		txtTrace.setText("");
 		// FIXME: call dispose on all TreeItems
+		for (TreeItem item : tree.getItems()) {
+			disposeTreeItemsRecurse(item);
+		}
 		tree.clearAll(true);
 		tree.setEnabled(true);
+	}
+
+	private static void disposeTreeItemsRecurse(TreeItem item) {
+		if (item == null) return;
+		for (TreeItem child : item.getItems()) {
+			disposeTreeItemsRecurse(child);
+		}
+		item.dispose();
 	}
 
 	/**
