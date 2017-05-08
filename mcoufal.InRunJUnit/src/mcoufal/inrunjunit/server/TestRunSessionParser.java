@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -25,6 +26,7 @@ public class TestRunSessionParser {
 	private String sTestCasePackageName = null;
 	private String sTestCaseTestSuite = null;
 	private String pathToFile = null;
+	private String pathToWorkspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 	// Regex patterns for parsing test case data
 	private Matcher matcherOuter = null;
 	private Matcher matcherInner = null;
@@ -57,21 +59,16 @@ public class TestRunSessionParser {
 									if (matcherInner.find())
 										sTestCasePackageName = matcherInner.group(1);
 									// find and add test cases to list
-									// FIXME: path to workspace or project
-									// location
-									pathToFile = "/home/mcoufal/workspace" + e.getPath().toOSString() + "/"
+									pathToFile = pathToWorkspace + e.getPath().toOSString() + "/"
 											+ sTestCaseJavaFile + ".java";
 									handleTestCasesinFile(pathToFile);
 								}
-								System.out.println("PATH toOSString: " + e.getCorrespondingResource().getFullPath());
-								System.out.println("getUnderlyingResource: " + e.getUnderlyingResource().getName());
-								e.getOpenable().close();
 							}
 						}
 				}
 			}
 		} catch (JavaModelException e1) {
-			// TODO Auto-generated catch block
+			// TODO
 			e1.printStackTrace();
 		}
 	}

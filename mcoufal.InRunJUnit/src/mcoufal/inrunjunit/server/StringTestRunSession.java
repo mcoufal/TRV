@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.model.ITestRunSession;
-import org.jboss.reddeer.common.logging.Logger;
 
 /**
  * Creates StringTestRunSession instance containing string data of
@@ -17,8 +15,6 @@ import org.jboss.reddeer.common.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class StringTestRunSession implements Serializable {
-	// set up logger
-	private final static Logger log = Logger.getLogger(StringTestRunSession.class);
 	private String testRunSession;
 	private String testRunName;
 	private double elapsedTime;
@@ -51,20 +47,6 @@ public class StringTestRunSession implements Serializable {
 		testResultNoChildren = new StringResult(session.getTestResult(false));
 		testResultWithChildren = new StringResult(session.getTestResult(true));
 		testCases = (new TestRunSessionParser(session)).getTestCases();
-		log.debug("PATH of project: " + session.getLaunchedProject().getProject().getFullPath().toOSString());
-		log.debug("testRunSession:" + testRunSession);
-		log.debug("testRunName:" + testRunName);
-		log.debug("getElementName: " + session.getLaunchedProject().getElementName());
-		log.debug("WORKSPACE PATH: " + System.getProperty("user.dir"));
-		try {
-			log.debug("PATH?: " + session.getLaunchedProject().getJavaProject().getOutputLocation());
-		} catch (JavaModelException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		// log.debug(session.getLaunchedProject().getProject().getWorkingLocation());
-
-		log.debug("getTestRunSession.getTestRunName: " + session.getTestRunSession().getTestRunName());
 	}
 
 	/**
