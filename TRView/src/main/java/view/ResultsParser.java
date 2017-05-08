@@ -134,7 +134,8 @@ public class ResultsParser {
 
 		// highlight current item
 		TreeItem t1 = findTreeItemCaseName(tc, true);
-		t1.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testrun.png")));
+		if (t1 != null)
+			t1.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testrun.png")));
 
 		// scroll to currently running test case (so it is visible)
 		TreeItem[] currentlySelected = TRView.getTree().getSelection();
