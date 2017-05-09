@@ -41,9 +41,9 @@ public class ResultsClient extends Thread {
 	 * @param portNum
 	 */
 	public ResultsClient(String serverIP, int portNum) {
-		IPaddr = serverIP;
+		this.IPaddr = serverIP;
 		this.portNum = portNum;
-		alive = true;
+		this.alive = true;
 		log.info("ResultsClient created");
 	}
 
@@ -64,8 +64,10 @@ public class ResultsClient extends Thread {
 			TRView.getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					TRView.getLblWarning().setText("IP Adress is not valid!");
-					TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+					if (!TRView.getLblWarning().isDisposed()){
+						TRView.getLblWarning().setText("IP Adress is not valid!");
+						TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
 				}
 			});
 			uhe.printStackTrace();
@@ -75,8 +77,10 @@ public class ResultsClient extends Thread {
 			TRView.getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					TRView.getLblWarning().setText("Can't connect to server!");
-					TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+					if (!TRView.getLblWarning().isDisposed()){
+						TRView.getLblWarning().setText("Can't connect to server!");
+						TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
 				}
 			});
 			ioe.printStackTrace();
@@ -86,8 +90,10 @@ public class ResultsClient extends Thread {
 			TRView.getDisplay().syncExec(new Runnable() {
 				@Override
 				public void run() {
-					TRView.getLblWarning().setText("Port number is out of range!");
-					TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+					if (!TRView.getLblWarning().isDisposed()){
+						TRView.getLblWarning().setText("Port number is out of range!");
+						TRView.getLblWarning().setForeground(TRView.getDisplay().getSystemColor(SWT.COLOR_RED));
+					}
 				}
 			});
 			iae.printStackTrace();
@@ -98,7 +104,9 @@ public class ResultsClient extends Thread {
 		TRView.getDisplay().syncExec(new Runnable() {
 			@Override
 			public void run() {
-				TRView.getConnectShell().close();
+				if (!TRView.getConnectShell().isDisposed()){
+					TRView.getConnectShell().close();
+				}
 			}
 		});
 
