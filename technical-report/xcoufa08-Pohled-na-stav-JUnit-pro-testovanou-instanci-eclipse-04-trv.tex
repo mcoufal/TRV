@@ -1,6 +1,7 @@
 %=========================================================================%
 % - - KAPITOLA 4: Z Á S U V N Ý - M O D U L - I n R u n J U n i t V i e w %
-\chapter{Implementovaná aplikace TestRunView}                             %
+\chapter{Implementovaná aplikace TestRunView}
+\label{chapter:TRV}
 %=========================================================================%
 Díky architektuře zásuvných modulů je snadné rozšířit Eclipse IDE o~novou funkcionalitu a tak poskytuje četné množství prvků, které je vhodné otestovat. V~rámci testování GUI Eclipse IDE se používají rozsáhlé testovací sady testující velké množství aspektů a možností. Automatické testy GUI jsou ale časově náročné a nejsou dokonalé. Vzniká tak potřeba kontroly nad sadou s~probíhajícími testy. Průběh testů lze sledovat pomocí zásuvného modulu \texttt{org.eclipse.jdt.junit}, který poskytuje pohled JUnit zobrazující potřebné informace o~probíhajících testech. Navíc umožňuje znovu spustit testovací sadu a také si uchovává historii testovaných sad. Problémem tohoto pohledu je, že při spuštění testovací sady se otevírá nové okno s~testovanou instancí Eclipse IDE. To způsobí překrytí pohledu JUnit a proto není možné sledovat tento pohled v~průběhu testování. Také z~hlediska časové náročnosti může být výhodnější testovat na vzdálených serverech a spouštět testy z~terminálu. V~takovém případě nelze pohled JUnit k~zobrazení detailů o~testování použít.
 

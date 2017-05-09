@@ -8,6 +8,7 @@ Eclipse IDE je integrované vývojové prostředí poskytující podporu pro mno
 V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kterých se skládá. Dále je zde popsán systém zásuvných modulů Eclipse IDE a jejich částí.
 
   \section{Infrastruktura Eclipse IDE}%TODO: citace - resit kapitoly?
+  \label{section:Infrastruktura_Eclipse_IDE}
   %===============================
   Eclipse IDE není monolitické vývojové prostředí, ale spíše komplexní soubor zásuvných modulů. V~základě je rozdělen do několika podsystémů, které jsou koncipovány jako jeden nebo více zásuvných modulů. Minimální množina zásuvných modulů, která je potřeba pro vývoj klientské aplikace se nazývá \emph{Eclipse RCP} (\emph{Rich Client Platform})\footnote{\url{https://wiki.eclipse.org/Rich_Client_Platform}}. V~dnešní době se však Eclipse IDE často používá i pro vývoj serverových aplikací, tato infrastruktura se potom nazývá \emph{EAF} (\emph{Eclipse Aplication Framework}). Důležitou komponentou je jádro, které načítá jednotlivé zásuvné moduly. Toto jádro je implementováno na základě specifikace \emph{OSGi Service Platform}, která definuje standard pro dynamické modulární systémy v~Javě \cite{Plugins}. Tento standard je definován mezinárodním konsorciem \emph{OSGi Alliance}\footnote{\url{https://www.osgi.org/}}. Díky implementaci rámce \emph{OSGi Equinox}\footnote{\url{http://www.eclipse.org/equinox/}} používá Eclipse IDE pro načítání jednotlivých zásuvných modulů návrhový vzor \emph{lazy-loading}, který zajišťuje načítání jen nezbytných zásuvných modulů.
   \\
@@ -39,7 +40,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
     %*********************
     Termín Workbench odkazuje na desktopové vývojové prostředí. Jeho cílem je integrace různých nástrojů a poskytnutí základního schématu pro tvorbu, správu a navigaci ve zdrojích pracovní plochy. Běžně se ve Workbench nachází lišta s~hlavním menu, nástrojová lišta a několik pohledů, případně editorů \cite{eclipse-workbench}. Grafické prvky vývojového prostředí jsou však pro uživatele přizpůsobitelné.
 
-    \begin{figure}[h]
+    \begin{figure}
       \includegraphics[width=\textwidth, keepaspectratio, center]{obrazky-figures/eclipse_workbench.png}
       \caption{Běžný vzhled Eclipse Workbench.}
       \label{fig:eclipse_workbench}
@@ -112,7 +113,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
       V~tomto manifestu zásuvného modulu mohou být uvedeny body rozšíření, na které je možno připojit nový zásuvný modul rozšiřující stávající funkcionalitu. Toto odloučení od rozšiřujících zásuvných modulů umožňuje existenci základního zásuvného modulu bez znalosti jakýchkoliv informací o~ostatních zásuvných modulech. To zajišťuje snazší spolupráci při implementaci a znovupoužitelnost již implementovaných částí. Bod rozšíření obvykle definuje identifikátor, jméno a schéma\,(viz obrázek \ref{code:extension_point_declaration}). Schéma určuje, co musí rozšiřující zásuvný modul splnit pro správné rozšíření tohoto zásuvného modulu. Deklarace bodu rozšíření se vkládá do bloku s~označením \texttt{<plugin>}. 
       
       \lstset{language=xml}
-      \begin{figure}[h]
+      \begin{figure}
 	\begin{lstlisting}[frame=single]
 	  <extension-point id="org.example.extensionpoints.point"
                 name="Point"
@@ -124,7 +125,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
       
       Dále je zde možno definovat, který zásuvný modul chceme stávajícím modulem rozšířit\,--\,k tomu slouží rozšíření zásuvného modulu\,(viz obrázek \ref{code:extension_declaration}). Obsah bloku \texttt{<extension point>} je dán bodem rozšíření na který se připojujeme. V~případě obrázku \ref{code:extension_declaration} jde o~připojení na bod rozšíření \texttt{org.eclipse.ui.views}, který umožňuje přidání vlastního pohledu. K~tomu je třeba specifikovat kategorii\,(v případě že vytváříme novou) a zároveň jednotlivé parametry implementovaného pohledu.
       
-      \begin{figure}[h]
+      \begin{figure}
 	\begin{lstlisting}[frame=single]
 	  <extension
          point="org.eclipse.ui.views">
