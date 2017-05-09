@@ -26,7 +26,7 @@ public class TestRunSessionParser {
 	private String sTestCasePackageName = null;
 	private String sTestCaseTestSuite = null;
 	private String pathToFile = null;
-	private String pathToWorkspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
+	private String pathToWorkspace = System.getenv("TESTS_DIR");
 	// Regex patterns for parsing test case data
 	private Matcher matcherOuter = null;
 	private Matcher matcherInner = null;
@@ -36,6 +36,9 @@ public class TestRunSessionParser {
 	private final Pattern testCasePackageName = Pattern.compile("(.*?)\\s+\\[in\\s+.*\\s+\\[in\\s+(.*?)\\]\\]");
 
 	public TestRunSessionParser(ITestRunSession session) {
+		// if path to tests is not set explicitly, use workspace
+		if (pathToWorkspace == null)
+			pathToWorkspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
 		// get test case information: name, java file, package and test suite
 		try {
 			for (IPackageFragmentRoot r : session.getLaunchedProject().getAllPackageFragmentRoots()) {
