@@ -5,8 +5,9 @@ import java.io.Serializable;
 import org.eclipse.jdt.junit.model.ITestElement;
 
 /**
- * Creates StringTestElement instance containing string data of ITestElement object.
- * 
+ * Creates StringTestElement instance containing string data of ITestElement
+ * object.
+ *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  *
  */
@@ -21,39 +22,50 @@ public class StringTestElement implements Serializable {
 	private static StringResult testResultNoChildren;
 	private static StringResult testResultWithChildren;
 	private static String testRunSession;
-	
+
 	/**
-	 * Creates StringTestElement instance containing string data of ITestElement object.
-	 * 
+	 * Creates StringTestElement instance containing string data of ITestElement
+	 * object.
+	 *
 	 * @param element
 	 */
 	public StringTestElement(ITestElement element) {
 		// initialize
-		if (element != null) testElement = element.toString();
-		else testElement = null;
+		if (element != null)
+			testElement = element.toString();
+		else
+			testElement = null;
 		elapsedTime = element.getElapsedTimeInSeconds();
-		if (element.getFailureTrace() != null) failureTrace = element.getFailureTrace().toString();
-		else failureTrace = null;
-		if (element.getParentContainer() != null) parentContainer = element.getParentContainer().toString();
-		else parentContainer = null;
-		if (element.getProgressState() != null) progressState = element.getProgressState().toString();
-		else progressState = null;
+		if (element.getFailureTrace() != null)
+			failureTrace = element.getFailureTrace().toString();
+		else
+			failureTrace = null;
+		if (element.getParentContainer() != null)
+			parentContainer = element.getParentContainer().toString();
+		else
+			parentContainer = null;
+		if (element.getProgressState() != null)
+			progressState = element.getProgressState().toString();
+		else
+			progressState = null;
 		testResultNoChildren = new StringResult(element.getTestResult(false));
 		testResultWithChildren = new StringResult(element.getTestResult(true));
 		testRunSession = element.getTestRunSession().toString();
 	}
-	
+
 	/**
 	 * Prints all available StringTestElement data to stdout.
 	 */
-	public void print(){
+	public void print() {
 		System.out.println("[testElement]: " + testElement);
 		System.out.println("[elapsedTime]: " + elapsedTime);
 		System.out.println("[failureTrace]: " + failureTrace);
 		System.out.println("[parentContainer]: " + parentContainer);
 		System.out.println("[progressState]: " + progressState);
-		if (testResultNoChildren != null) testResultNoChildren.print();
-		if (testResultWithChildren != null) testResultWithChildren.print();
+		if (testResultNoChildren != null)
+			testResultNoChildren.print();
+		if (testResultWithChildren != null)
+			testResultWithChildren.print();
 		System.out.println("[testRunSession]: " + testRunSession);
 	}
 

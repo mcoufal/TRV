@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
-import org.jboss.reddeer.common.logging.Logger;
 
 import mcoufal.inrunjunit.server.ResultsServer;
 
@@ -20,8 +19,6 @@ import mcoufal.inrunjunit.server.ResultsServer;
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
 public class JUnitListenerEP extends TestRunListener {
-	// set up logger
-	private final static Logger log = Logger.getLogger(JUnitListenerEP.class);
 	// Results server thread
 	public static ResultsServer server;
 
@@ -32,12 +29,12 @@ public class JUnitListenerEP extends TestRunListener {
 
 	/**
 	 * Constructor. Initializes and starts ResultsServer thread.
-	 * 
+	 *
 	 * TODO: add 'debug' option: tests can't start before TRView is connected
 	 * (pause this thread probably) - will need some *global* variable
 	 */
 	public JUnitListenerEP() {
-		log.info("JUnitListenerEP created");
+		// TODO: here is space to make DEBUG mode!
 	}
 
 	/**
@@ -46,7 +43,6 @@ public class JUnitListenerEP extends TestRunListener {
 	 */
 	@Override
 	public void sessionLaunched(ITestRunSession session) {
-		log.info("Session '" + session.getTestRunName() + "' LAUNCHED");
 		// ResultsServer is handled by new thread
 		server = new ResultsServer();
 		server.start();
@@ -59,7 +55,6 @@ public class JUnitListenerEP extends TestRunListener {
 	 */
 	@Override
 	public void sessionStarted(ITestRunSession session) {
-		log.info("Session '" + session.getTestRunName() + "' STARTED");
 		server.sendData(session, Phase.SESSION_STARTED);
 	}
 
@@ -69,24 +64,22 @@ public class JUnitListenerEP extends TestRunListener {
 	 */
 	@Override
 	public void sessionFinished(ITestRunSession session) {
-		log.info("Session '" + session.getTestRunName() + "' FINISHED");
 		server.sendData(session, Phase.SESSION_FINISHED);
 		try {
 			server.getServSock().close();
 		} catch (IOException e) {
-			log.error("Error while initializing ResultsServer end: " + e.getMessage());
+			System.err.println("Error while initializing ResultsServer end: " + e.getMessage());
 			e.printStackTrace();
 		}
 		server = null;
 	}
 
 	/**
-	 * This method is invoked when test case starts. Sends data to
-	 * ResultsServer instance.
+	 * This method is invoked when test case starts. Sends data to ResultsServer
+	 * instance.
 	 */
 	@Override
 	public void testCaseStarted(ITestCaseElement testCaseElement) {
-		log.info("Test case '" + testCaseElement.getTestMethodName() + "' STARTED");
 		server.sendData(testCaseElement, Phase.CASE_STARTED);
 	}
 
@@ -96,7 +89,6 @@ public class JUnitListenerEP extends TestRunListener {
 	 */
 	@Override
 	public void testCaseFinished(ITestCaseElement testCaseElement) {
-		log.info("Test case '" + testCaseElement.getTestMethodName() + "' FINISHED");
 		server.sendData(testCaseElement, Phase.CASE_FINISHED);
 	}
 }

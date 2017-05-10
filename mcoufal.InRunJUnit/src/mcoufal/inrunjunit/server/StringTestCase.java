@@ -3,7 +3,7 @@ package mcoufal.inrunjunit.server;
 import java.io.Serializable;
 
 /**
- * This class is used to store basic test case information. 
+ * This class is used to store basic test case information.
  *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
@@ -16,6 +16,7 @@ public class StringTestCase implements Serializable {
 
 	/**
 	 * Constructor.
+	 *
 	 * @param name
 	 * @param javaFile
 	 * @param packageName

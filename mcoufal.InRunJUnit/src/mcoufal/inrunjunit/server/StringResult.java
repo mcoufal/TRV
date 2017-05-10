@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class StringResult implements Serializable {
-	
+
 	/**
 	 * @return string representation of Result
 	 */
@@ -31,33 +31,30 @@ public class StringResult implements Serializable {
 	 * Constructor.
 	 *
 	 * Converts result to string representation.
+	 *
 	 * @param result
 	 */
 	public StringResult(org.eclipse.jdt.junit.model.ITestElement.Result result) {
-		if (result != null){
-			if (result == org.eclipse.jdt.junit.model.ITestElement.Result.ERROR){
+		if (result != null) {
+			if (result == org.eclipse.jdt.junit.model.ITestElement.Result.ERROR) {
 				status = "Error";
-			}
-			else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.FAILURE){
+			} else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.FAILURE) {
 				status = "Failure";
-			}
-			else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.IGNORED){
+			} else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.IGNORED) {
 				status = "Ignored";
-			}
-			else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.OK){
+			} else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.OK) {
 				status = "OK";
-			}
-			else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.UNDEFINED){
+			} else if (result == org.eclipse.jdt.junit.model.ITestElement.Result.UNDEFINED) {
 				status = "Undefined";
 			}
-		}
-		else status = "Undefined";
+		} else
+			status = "Undefined";
 	}
 
 	/**
 	 * Prints result state to standard output.
 	 */
-	public void print(){
+	public void print() {
 		System.out.println(status);
 	}
 

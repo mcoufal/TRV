@@ -9,7 +9,7 @@ import org.eclipse.jdt.junit.model.ITestRunSession;
 /**
  * Creates StringTestRunSession instance containing string data of
  * ITestRunSession object.
- * 
+ *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  *
  */
@@ -28,7 +28,7 @@ public class StringTestRunSession implements Serializable {
 	/**
 	 * Creates StringTestRunSession instance containing string data of
 	 * ITestRunSession object.
-	 * 
+	 *
 	 * @param session
 	 */
 	public StringTestRunSession(ITestRunSession session) {

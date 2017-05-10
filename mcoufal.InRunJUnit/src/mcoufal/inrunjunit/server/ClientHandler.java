@@ -5,18 +5,14 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-
 /**
  * This class represents thread handling one client connection. In case of
  * multiple clients, client server multiple ClientHandlers while communication
  * with all of them.
- * 
+ *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
 public class ClientHandler extends Thread {
-	// set up logger
-	private final static Logger log = Logger.getLogger(ClientHandler.class);
 	// TODO: reference to this client handler -- usage for synchronization
 	// private ClientHandler handler = null;
 	// TODO reference to results server -- usage for synchronization
@@ -36,9 +32,8 @@ public class ClientHandler extends Thread {
 	 * @param socket
 	 */
 	public ClientHandler(ResultsServer server, Socket socket, List<ResultsData> resultsList) {
-		log.info("ClientHandler@" + this.getId() + " created");
-		//this.handler = this;
-		//this.server = server;
+		// this.handler = this;
+		// this.server = server;
 		clientSocket = socket;
 		this.resultsList = resultsList;
 
@@ -46,12 +41,10 @@ public class ClientHandler extends Thread {
 		try {
 			toClient = new ObjectOutputStream(clientSocket.getOutputStream());
 		} catch (IOException e) {
-			log.error("ClientHandler@" + this.getId() + ": Failed to establish output stream to client: "
+			System.err.println("ClientHandler@" + this.getId() + ": Failed to establish output stream to client: "
 					+ clientSocket.getInetAddress().getHostName());
 			e.printStackTrace();
 		}
-
-		log.info("ClientHandler@" + this.getId() + " initialized");
 	}
 
 	/**
@@ -62,14 +55,13 @@ public class ClientHandler extends Thread {
 	 */
 	@Override
 	public void run() {
-		log.debug("ClientHandler@" + this.getId() + " started");
 		alive = true;
 
 		// send initial data set
 		try {
 			toClient.writeObject(resultsList);
 		} catch (IOException e) {
-			log.error("ClientHandler@" + this.getId() + ": Failed to send data to client: "
+			System.err.println("ClientHandler@" + this.getId() + ": Failed to send data to client: "
 					+ clientSocket.getInetAddress().getHostName());
 			e.printStackTrace();
 		}
@@ -104,7 +96,6 @@ public class ClientHandler extends Thread {
 	 * @param phase
 	 */
 	public void sendData(ResultsData data) {
-		log.info("ClientHandler@" + this.getId() + ": Sending data to client");
 		try {
 			toClient.writeObject(data);
 		} catch (IOException e) {
@@ -113,7 +104,7 @@ public class ClientHandler extends Thread {
 				toClient.writeObject(data);
 			} catch (IOException e1) {
 				// client probably ended, remove from list of clients
-				log.info("ClientHandler@" + this.getId() + ": Failed to send data to client: "
+				System.err.println("ClientHandler@" + this.getId() + ": Failed to send data to client: "
 						+ clientSocket.getInetAddress().getHostName());
 				// log.info("Removing client from list of clients...");
 				// FIXME: needs to use synchronizations, else throws

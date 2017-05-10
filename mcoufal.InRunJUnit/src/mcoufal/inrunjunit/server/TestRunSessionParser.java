@@ -62,8 +62,8 @@ public class TestRunSessionParser {
 									if (matcherInner.find())
 										sTestCasePackageName = matcherInner.group(1);
 									// find and add test cases to list
-									pathToFile = pathToWorkspace + e.getPath().toOSString() + "/"
-											+ sTestCaseJavaFile + ".java";
+									pathToFile = pathToWorkspace + e.getPath().toOSString() + "/" + sTestCaseJavaFile
+											+ ".java";
 									handleTestCasesinFile(pathToFile);
 								}
 							}
@@ -71,7 +71,7 @@ public class TestRunSessionParser {
 				}
 			}
 		} catch (JavaModelException e1) {
-			// TODO
+			System.err.println("Failed in parsing test run session! See stack trace for details.");
 			e1.printStackTrace();
 		}
 	}

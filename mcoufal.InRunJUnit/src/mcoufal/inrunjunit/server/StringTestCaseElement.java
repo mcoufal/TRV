@@ -3,7 +3,6 @@ package mcoufal.inrunjunit.server;
 import java.io.Serializable;
 
 import org.eclipse.jdt.junit.model.ITestCaseElement;
-import org.jboss.reddeer.common.logging.Logger;
 
 /**
  * Creates StringTestCaseElement instance containing string data of
@@ -13,8 +12,6 @@ import org.jboss.reddeer.common.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class StringTestCaseElement implements Serializable {
-	// set up logger
-	private final static Logger log = Logger.getLogger(StringTestCaseElement.class);
 	private String testCaseElement;
 	private String testClassName;
 	private StringTestCase testCase = null;
@@ -32,7 +29,6 @@ public class StringTestCaseElement implements Serializable {
 	 * @param testCaseElement
 	 */
 	public StringTestCaseElement(ITestCaseElement testCaseElement) {
-		log.debug("initializing " + this.getClass().getName());
 		String testMethodName = null;
 		String testJavaFile = null;
 		String testPackageName = null;
@@ -49,8 +45,7 @@ public class StringTestCaseElement implements Serializable {
 		helpIndex = testCaseElement.getTestMethodName().indexOf(' ');
 		if (helpIndex > 0) {
 			testMethodName = testCaseElement.getTestMethodName().substring(0, helpIndex);
-		}
-		else {
+		} else {
 			testMethodName = testCaseElement.getTestMethodName();
 		}
 

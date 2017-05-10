@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.jdt.junit.model.ITestCaseElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
-import org.jboss.reddeer.common.logging.Logger;
 
 import mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
 
@@ -19,8 +18,6 @@ import mcoufal.inrunjunit.listener.JUnitListenerEP.Phase;
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
 public class ResultsServer extends Thread {
-	// set up logger
-	private final static Logger log = Logger.getLogger(ResultsServer.class);
 	// set up one port number: 7357 (TEST)
 	public static int portNum = 7357;
 	// list of client connections
@@ -38,20 +35,17 @@ public class ResultsServer extends Thread {
 	 */
 	@Override
 	public void run() {
-		log.info("Server thread is running...");
-
 		// establish server socket
 		try {
 			servSock = new ServerSocket(portNum);
 		} catch (IOException e) {
-			log.error("Failed to create server socket!");
+			System.err.println("Failed to create server socket!");
 			e.printStackTrace();
 		}
 
 		// looking for clients
 		while (alive) {
 			try {
-				log.debug("Waiting for new client...");
 				ClientHandler newClient = new ClientHandler(this, servSock.accept(), resultsList);
 				clientThreads.add(newClient);
 				newClient.start();
@@ -76,12 +70,11 @@ public class ResultsServer extends Thread {
 	 * server. Data are send using ResultsData structure, which provides string
 	 * representations of test data and serialization for simple socket
 	 * communication.
-	 * 
+	 *
 	 * @param testCaseElement
 	 * @param phase
 	 */
 	public void sendData(ITestCaseElement testCaseElement, Phase phase) {
-		log.info("Sending TestCaseElement data to ClientHandlers");
 		ResultsData data = new ResultsData(new StringTestCaseElement(testCaseElement), phase);
 
 		// add to list
@@ -98,12 +91,11 @@ public class ResultsServer extends Thread {
 	 * server. Data are send using ResultsData structure, which provides string
 	 * representations of test data and serialization for simple socket
 	 * communication.
-	 * 
+	 *
 	 * @param testRunSession
 	 * @param phase
 	 */
 	public void sendData(ITestRunSession testRunSession, Phase phase) {
-		log.info("Sending TestRunSession data to ClientHandlers");
 		ResultsData data = new ResultsData(new StringTestRunSession(testRunSession), phase);
 
 		// add to list
