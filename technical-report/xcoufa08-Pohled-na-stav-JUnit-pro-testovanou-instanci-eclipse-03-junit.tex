@@ -71,7 +71,7 @@ Bohužel jsou některé z~těchto podmínek v~rozporu mezi sebou a tak nelze spl
 
   \section{Aplikační rozhraní rámce JUnit}
   %=======================================
-  V následující části se nachází stručný popis aplikačního rozhraní testovacího rámce JUnit. \todo{Lorem isusm dolor sit amet.}
+  V následující části se nachází stručný popis aplikačního rozhraní testovacího rámce JUnit včetně vytváření vlastních testovacích sad, použití parametrizovaných tříd a definice pravidel.
 
     \subsection{Testovací třídy v~rámci JUnit}
     Testovací třída v~rámci Junit je třída obsahující jednotlivé testovací případy. Konvencí pro pojmenování jednotlivých tříd je použití sufixu \uv{Test}. Jednotlivé testovací případy jsou od ostatních metod odlišeny anotací \texttt{@Test}. Díky tomu rámec JUnit pozná jednotlivé testy, které má spustit. Jména metod jednotlivých testovacích případů by měla reflektovat jejich účel.  \cite{vogella:JUnit}. Seznam anotací, které lze v testovací třídě použít je uveden v tabulce \ref{tab:junit_annotations}. \todo{Tabulka}
@@ -80,8 +80,8 @@ Bohužel jsou některé z~těchto podmínek v~rozporu mezi sebou a tak nelze spl
       \centering
       \begin{tabular}{|l|l|}
 	\hline
-	\textbf{@Test} & vyznam\\ \hline
-	\textbf{@Before} & vyznam\\ \hline
+	\textbf{@Test} & Označí metodu jako testovací případ.\\ \hline
+	\textbf{@Before} & \begin{tabular}{@{}l@{}}Metoda s touto anotací je zavolána před\\ každým testovacím případem.\\Obyčejně se používa pro připravu prostředí před během každého testovacího případu.\end{tabular}\\ \hline
 	\textbf{@After} & vyznam\\ \hline
 	\textbf{@BeforeClass} & vyznam\\ \hline
 	\textbf{@AfterClass} & vyznam\\ \hline
@@ -92,7 +92,7 @@ Bohužel jsou některé z~těchto podmínek v~rozporu mezi sebou a tak nelze spl
 	\hline
       \end{tabular}
       \label{tab:junit_annotations}
-      \caption{Seznam anotací použitelných v testovací třídě JUnit. (Převzato z \cite{vogella:JUnit})}
+      \caption{Seznam anotací použitelných v testovací třídě JUnit. (převzato z \cite{vogella:JUnit})}
     \end{table}
 
 
