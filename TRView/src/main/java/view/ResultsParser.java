@@ -98,16 +98,15 @@ public class ResultsParser {
 				TRView.getTxtFailures().setText(Integer.toString(failNum));
 			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("Ignored")) {
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_GRAY));
-				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testignored.png")));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testignored.gif")));
 				ignoredNum++;
 				TRView.getTxtIgnored().setText(Integer.toString(ignoredNum));
 			} else if (testCaseElement.getTestResultNoChildren().getResult().equals("OK")) {
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GREEN));
 				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testok.png")));
 			} else { // "Undefined"
-				log.debug("inside Undefined");
 				treeItem.setForeground(TRView.getTree().getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testassumptionfailed")));
+				treeItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/testassumptionfailed.gif")));
 			}
 		}
 	}
