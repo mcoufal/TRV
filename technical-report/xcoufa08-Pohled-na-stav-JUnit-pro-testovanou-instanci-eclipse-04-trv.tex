@@ -186,33 +186,48 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	\label{fig:trview_flowchart}
       \end{figure}
 
+      \begin{figure}
+	\includegraphics[width=\textwidth, center]{obrazky-figures/TRV_gui.png}
+	\caption{Grafické uživatelské rozhraní implementované aplikace TRView.}
+	\label{fig:TRV_gui}
+      \end{figure}
 
       \noindent Grafické uživatelské rozhraní se skládá z:
       \begin{description}
 	 \item[Menu:] obsahuje jednoduchou nabídku pro snadné ovládání aplikace. Nabídka obsahuje možnosti \texttt{Connect...}, \texttt{Re-connect}, \texttt{Disconnect} a \texttt{Exit}, sloužící pro připojení a opětovné přípojení k serveru, odpojení od serveru a ukončení aplikace.
 	 \item[Popisků:] slouží k~identifikaci jednotlivých komponent (říkají tak uživateli, jaký je význam dat dané komponenty)
 	 \item[Textových polí:] slouží pro zobrazení informací (počet chyb, běhů testů, atd.) nebo pro zadávání informací uživatelem (IP adresa serveru, port serveru).
-	 \item[Stromová struktura:] je nejdůležitější část GUI aplikace. Do této struktury se zobrazuje průběh testů jednotlivých testovacích případů. Pro každý stav testovacího případu je zobrazena příslušná ikona (viz tabulka \ref{table:icons}) informující o~stavu testu.
+	 \item[Stromová struktura:] je nejdůležitější část GUI aplikace. Do této struktury se zobrazuje průběh testů jednotlivých testovacích případů. Pro každý uzel ve stromu je zobrazena příslušná ikona (viz tabulka \ref{tab:trview_icons}) informující o~jeho stavu.
 	 \item[Stack trace:] textový záznam zobrazující výpis metod které byly volány, než došlo u~vybraného testovacího případu k~chybě. Pokud žádná chyba nenastala, textové pole obsahuje pouze řetězec informující uživatele o~tom, že stack trace je prázdný.
       \end{description}
 
-      \todo{Popis ikon použitých v~GUI - tabulka}
-      %\begin{table}[h]
-      % \begin{tabular}{c|c}
-%	ikona & popis
-%	ikona & popis
-%	ikona & popis
-%       \end{tabular}
-%	\label{table:icons}
-%	\caption{Použité ikony a jejich význam.}
-%      \end{table}
-
+      \begin{table}
+      \renewcommand{\tabularxcolumn}[1]{>{\small}m{#1}}
+      \centering
+      \begin{tabularx}{\textwidth}{|p{1cm}|X|}
+	\hline
+	\textbf{Ikona} & \textbf{Význam}\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuite.png}} & Uzel obsahující testovací případy. Může se jednat o testovací sadu, balíček nebo testovací třídu.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiterun.png}} & Testovací sada právě běží.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiteok.png}} & Testovací sada proběhla v pořádku.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiteerror.png}} & Testovací sada proběhla, nastalo v ní jedna nebo více běhových chyb.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuitefail.png}} & Testovací sada proběhla, nastalo v ní jedna nebo více testových chyb.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/test.png}} & Uzel představující jeden testovací případ.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testrun.png}} & Testovací případ právě běží.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testok.png}} & Testovací případ proběhl v pořádku.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testerr.png}} & Testovací případ skončil s běhovou chybou.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testfail.png}} & Testovací případ skončil s testovou chybou.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testignored.png}} & Testovací případ neproběhl\,--\,byl přeskočen.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testassumptionfailed.png}} & Testovací případ skončil , stav je neznámý a předpokládá se chyba\\ \hline
+      \end{tabularx}
+      \label{tab:trview_icons}
+      \caption{Seznam ikon použitých v grafickém uživatelském rozhraní aplikace TRView.}
+      \end{table}
 
       Třída \texttt{ResultsParser} obsahuje metody, které na vstupu zpracovávají instance třídy \texttt{ResultsData} a zobrazují je do GUI. Díky fázi uvedené v~objektu \texttt{ResultsData} lze poznat, v~jaké fázi testování byla data zachycena a podle toho data zpracovat a zobrazit. Jednotlivé fáze jsou definovány v~třídě \texttt{JUnitListenerEP} zásuvného modulu InRunJunit.
-      
 
       \subsubsection{Implementace balíčku \texttt{client}}
-      Balíček \texttt{client} obsahuje pouze třídu \texttt{ResultsClient}. Funkce implementovaná touto třídou je znázorněna na obrázku \ref{fig:resultsclient_flowchart}. Instance třídy \texttt{ResultsClient} vzniká po zadání detailů připojení a stisku tlačítka \texttt{CONNECT} uživatelem. Instance se poté zkusí připojit k~serveru na zadané IP adrese a portu. Pokud se připojení nezdaří, je uživateli vypsáno oznámení o~chybě. Pokud proběhne připojení úspěšně, dochází k~přijetí a zpracování počátečního souboru dat. Spojení mezi klientem a serverem je postaveno na spojované službě TCP a tak by nemělo docházet ke ztrátě dat. Pokud ovšem dojde k~závažnějšímu problému na síti, je uživateli zobrazeno oznámení o~chybě a \texttt{ResultsClient} je ukončen. Poté klient čeká na další data. Jakmile data obdrží, inicializuje jejich zpracování a zobrazení pomocí třídy \texttt{ResultsParser}. Jelikož upravujeme komponenty vytvořené jiným vláknem, je zapotřebí zajistit aby byl kód vykonán vláknem obsluhujícím GUI a nedocházelo tak k~chybě typu \emph{Invalid Thread Access}. Proto je tato operaci prováděna pomocí synchronizace vláken (viz obrázek \ref{code:syncExec}). SWT poskytuje metodu syncExec(), která pozastaví průběh současného vlákna, a argument typu Runnable této metody předá vláknu obsluhujícího GUI. Jakmile je to možné, vlákno obsluhující GUI vykoná tento kód a dále pokračuje ve své práci. Po vykonání kódu je vlákno ze kterého byla metoda syncExec() volána zase spuštěno \cite{codeaffine-asyncexec}. V~případě zachycení dat s~fází konce testovací sady se stejným způsobem inicializuje zpracování a zobrazení dat a poté se klient ukončí.
+      Balíček \texttt{client} obsahuje pouze třídu \texttt{ResultsClient}. Funkce implementovaná touto třídou je znázorněna na obrázku \ref{fig:resultsclient_flowchart}. Instance třídy \texttt{ResultsClient} vzniká po zadání detailů připojení a stisku tlačítka \texttt{CONNECT} uživatelem. Instance se poté zkusí připojit k~serveru na zadané IP adrese a portu. Pokud se připojení nezdaří, je uživateli vypsáno oznámení o~chybě. Pokud proběhne připojení úspěšně, dochází k~přijetí a zpracování počátečního souboru dat. Spojení mezi klientem a serverem je postaveno na spojované službě TCP a tak by nemělo docházet ke ztrátě dat. Pokud ovšem dojde k~závažnějšímu problému na síti, je uživateli zobrazeno oznámení o~chybě a \texttt{ResultsClient} je ukončen. Poté klient čeká na další data. Jakmile data obdrží, inicializuje jejich zpracování a zobrazení pomocí třídy \texttt{ResultsParser}. Jelikož upravujeme komponenty vytvořené jiným vláknem, je zapotřebí zajistit aby byl kód vykonán vláknem obsluhujícím GUI a nedocházelo tak k~chybě typu \emph{Invalid Thread Access}. Proto je tato operaci prováděna pomocí synchronizace vláken (viz obrázek \ref{code:syncExec}). SWT poskytuje metodu \texttt{syncExec()}, která pozastaví průběh současného vlákna, a argument typu Runnable této metody předá vláknu obsluhujícího GUI. Jakmile je to možné, vlákno obsluhující GUI vykoná tento kód a dále pokračuje ve své práci. Po vykonání kódu je vlákno ze kterého byla metoda \texttt{syncExec()} volána zase spuštěno \cite{codeaffine-asyncexec}. V~případě zachycení dat s~fází konce testovací sady se stejným způsobem inicializuje zpracování a zobrazení dat a poté se klient ukončí. Aktivní zůstává pouze vlákno obsluhující GUI.
 
       	\lstset{language=java}
 	\begin{figure}
@@ -221,54 +236,45 @@ TRView.getDisplay().syncExec(new Runnable() {
 	@Override
 	public void run() {
 		ResultsParser.parseAndDisplay(receivedData);
-		TRView.redrawAllComponents();
 	}
 });
 	  \end{lstlisting}
-	  \caption{Zdrojový kód znázorňující práci s~komponentami GUI z~vlákna klienta \texttt{ResultsClient}. Metoda \texttt{parseAndDisplay(ResultsData)} zpracovává data a mění dle těchto dat GUI. Metoda \texttt{redrawAllComponents()} slouží k~vykreslení všech komponent do GUI poté, co došlo ke změně komponenty.}
+	  \caption{Zdrojový kód znázorňující práci s~komponentami GUI z~vlákna klienta \texttt{ResultsClient}. Metoda \texttt{parseAndDisplay(ResultsData)} zpracovává data a mění dle těchto dat GUI. Díky metodě \texttt{syncExec()} je kód této metody vykonán vláknem obsluhujícím GUI, a tak nedochází k chybě typu \emph{Invalid Thread Access.}}
 	  \label{code:syncExec}
 	\end{figure}
-      
-      \todo{Az bude implementovano -- ukonceni klienta}
-      
-      
+
   \section{Testování}
   %==================
-  Testování projektu proběhlo prozatím pouze manuálně -- byl vytvořen jeden projekt obsahující tři testovací sady. Testovací případy v~každé sadě se zaměřují na jiné aspekty aplikace. \todo{První testovací sada ... ipsum dolor sit amet.}
+  Testování projektu proběhlo prozatím pouze manuálně -- byl vytvořen jeden projekt obsahující dvě testovací sady. Tyto sady byly poté manuálně spouštěny a v jejich průběhu byla ověřována funkčnost nástroje interakcí s implementovaným nástrojem. Testovací případy v~každé sadě se zaměřují na jiné aspekty aplikace. První testovací sada je zaměřená pouze na obecnou funkčnost nástroje. Obsahuje několik testovacích případů s různými anotacemi a testuje tak zobrazení jednotlivých uzlů v okně aplikace TRView. Při spuštění testů pouze části testovací sady (například balíček nebo testovací třídu) očekává přizpůsobení stromové struktury v okně TRView. Druhá testovací sada je zaměřena na testování aktivity okna. Pomocí zásuvného modulu SWTBot se v testech hledají jednotlivé prvky aplikace. Pokud SWTBot prvek nenajde, došlo pravděpodobně k narušení aktivity okna.
 
   \section{Praktické využití}
   %==========================
   Využití aplikace TRV spočívá především v~použití při vývoji nebo opravách testů pro GUI platformy Eclipse. Spuštěním sady testů se otevře okno testované instance Eclipse IDE, kde probíhají jednotlivé testovací případy dané testovací sady. Bez pohledu JUnit však nelze jednoduše zjistit, který testovací případ právě běží a jak předchozí testovací případy dopadly.
-  
-  \todo{Co vse je treba mit nainstalovano? Staci jen Junita InRunJunit}
+
   Pro funkcionalitu aplikace TRV je nutno mít v~Eclipse nainstalovány zásuvné moduly JUnit a InRunJUnit. Na obrázku \ref{fig:TRV_run_from_gui} je znázorněno spuštění testovací sady z~instance Eclipse IDE. Eclipse SDK představuje soubor všech komponent a zásuvných modulů, které Eclipse poskytuje jako minimální balíček pro vývoj aplikací. K~tomuto minimálnímu balíčku lze instalovat další zásuvné moduly. V~tomto případě se jedná o~rámec JUnit a zásuvný modul InRunJunit. Uživatel vidí pouze Workbench, který mu umožňuje pracovat s~jednotlivými projekty uloženýmy v~pracovní ploše (Workspace). Spuštěním projektu s~testovací sadou se uvědomí zásuvný modul JUnit a zvolený runner. Runner se stará o~průběh testů a zároveň získává informace o~průběhu testů. Tyto informace posílá zásuvnému modulu JUnit, který je dále zpracovává. Díky připojení pomocí bodů rozšíření může zásuvný modul JUnit automaticky informovat zásuvný modul InRunJUnit o~průběhu testů. InRunJUnit tyto informace pomocí soketů posílá aplikaci TRView, která je zobrazuje na obrazovku. Tato komunikace může probíhat buď po síti (testy tak poběží na jednom stroji a aplikace TRView na druhém), nebo lze komunikovat pomocí \emph{localhost} adresy na jednom stroji.
 
+  \begin{figure}
+    \includegraphics[width=\textwidth, center]{obrazky-figures/TRV_screenshot.png}
+    \caption{Snímek obrazovky pořízený při testování GUI Eclipse IDE zobrazující stav běhu testů nástrojem TRV.}
+    \label{fig:TRV_screenshot}
+  \end{figure}
+
       \subsection{Instalace aplikace TRV}
-      Instalace je odlišná pro obě části TRV\,--\,zásuvný modul InRunJUnit lze instalovat pomocí Eclipse Update site, aplikaci TRView stačí pouze stáhnout do zvoleného adresáře a přidat cestu k~spustitelnému souboru do proměnné PATH.
+      Instalace je odlišná pro obě části nástroje TRV. Zásuvný modul InRunJUnit lze instalovat pomocí Eclipse Update site a aplikaci TRView stačí pouze spustit pomocí JAR archivu.
 
       \subsubsection{Instalace zásuvného modulu InRunJUnit}
-      \todo{Lorem ipsum dolor sit amet.}
+      Pro instalaci zásuvného modulu InRunJUnit je zapotřebí vývojové prostředí Eclipse s JDT. Doporučena je verze Neon (4.6) a vyšší. Instalaci lze provést pomocí \emph{Eclipse Update site} buď z online repositáře, nebo lokálně. Pro instalaci zásuvného modulu InRunJUnit je zatím vytvořen pouze lokální Update site. Z lokálního zdroje lze nainstalovat zásuvný modul pomocí \texttt{Help} -> \texttt{Install New Software...} -> \texttt{Add...} -> \texttt{Local...} , kde se zadá cesta k Eclipse Update site projektu. Ten je dostupný na paměťovém médiu přiloženém k této práci, nebo na webové službě GitHub\footnote{\url{https://github.com/mcoufal/TRV/tree/master/mcoufal.InRunJUnit.updateSite}}.
 
       \subsubsection{Instalace aplikace TRView}
-      \todo{Lorem ipsum dolor sit amet.}
+      Pro spuštění aplikace TRView je zapotřebí pouze stažení JAR archivu a jeho následovné spuštění pomocí javy. Tento archiv je dostupný na paměťovém médiu přiloženém k této práci, nebo webové službě GitHub\footnote{\url{https://github.com/mcoufal/TRV/tree/master/TRView}}. Archiv TRView.jar se nachází ve složce \emph{TRV/TRView} a je možné ho spustit pomocí příkazu '\texttt{java -jar TRView.jar}'.
 
     \subsection{Použití při testování Eclipse IDE v~Red Hat}
     %******************************************************
-    Testování Eclipse IDE probíhá z~velké části automatizovaně. Testovací sady jsou spouštěny oproti jednotlivým verzím operačního systému RHEL a Eclipse IDE. Tyto testy jsou spouštěny buď manuálně, nebo po splnění nastavených podmínek pomocí serveru Jenkins\footnote{\url{https://jenkins.io/}}. Testování probíhá na vybraných serverech, které jsou vybrány dle potřeby testera. Testy jsou spuštěny přímo z~konzole (viz obrázek \ref{code:run_tests_from_term}) a nevzniká tak druhé okno s~GUI Eclipse IDE. Tento způsob spuštění zachycuje diagram na obrázku \ref{fig:TRV_run_from_term}. \todo{Popis obrázku}
-    
-    \todo{Kod - priklad spousteni testu z~konzole}
-    \lstset{language=bash}
-    \begin{figure}
-      \begin{lstlisting}[frame=single]
-echo "TODO:"
-      \end{lstlisting}
-      \caption{Příklad syntaxe spouštění testů Eclipse IDE z~terminálu.}
-      \label{code:run_tests_from_term}
-    \end{figure}
-    
+    Testování Eclipse IDE probíhá z~velké části automatizovaně. Testovací sady jsou spouštěny oproti jednotlivým verzím operačního systému RHEL a Eclipse IDE. Tyto testy jsou spouštěny buď manuálně, nebo po splnění nastavených podmínek pomocí serveru \emph{Jenkins}\footnote{\url{https://jenkins.io/}}. Testování probíhá na vybraných serverech, které jsou vybrány dle potřeby testera. Testy jsou spuštěny přímo z~konzole\footnote{Příklad spuštění z konzole lze najít na \url{https://wiki.eclipse.org/SWTBot/Automate_test_execution}.} a nevzniká tak druhé okno s~GUI Eclipse IDE. Tento způsob spuštění zachycuje diagram na obrázku \ref{fig:TRV_run_from_term}. Je spuštěna pouze jedna instance Eclipse IDE, se zadanými parametry definujícími mimo jiné umístění pracovní plochy, identifikaci balíčku s implementovanými testy a nastavení parametrů pro cílovou platformu, na které testy poběží. Zásuvný modul InRunJUnit funguje na pozadí v rámci aplikace řídící spuštěné testy.
+
     \begin{figure}
 	\includegraphics[width=\textwidth, center]{obrazky-figures/TRV_run_from_term.pdf}
-	\caption{Znázorňění funkce aplikace TRV při spuštění testů z~terminálu.}
+	\caption{Znázornění funkce aplikace TRV při spuštění testů z~terminálu.}
 	\label{fig:TRV_run_from_term}
       \end{figure}
 

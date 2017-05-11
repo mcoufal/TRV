@@ -74,23 +74,23 @@ Bohužel jsou některé z~těchto podmínek v~rozporu mezi sebou a tak nelze spl
   V následující části se nachází stručný popis aplikačního rozhraní testovacího rámce JUnit včetně vytváření vlastních testovacích sad, použití parametrizovaných tříd a definice pravidel.
 
     \subsection{Testovací třídy v~rámci JUnit}
-    Testovací třída v~rámci Junit je třída obsahující jednotlivé testovací případy. Konvencí pro pojmenování jednotlivých tříd je použití sufixu \uv{Test}. Jednotlivé testovací případy jsou od ostatních metod odlišeny anotací \texttt{@Test}. Díky tomu rámec JUnit pozná jednotlivé testy, které má spustit. Jména metod jednotlivých testovacích případů by měla reflektovat jejich účel.  \cite{vogella:JUnit}. Seznam anotací, které lze v testovací třídě použít je uveden v tabulce \ref{tab:junit_annotations}. \todo{Tabulka}
+    Testovací třída v~rámci Junit je třída obsahující jednotlivé testovací případy. Konvencí pro pojmenování jednotlivých tříd je použití sufixu \uv{Test}. Jednotlivé testovací případy jsou od ostatních metod odlišeny anotací \texttt{@Test}. Díky tomu rámec JUnit pozná jednotlivé testy, které má spustit. Jména metod jednotlivých testovacích případů by měla reflektovat jejich účel.  \cite{vogella:JUnit}. Seznam anotací, které lze v testovací třídě použít je uveden v tabulce \ref{tab:junit_annotations}.
 
     \begin{table}
+      \renewcommand{\tabularxcolumn}[1]{>{\small}m{#1}}
       \centering
-      \begin{tabular}{|l|l|}
+      \begin{tabularx}{\textwidth}{|c|X|}
 	\hline
 	\textbf{@Test} & Označí metodu jako testovací případ.\\ \hline
-	\textbf{@Before} & \begin{tabular}{@{}l@{}}Metoda s touto anotací je zavolána před\\ každým testovacím případem.\\Obyčejně se používa pro připravu prostředí před během každého testovacího případu.\end{tabular}\\ \hline
-	\textbf{@After} & vyznam\\ \hline
-	\textbf{@BeforeClass} & vyznam\\ \hline
-	\textbf{@AfterClass} & vyznam\\ \hline
-	\textbf{@Ignore} & vyznam\\ \hline
-	\textbf{@Ignore ("Důvod")} & vyznam\\ \hline
-	\textbf{@Test (expected = Exception.class)} & vyznam\\ \hline
-	\textbf{@Test (timeout = 100)} & vyznam\\
+	\textbf{@Before} & Metoda s touto anotací je zavolána před každým testovacím případem. Obyčejně se používá pro přípravu prostředí před během každého testovacího případu.\\ \hline
+	\textbf{@After} & Metoda s touto anotací je zavolána po provedení každého testovacího případu. Obyčejně se používá pro navrácení prostředí do stejného stavu jako před testem. Také ji lze použít k uvolnění alokovaných zdrojů zabírajících příliš mnoho paměti.\\ \hline
+	\textbf{@BeforeClass} & Metoda s touto anotací je zavolána pouze jednou před začátkem testovacích případů z dané testovací třídy.  Obyčejně se používá pro přípravu prostředí společného pro všechny testovací případy dané testovací třídy.\\ \hline
+	\textbf{@AfterClass} & Metoda s touto anotací je zavolána pouze jednou před ukončením testovacích případů z dané testovací třídy. Obyčejně se používá pro navrácení prostředí do stejného stavu jako před zahájením testovací třídy.\\ \hline
+	\textbf{@Ignore[("Důvod")]} & Označí testovací případ jako ignorovaný -- přeskakuje se. Do závorky za anotaci lze případně dopsat důvod proč má být testovací případ ignorován.\\ \hline
+	\textbf{@Test (expected = Exception.class)} & V případě, že testovacím případu nastane testová chyba stejného typu jako je uvedeno v anotaci, chyba se ignoruje.\\ \hline
+	\textbf{@Test(timeout = 100)} & Pokud je testovací případ vykonáván déle než je uvedeno v anotaci, je ukončen s chybou. Číslo se uvádí v jednotkách milisekund.\\
 	\hline
-      \end{tabular}
+      \end{tabularx}
       \label{tab:junit_annotations}
       \caption{Seznam anotací použitelných v testovací třídě JUnit. (převzato z \cite{vogella:JUnit})}
     \end{table}
