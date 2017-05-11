@@ -154,7 +154,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	  \label{fig:resultsserver_flowchart}
 	\end{figure}
 
-	Hlavním účelem třídy \texttt{ClientHandler} je obsluha klienta a přenos dat (viz Obrázek \ref{fig:clientHandler_flowchart}). Jakmile dojde k~inicializaci a úspěšnému spojení s~klientem, posílá se počáteční soubor dat. Tento soubor obsahuje všechna data zachycená pomocí listeneru do doby, než došlo k~připojení klienta. Nedochází tak k~ztrátě dat v~případě, že se klient připojí až v~průběhu testů. Dále se již posílají jen nově zachycená data (odesílání těchto dat inicializuje \texttt{JUnitListenerEP} prostřednictvím instance \texttt{ResultsServer}). Díky tomuto modelu komunikace nedochází k~posílání irelevantních dat a zbytečnému zatížení síťové komunikace. Při zachycení dat z fáze ukončení testovací sady dojde k poslání dat klientovi a poté se ClientHandler ukončí.V případě ukončení uživatelem z grafického uživatelského rozhraní se nejdříve dojde k výjimce při posílání dat a ClientHandler se ukončí.
+	Hlavním účelem třídy \texttt{ClientHandler} je obsluha klienta a přenos dat (viz Obrázek \ref{fig:clientHandler_flowchart}). Jakmile dojde k~inicializaci a úspěšnému spojení s~klientem, posílá se počáteční soubor dat. Tento soubor obsahuje všechna data zachycená pomocí listeneru do doby, než došlo k~připojení klienta. Nedochází tak k~ztrátě dat v~případě, že se klient připojí až v~průběhu testů. Dále se již posílají jen nově zachycená data (odesílání těchto dat inicializuje \texttt{JUnitListenerEP} prostřednictvím instance \texttt{ResultsServer}). Díky tomuto modelu komunikace nedochází k~posílání irelevantních dat a zbytečnému zatížení síťové komunikace. Při zachycení dat z~fáze ukončení testovací sady dojde k~poslání dat klientovi a poté se ClientHandler ukončí.V případě ukončení uživatelem z~grafického uživatelského rozhraní se nejdříve dojde k~výjimce při posílání dat a ClientHandler se ukončí.
 
 	\begin{figure}
 	  \centering
@@ -194,7 +194,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 
       \noindent Grafické uživatelské rozhraní se skládá z:
       \begin{description}
-	 \item[Menu:] obsahuje jednoduchou nabídku pro snadné ovládání aplikace. Nabídka obsahuje možnosti \texttt{Connect...}, \texttt{Re-connect}, \texttt{Disconnect} a \texttt{Exit}, sloužící pro připojení a opětovné přípojení k serveru, odpojení od serveru a ukončení aplikace.
+	 \item[Menu:] obsahuje jednoduchou nabídku pro snadné ovládání aplikace. Nabídka obsahuje možnosti \texttt{Connect...}, \texttt{Re-connect}, \texttt{Disconnect} a \texttt{Exit}, sloužící pro připojení a opětovné přípojení k~serveru, odpojení od serveru a ukončení aplikace.
 	 \item[Popisků:] slouží k~identifikaci jednotlivých komponent (říkají tak uživateli, jaký je význam dat dané komponenty)
 	 \item[Textových polí:] slouží pro zobrazení informací (počet chyb, běhů testů, atd.) nebo pro zadávání informací uživatelem (IP adresa serveru, port serveru).
 	 \item[Stromová struktura:] je nejdůležitější část GUI aplikace. Do této struktury se zobrazuje průběh testů jednotlivých testovacích případů. Pro každý uzel ve stromu je zobrazena příslušná ikona (viz tabulka \ref{tab:trview_icons}) informující o~jeho stavu.
@@ -207,21 +207,21 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
       \begin{tabularx}{\textwidth}{|p{1cm}|X|}
 	\hline
 	\textbf{Ikona} & \textbf{Význam}\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuite.png}} & Uzel obsahující testovací případy. Může se jednat o testovací sadu, balíček nebo testovací třídu.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuite.png}} & Uzel obsahující testovací případy. Může se jednat o~testovací sadu, balíček nebo testovací třídu.\\ \hline
 	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiterun.png}} & Testovací sada právě běží.\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiteok.png}} & Testovací sada proběhla v pořádku.\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiteerror.png}} & Testovací sada proběhla, nastalo v ní jedna nebo více běhových chyb.\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuitefail.png}} & Testovací sada proběhla, nastalo v ní jedna nebo více testových chyb.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiteok.png}} & Testovací sada proběhla v~pořádku.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuiteerror.png}} & Testovací sada proběhla, nastalo v~ní jedna nebo více běhových chyb.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/tsuitefail.png}} & Testovací sada proběhla, nastalo v~ní jedna nebo více testových chyb.\\ \hline
 	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/test.png}} & Uzel představující jeden testovací případ.\\ \hline
 	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testrun.png}} & Testovací případ právě běží.\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testok.png}} & Testovací případ proběhl v pořádku.\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testerr.png}} & Testovací případ skončil s běhovou chybou.\\ \hline
-	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testfail.png}} & Testovací případ skončil s testovou chybou.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testok.png}} & Testovací případ proběhl v~pořádku.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testerr.png}} & Testovací případ skončil s~běhovou chybou.\\ \hline
+	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testfail.png}} & Testovací případ skončil s~testovou chybou.\\ \hline
 	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testignored.png}} & Testovací případ neproběhl\,--\,byl přeskočen.\\ \hline
 	\raisebox{-0.3\height}{\includegraphics[width=1.5em, center]{ikony-icons/testassumptionfailed.png}} & Testovací případ skončil , stav je neznámý a předpokládá se chyba\\ \hline
       \end{tabularx}
       \label{tab:trview_icons}
-      \caption{Seznam ikon použitých v grafickém uživatelském rozhraní aplikace TRView.}
+      \caption{Seznam ikon použitých v~grafickém uživatelském rozhraní aplikace TRView.}
       \end{table}
 
       Třída \texttt{ResultsParser} obsahuje metody, které na vstupu zpracovávají instance třídy \texttt{ResultsData} a zobrazují je do GUI. Díky fázi uvedené v~objektu \texttt{ResultsData} lze poznat, v~jaké fázi testování byla data zachycena a podle toho data zpracovat a zobrazit. Jednotlivé fáze jsou definovány v~třídě \texttt{JUnitListenerEP} zásuvného modulu InRunJunit.
@@ -239,13 +239,13 @@ TRView.getDisplay().syncExec(new Runnable() {
 	}
 });
 	  \end{lstlisting}
-	  \caption{Zdrojový kód znázorňující práci s~komponentami GUI z~vlákna klienta \texttt{ResultsClient}. Metoda \texttt{parseAndDisplay(ResultsData)} zpracovává data a mění dle těchto dat GUI. Díky metodě \texttt{syncExec()} je kód této metody vykonán vláknem obsluhujícím GUI, a tak nedochází k chybě typu \emph{Invalid Thread Access.}}
+	  \caption{Zdrojový kód znázorňující práci s~komponentami GUI z~vlákna klienta \texttt{ResultsClient}. Metoda \texttt{parseAndDisplay(ResultsData)} zpracovává data a mění dle těchto dat GUI. Díky metodě \texttt{syncExec()} je kód této metody vykonán vláknem obsluhujícím GUI, a tak nedochází k~chybě typu \emph{Invalid Thread Access.}}
 	  \label{code:syncExec}
 	\end{figure}
 
   \section{Testování}
   %==================
-  Testování projektu proběhlo prozatím pouze manuálně -- byl vytvořen jeden projekt obsahující dvě testovací sady. Tyto sady byly poté manuálně spouštěny a v jejich průběhu byla ověřována funkčnost nástroje interakcí s implementovaným nástrojem. Testovací případy v~každé sadě se zaměřují na jiné aspekty aplikace. První testovací sada je zaměřená pouze na obecnou funkčnost nástroje. Obsahuje několik testovacích případů s různými anotacemi a testuje tak zobrazení jednotlivých uzlů v okně aplikace TRView. Při spuštění testů pouze části testovací sady (například balíček nebo testovací třídu) očekává přizpůsobení stromové struktury v okně TRView. Druhá testovací sada je zaměřena na testování aktivity okna. Pomocí zásuvného modulu SWTBot se v testech hledají jednotlivé prvky aplikace. Pokud SWTBot prvek nenajde, došlo pravděpodobně k narušení aktivity okna.
+  Testování projektu proběhlo prozatím pouze manuálně -- byl vytvořen jeden projekt obsahující dvě testovací sady. Tyto sady byly poté manuálně spouštěny a v~jejich průběhu byla ověřována funkčnost nástroje interakcí s~implementovaným nástrojem. Testovací případy v~každé sadě se zaměřují na jiné aspekty aplikace. První testovací sada je zaměřená pouze na obecnou funkčnost nástroje. Obsahuje několik testovacích případů s~různými anotacemi a testuje tak zobrazení jednotlivých uzlů v~okně aplikace TRView. Při spuštění testů pouze části testovací sady (například balíček nebo testovací třídu) očekává přizpůsobení stromové struktury v~okně TRView. Druhá testovací sada je zaměřena na testování aktivity okna. Pomocí zásuvného modulu SWTBot se v~testech hledají jednotlivé prvky aplikace. Pokud SWTBot prvek nenajde, došlo pravděpodobně k~narušení aktivity okna.
 
   \section{Praktické využití}
   %==========================
@@ -263,14 +263,14 @@ TRView.getDisplay().syncExec(new Runnable() {
       Instalace je odlišná pro obě části nástroje TRV. Zásuvný modul InRunJUnit lze instalovat pomocí Eclipse Update site a aplikaci TRView stačí pouze spustit pomocí JAR archivu.
 
       \subsubsection{Instalace zásuvného modulu InRunJUnit}
-      Pro instalaci zásuvného modulu InRunJUnit je zapotřebí vývojové prostředí Eclipse s JDT. Doporučena je verze Neon (4.6) a vyšší. Instalaci lze provést pomocí \emph{Eclipse Update site} buď z online repositáře, nebo lokálně. Pro instalaci zásuvného modulu InRunJUnit je zatím vytvořen pouze lokální Update site. Z lokálního zdroje lze nainstalovat zásuvný modul pomocí \texttt{Help} -> \texttt{Install New Software...} -> \texttt{Add...} -> \texttt{Local...} , kde se zadá cesta k Eclipse Update site projektu. Ten je dostupný na paměťovém médiu přiloženém k této práci, nebo na webové službě GitHub\footnote{\url{https://github.com/mcoufal/TRV/tree/master/mcoufal.InRunJUnit.updateSite}}.
+      Pro instalaci zásuvného modulu InRunJUnit je zapotřebí vývojové prostředí Eclipse s~JDT. Doporučena je verze Neon (4.6) a vyšší. Instalaci lze provést pomocí \emph{Eclipse Update site} buď z~online repositáře, nebo lokálně. Pro instalaci zásuvného modulu InRunJUnit je zatím vytvořen pouze lokální Update site. Z~lokálního zdroje lze nainstalovat zásuvný modul pomocí \texttt{Help} -> \texttt{Install New Software...} -> \texttt{Add...} -> \texttt{Local...} , kde se zadá cesta k~Eclipse Update site projektu. Ten je dostupný na paměťovém médiu přiloženém k~této práci, nebo na webové službě GitHub\footnote{\url{https://github.com/mcoufal/TRV/tree/master/mcoufal.InRunJUnit.updateSite}}.
 
       \subsubsection{Instalace aplikace TRView}
-      Pro spuštění aplikace TRView je zapotřebí pouze stažení JAR archivu a jeho následovné spuštění pomocí javy. Tento archiv je dostupný na paměťovém médiu přiloženém k této práci, nebo webové službě GitHub\footnote{\url{https://github.com/mcoufal/TRV/tree/master/TRView}}. Archiv TRView.jar se nachází ve složce \emph{TRV/TRView} a je možné ho spustit pomocí příkazu '\texttt{java -jar TRView.jar}'.
+      Pro spuštění aplikace TRView je zapotřebí pouze stažení JAR archivu a jeho následovné spuštění pomocí javy. Tento archiv je dostupný na paměťovém médiu přiloženém k~této práci, nebo webové službě GitHub\footnote{\url{https://github.com/mcoufal/TRV/tree/master/TRView}}. Archiv TRView.jar se nachází ve složce \emph{TRV/TRView} a je možné ho spustit pomocí příkazu '\texttt{java -jar TRView.jar}'.
 
     \subsection{Použití při testování Eclipse IDE v~Red Hat}
     %******************************************************
-    Testování Eclipse IDE probíhá z~velké části automatizovaně. Testovací sady jsou spouštěny oproti jednotlivým verzím operačního systému RHEL a Eclipse IDE. Tyto testy jsou spouštěny buď manuálně, nebo po splnění nastavených podmínek pomocí serveru \emph{Jenkins}\footnote{\url{https://jenkins.io/}}. Testování probíhá na vybraných serverech, které jsou vybrány dle potřeby testera. Testy jsou spuštěny přímo z~konzole\footnote{Příklad spuštění z konzole lze najít na \url{https://wiki.eclipse.org/SWTBot/Automate_test_execution}.} a nevzniká tak druhé okno s~GUI Eclipse IDE. Tento způsob spuštění zachycuje diagram na obrázku \ref{fig:TRV_run_from_term}. Je spuštěna pouze jedna instance Eclipse IDE, se zadanými parametry definujícími mimo jiné umístění pracovní plochy, identifikaci balíčku s implementovanými testy a nastavení parametrů pro cílovou platformu, na které testy poběží. Zásuvný modul InRunJUnit funguje na pozadí v rámci aplikace řídící spuštěné testy.
+    Testování Eclipse IDE probíhá z~velké části automatizovaně. Testovací sady jsou spouštěny oproti jednotlivým verzím operačního systému RHEL a Eclipse IDE. Tyto testy jsou spouštěny buď manuálně, nebo po splnění nastavených podmínek pomocí serveru \emph{Jenkins}\footnote{\url{https://jenkins.io/}}. Testování probíhá na vybraných serverech, které jsou vybrány dle potřeby testera. Testy jsou spuštěny přímo z~konzole\footnote{Příklad spuštění z~konzole lze najít na \url{https://wiki.eclipse.org/SWTBot/Automate_test_execution}.} a nevzniká tak druhé okno s~GUI Eclipse IDE. Tento způsob spuštění zachycuje diagram na obrázku \ref{fig:TRV_run_from_term}. Je spuštěna pouze jedna instance Eclipse IDE, se zadanými parametry definujícími mimo jiné umístění pracovní plochy, identifikaci balíčku s~implementovanými testy a nastavení parametrů pro cílovou platformu, na které testy poběží. Zásuvný modul InRunJUnit funguje na pozadí v~rámci aplikace řídící spuštěné testy.
 
     \begin{figure}
 	\includegraphics[width=\textwidth, center]{obrazky-figures/TRV_run_from_term.pdf}

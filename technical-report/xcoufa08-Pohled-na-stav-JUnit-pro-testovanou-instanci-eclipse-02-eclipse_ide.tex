@@ -30,7 +30,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
   \begin{figure}
     \includegraphics[width=0.5\textwidth, center]{obrazky-figures/eclipse_arch.pdf}
-    \caption[Architektura platformy Eclipse.]{Architektura platformy Eclipse (inspirováno v \cite{eclipse-platform}).}
+    \caption[Architektura platformy Eclipse.]{Architektura platformy Eclipse (inspirováno v~\cite{eclipse-platform}).}
     \label{fig:eclipse_arch}
   \end{figure}
 
@@ -68,7 +68,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
       \subsection{Standard Widget Toolkit}
       %***********************************
-      SWT představuje tenkou vrstvu nad nativním ovládáním uživatelského rozhraní platformy Eclipse. Poskytuje tak rozhraní pro pohodlnější interakci s uživatelským rozhraním, které zahrnuje většinu prvků nacházejících se v platformě Eclipse a tak lze pomocí SWT snadno vytvářet aplikace s grafickým uživatelským rozhraním \cite{Plugins}. Zároveň je na SWT postaven zásuvný modul \emph{SWTBot}, sloužící pro testování uživatelského rozhraní.
+      SWT představuje tenkou vrstvu nad nativním ovládáním uživatelského rozhraní platformy Eclipse. Poskytuje tak rozhraní pro pohodlnější interakci s~uživatelským rozhraním, které zahrnuje většinu prvků nacházejících se v~platformě Eclipse a tak lze pomocí SWT snadno vytvářet aplikace s~grafickým uživatelským rozhraním \cite{Plugins}. Zároveň je na SWT postaven zásuvný modul \emph{SWTBot}, sloužící pro testování uživatelského rozhraní.
 
   \section{Architektura zásuvných modulů v~Eclipse IDE}
   %====================================================
@@ -94,7 +94,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
       Identifikátor\,(\emph{Bundle-SymbolicName}) slouží k~jednoznačné identifikaci daného balíčku. Většinou se jako identifikátor balíčku používá Javová konvence pro pojmenování balíčků: \texttt{com.<název společnosti>.<komponenta>[.<část komponenty>]}, kde část dané komponenty\,(například '\texttt{ui}' nebo '\texttt{core}') se uvádí v~případě větších komponent, kde jsou jednotlivé balíčky rozděleny.
 
-      Verze\,(\emph{Bundle-Version}) slouží k~jednoznačné identifikaci verze daného balíčku. V~případě shody identifikátorů je vždy vybrán balíček s~novějším číslem verze. Toto číslo se skládá ze 3 číslic oddělených tečkami a v~případě potřeby i alfanumerického řetězce použitelného pro užší specifikaci\,(například '\texttt{1.2.3.beta}'). První číslo označuje majoritní verzi produktu, druhé minoritní verzi produktu a třetí slouží k~označení úrovně služeb\footnote{více k číslování balíčků lze nalézt na \url{https://wiki.eclipse.org/Version_Numbering}}.
+      Verze\,(\emph{Bundle-Version}) slouží k~jednoznačné identifikaci verze daného balíčku. V~případě shody identifikátorů je vždy vybrán balíček s~novějším číslem verze. Toto číslo se skládá ze 3 číslic oddělených tečkami a v~případě potřeby i alfanumerického řetězce použitelného pro užší specifikaci\,(například '\texttt{1.2.3.beta}'). První číslo označuje majoritní verzi produktu, druhé minoritní verzi produktu a třetí slouží k~označení úrovně služeb\footnote{více k~číslování balíčků lze nalézt na \url{https://wiki.eclipse.org/Version_Numbering}}.
 
       Spouštěč\,(\emph{Bundle-Activator}) je volitelná část manifestu která umožňuje specifikovat třídu implementující rozhraní \texttt{BundleActivator} a poskytuje tak metody \texttt{start()} a \texttt{stop()}, které jsou přínosné pro správu životního cyklu balíčku.
 
