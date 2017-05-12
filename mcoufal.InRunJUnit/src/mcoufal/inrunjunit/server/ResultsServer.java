@@ -96,8 +96,11 @@ public class ResultsServer extends Thread {
 	 * @param phase
 	 */
 	public void sendData(ITestRunSession testRunSession, Phase phase) {
-		ResultsData data = new ResultsData(new StringTestRunSession(testRunSession), phase);
-
+		ResultsData data = null;
+		if (phase.equals(Phase.SESSION_FINISHED))
+			data = new ResultsData(new StringTestRunSession(testRunSession, true), phase);
+		else
+			data = new ResultsData(new StringTestRunSession(testRunSession, false), phase);
 		// add to list
 		resultsList.add(data);
 

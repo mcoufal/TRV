@@ -31,7 +31,7 @@ public class StringTestRunSession implements Serializable {
 	 *
 	 * @param session
 	 */
-	public StringTestRunSession(ITestRunSession session) {
+	public StringTestRunSession(ITestRunSession session, Boolean closeResources) {
 		if (session != null)
 			testRunSession = session.toString();
 		else
@@ -46,7 +46,7 @@ public class StringTestRunSession implements Serializable {
 		failureTrace = session.getFailureTrace() != null ? session.getFailureTrace().getActual() : null;
 		testResultNoChildren = new StringResult(session.getTestResult(false));
 		testResultWithChildren = new StringResult(session.getTestResult(true));
-		testCases = (new TestRunSessionParser(session)).getTestCases();
+		testCases = (new TestRunSessionParser(session, closeResources)).getTestCases();
 	}
 
 	/**
