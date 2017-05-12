@@ -15,13 +15,13 @@ TRView is simple SWT based application that allows connecting to a server. Serve
 1. install InRunJunit plug-in
  * clone this repository
  * start Eclipse IDE
- * go to '`Help`' -> 'Install New Software...'
- * add Update site with 'Add...' -> 'Local...' and set it to _<PATH_TO_CLONED_REPO>/TRV/mcoufal.InRunJUnit.updateSite_
+ * go to '`Help`' -> '`Install New Software...`'
+ * add Update site with '`Add...`' -> '`Local...`' and set it to _<PATH_TO_CLONED_REPO>/TRV/mcoufal.InRunJUnit.updateSite_
  * select feature, confirm license and complete instalation
  * restart eclipse
 2. start the TRView app
  * go to _<PATH_TO_CLONED_REPO>/TRV/TRView_
- * run jar file ('java -jar TRView.jar')
+ * run jar file ('`java -jar TRView.jar`')
 3. run tests with JUnit
 4. connect TRView to a server using '7357' port and IP address. ('127.0.0.1' for localhost)
-5. Hit 'TRView' -> 'Connect...' and receive results!
+5. Hit '`TRView`' -> '`Connect...`' and receive results!
