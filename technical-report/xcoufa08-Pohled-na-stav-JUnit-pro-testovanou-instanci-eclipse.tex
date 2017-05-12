@@ -153,7 +153,7 @@ Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
 % All the relevant information sources, which were used during preparation of this thesis, are properly cited and included in the list of references.}
 
 %Podekovani (nepovinne, nejlepe v jazyce prace) / Acknowledgement (optional, ideally in the language of the thesis)
-\acknowledgment{Chtěl bych poděkovat svému vedoucímu práce za metodické vedení, pozitivní přístup a konstruktivní návrhy při tvorbě této práce, Ing.\,Srnovi a Ing. Wágnerovi za cenné rady ohledně návrhu a implementace výsledné aplikace a Ing.\,Kadlčíkovi za hodnotné připomínky k~jednotlivým částem textu této práce.}
+\acknowledgment{Chtěl bych poděkovat svému vedoucímu práce za metodické vedení, pozitivní přístup a konstruktivní návrhy při tvorbě této práce, Ing.\,Srnovi a Mgr.\,Wágnerovi za cenné rady ohledně návrhu a implementace výsledné aplikace a Ing.\,Kadlčíkovi za hodnotné připomínky k~jednotlivým částem textu této práce.}
 %\acknowledgment{Here it is possible to express thanks to the supervisor and to the people which provided professional help
 %(external submitter, consultant, etc.).}
 
@@ -236,7 +236,7 @@ Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
 
   % Prilohy / Appendices TODO: Uncomment appendix, appendixpage, startcontents[chapter] if appendices pressent
   % ---------------------------------------------
-  %\appendix
+  \appendix
 \ifczech
   \renewcommand{\appendixpagename}{Přílohy}
   \renewcommand{\appendixtocname}{Přílohy}
@@ -247,7 +247,7 @@ Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
   \renewcommand{\appendixtocname}{Prílohy}
   \renewcommand{\appendixname}{Príloha}
 \fi
-  %\appendixpage
+  \appendixpage
 
 % vynechani stranky v oboustrannem rezimu
 % Skip the page in the two-sided mode
@@ -267,7 +267,7 @@ Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
 %    \addcontentsline{toc}{section}{List of Appendices}
   \fi
 \fi
-  %\startcontents[chapters]
+  \startcontents[chapters]
   % seznam příloh / list of appendices
   % \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
   
@@ -275,5 +275,5 @@ Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
   \iftwoside
     \cleardoublepage
   \fi
-  %\input{xcoufa08-Pohled-na-stav-JUnit-pro-testovanou-instanci-eclipse-30-prilohy-appendices} % viz. prilohy.tex / see prilohy.tex TODO: uncomment if any appendices pressent
+  \input{xcoufa08-Pohled-na-stav-JUnit-pro-testovanou-instanci-eclipse-30-prilohy-appendices} % viz. prilohy.tex / see prilohy.tex
 \end{document}

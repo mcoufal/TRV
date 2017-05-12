@@ -25,7 +25,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
     \item[Help:] poskytuje dokumentaci k~jednotlivým prvkům Eclipse IDE.
     \item[JDT\,(Java Development Tools)\footnotemark:] \footnotetext{\url{http://www.eclipse.org/jdt/}} přidává podporu pro vývoj Java aplikací a navíc do Eclipse IDE přidává perspektivy, pohledy, průvodce a další nástroje pro práci s~Javou.
     \item[PDE\,(Plug-in Development Enviroment)\footnotemark:] \footnotetext{\url{http://www.eclipse.org/pde/}} skupina zásuvných modulů poskytujících různé nástroje\,(pohledy, editory, atd.) pro práci se zásuvnými moduly a jejich manifesty.
-    \item[Mylyn:] poskytuje uživatelské rozhraní pro správu a prezentaci informací definovaných uživatelem.
+    \item[Mylyn:] poskytuje rámec pro správu úkolů a životního cyklu aplikace (Application Lifecycle Management)
   \end{description}
 
   \begin{figure}
@@ -82,29 +82,36 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
     Původně mělo Eclipse IDE vlastní mechanismus pro běh aplikace, ale to znemožnilo použití již vytvořených technologií v~jiných oblastech jako Avalon\footnote{\url{https://avalon.apache.org}} nebo JMX\footnote{\url{http://www.oracle.com/technetwork/articles/java/javamanagement-140525.html}}. Proto byl nakonec nahrazen mechanismem pro běh aplikace založeném na technologii OSGi Alliance, která poskytuje model s~detailní specifikací a podporuje dynamické chování \cite{Plugins}.
 
+    \subsection{Vytvoření zásuvného modulu}
+    %**************************************
+    Pro vytvoření zásuvného modulu poskytuje platforma Eclipse zásuvný modul PDE, který poskytuje mnoho užitečných nástrojů pro tvorbu, manipulaci a distribuci zásuvných modulů. Platforma Eclipse poskytuje mnoho variant konfigurací, jaké lze stáhnout a instalovat. Zásuvný modul PDE je součástí například Eclipse SDK, Eclipse Classic a Eclipse Standard. Eclipse PDE lze také zpětně doinstalovat například pomocí \emph{Eclipse marketplace}\footnote{\url{https://marketplace.eclipse.org/content/eclipse-pde-plug-development-environment}}.
+
+    V PDE má každý zásuvný modul svůj vlastní projekt. Tento projekt lze vytvořit pomocí průvodce, nebo konvertovat již existující projekt na projekt se zásuvným modulem. Pro tvorbu nového projektu stačí použít průvodce \emph{New Plug-in Project}, vyplnit základní informace o projektu, informace o zásuvném modulu\footnote{Jednotlivé položky k vyplnění jsou blíže popsány v sekci \ref{section:manifesty_zasuvneho_modulu}} a dokončit průvodce \cite{Blewitt:Eclipse4}.
+
     \subsection{Manifesty zásuvného modulu}
+    \label{section:manifesty_zasuvneho_modulu}
     %**************************************
     Manifesty zásuvného modulu jsou dva soubory\,--\,\texttt{MANIFEST.MF} a \texttt{plugin.xml}. První zmíněný obsahuje data nutná pro běh zásuvného modulu jako jsou \emph{identifikátor}, \emph{verze} a \emph{závislosti} zásuvného modulu. Druhý obsahuje data ve formátu XML popisující případná rozšíření a body rozšíření.
 
-      \subsubsection{Soubor `MANIFEST.MF'}
+      \subsubsection{Soubor \texttt{MANIFEST.MF}}
       %-------------------------------------
-      V~každém souboru \texttt{MANIFEST.MF} zásuvného modulu se nacházejí záznamy pro jméno, identifikátor, verzi, spouštěč a poskytovatele balíčku zásuvného modulu. Dále se zde mohou vyskytovat záznamy s~cestou k~knihovnám\,(\emph{ClassPath}), exportovanými balíčky a závislostmi zásuvného modulu.
+      V~každém souboru \texttt{MANIFEST.MF} zásuvného modulu se nacházejí záznamy pro jméno, identifikátor, verzi, spouštěč a poskytovatele balíčku zásuvného modulu. Dále se zde mohou vyskytovat záznamy s \emph{ClassPath}, exportovanými balíčky a závislostmi zásuvného modulu.
 
       Jméno\,(\emph{Bundle-Name}) a poskytovatel\,(\emph{Bundle-Vendor}) jsou \emph{human-readable}\footnote{\url{https://en.oxforddictionaries.com/definition/us/human-readable}} řetězce, které nemusí být unikátní a lze je ukládat do zvláštního souboru \texttt{plugin.properties} za účelem internacionalizace.
 
-      Identifikátor\,(\emph{Bundle-SymbolicName}) slouží k~jednoznačné identifikaci daného balíčku. Většinou se jako identifikátor balíčku používá Javová konvence pro pojmenování balíčků: \texttt{com.<název společnosti>.<komponenta>[.<část komponenty>]}, kde část dané komponenty\,(například '\texttt{ui}' nebo '\texttt{core}') se uvádí v~případě větších komponent, kde jsou jednotlivé balíčky rozděleny.
+      Identifikátor\,(\emph{Bundle-SymbolicName}) slouží k~jednoznačné identifikaci daného balíčku. Většinou se jako identifikátor balíčku používá Javová konvence pro pojmenování balíčků: \texttt{com.<název společnosti>.<komponenta>[.<část komponenty>]}, kde část dané komponenty\,(například '\texttt{ui}' nebo '\texttt{core}') se uvádí v~případě větších komponent, kde jsou jednotlivé balíčky rozděleny. U tohoto identifikátoru bývá ještě uvedena direktiva OSGi \texttt{singleton}, která udává zda může být v platformě instalováno více verzí daného zásuvného modulu současně \cite{Blewitt:Eclipse4}.
 
       Verze\,(\emph{Bundle-Version}) slouží k~jednoznačné identifikaci verze daného balíčku. V~případě shody identifikátorů je vždy vybrán balíček s~novějším číslem verze. Toto číslo se skládá ze 3 číslic oddělených tečkami a v~případě potřeby i alfanumerického řetězce použitelného pro užší specifikaci\,(například '\texttt{1.2.3.beta}'). První číslo označuje majoritní verzi produktu, druhé minoritní verzi produktu a třetí slouží k~označení úrovně služeb\footnote{více k~číslování balíčků lze nalézt na \url{https://wiki.eclipse.org/Version_Numbering}}.
 
       Spouštěč\,(\emph{Bundle-Activator}) je volitelná část manifestu která umožňuje specifikovat třídu implementující rozhraní \texttt{BundleActivator} a poskytuje tak metody \texttt{start()} a \texttt{stop()}, které jsou přínosné pro správu životního cyklu balíčku.
 
-      Cesta k~knihovnám\,(\emph{Bundle-ClassPath}) je čárkami oddělený seznam knihoven ve formátu JAR obsahujících zdrojový kód zásuvného modulu.
+      \emph{Bundle-ClassPath} je záznam využitý pro seznam balíčků a knihoven, které mají být do zásuvného modulu přidány. Modul tak může být instalován sám o sobě bez nutnosti stahování dalších balíčků nebo knihoven\footnote{Takto přidané balíčky však výrazně zvětšují velikost výsledného zásuvného modulu.}.
 
-      Záznam s~exportovanými balíčky\,(\emph{Export-Package}) je podmnožina z~cesty k~knihovnám obsahující ty knihovny, které se mají exportovat, aby byly viditelné pro ostatní zásuvné moduly.
+      Záznam s~exportovanými balíčky\,(\emph{Export-Package}) je podmnožina z~Bundle-ClassPath obsahující balíčky, které mají být viditelné pro ostatní balíčky zásuvných modulů.
 
       Eclipse IDE vytváří pro každý načtený zásuvný modul novou instanci, která slouží k~vyhledávání a načítání zásuvných modulů a používá \emph{záznam závislostí} v~manifestu k~určení viditelnosti ostatních zásuvných modulů. Záznam závislostí\,(\emph{Require-Bundle}) je seznam zásuvných modulů, které jsou pro daný zásuvný modul viditelné z~hlediska vykonávání programu \cite{Plugins}.
 
-      \subsubsection{Soubor `plugin.xml'}
+      \subsubsection{Soubor \texttt{plugin.xml}}
       %------------------------------------
       V~tomto manifestu zásuvného modulu mohou být uvedeny body rozšíření, na které je možno připojit nový zásuvný modul rozšiřující stávající funkcionalitu. Toto odloučení od rozšiřujících zásuvných modulů umožňuje existenci základního zásuvného modulu bez znalosti jakýchkoliv informací o~ostatních zásuvných modulech. To zajišťuje snazší spolupráci při implementaci a znovupoužitelnost již implementovaných částí \cite{Plugins}. Bod rozšíření obvykle definuje identifikátor, jméno a schéma\,(viz obrázek \ref{code:extension_point_declaration}). Schéma určuje, co musí rozšiřující zásuvný modul splnit pro správné rozšíření tohoto zásuvného modulu. Deklarace bodu rozšíření se vkládá do bloku s~označením \texttt{<plugin>}. 
 

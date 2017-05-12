@@ -5,7 +5,7 @@
 %=========================================================================%
 Díky architektuře zásuvných modulů je snadné rozšířit Eclipse IDE o~novou funkcionalitu a tak poskytuje četné množství prvků, které je vhodné otestovat. V~rámci testování GUI Eclipse IDE se používají rozsáhlé testovací sady testující velké množství aspektů a možností. Automatické testy GUI jsou ale časově náročné a nejsou dokonalé. Vzniká tak potřeba kontroly nad sadou s~probíhajícími testy. Průběh testů lze sledovat pomocí zásuvného modulu \texttt{org.eclipse.jdt.junit}, který poskytuje pohled JUnit zobrazující potřebné informace o~probíhajících testech. Navíc umožňuje znovu spustit testovací sadu a také si uchovává historii testovaných sad. Problémem tohoto pohledu je, že při spuštění testovací sady se otevírá nové okno s~testovanou instancí Eclipse IDE. To způsobí překrytí pohledu JUnit a proto není možné sledovat tento pohled v~průběhu testování. Také z~hlediska časové náročnosti může být výhodnější testovat na vzdálených serverech a spouštět testy z~terminálu. V~takovém případě nelze pohled JUnit k~zobrazení detailů o~testování použít.
 
-Implementovaná aplikace \emph{TestRunView} (dále zkráceně TRV) poskytuje možnost zobrazení informací o~probíhajícím testování GUI Eclipse IDE bez narušení průběhu testů. Mezi důležité informace které tato aplikace zobrazuje patří zobrazení průběhu a výsledků jednotlivých testovacích případů v~rámci spuštěné testovací sady. V~případě nějaké chyby v~testovací sadě potom lze lépe prozkoumat kde chyba nastala a jaká byla její příčina.
+Implementovaná aplikace \emph{TestRunView} (dále zkráceně TRV) poskytuje možnost zobrazení informací o~probíhajícím testování GUI Eclipse IDE bez narušení průběhu testů. Mezi důležité informace, které tato aplikace zobrazuje, patří zobrazení průběhu a výsledků jednotlivých testovacích případů v~rámci spuštěné testovací sady. V~případě nějaké chyby v~testovací sadě potom lze lépe prozkoumat, kde chyba nastala a jaká byla její příčina.
 
 Tato kapitola detailně popisuje architekturu, implementaci, způsob testování a využití této aplikace.
 
@@ -18,18 +18,18 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
   \\
   \\
   \noindent
-  Možností jak zobrazit informace zachycené z~zásuvného modulu JUnit je několik:
+  Možností, jak zobrazit informace zachycené z~zásuvného modulu JUnit, je několik:
   \begin{enumerate}
    \item pomocí pohledu\,(nebo jiné komponenty Eclipse Workbench) přímo v~instanci Eclipse IDE s~běžícími testy
    \item pomocí externí aplikace
    \item pomocí nástrojů operačního systému\,(notifikace, terminál)
   \end{enumerate}
 
-  Při zobrazování dat je nutné aby nedocházelo k~narušování běhu testů a zároveň byly informace o~běžících testech viditelné. V~případě zobrazování informací o~probíhajících testech přímo v~testované instanci Eclipse IDE by bylo velmi problematické zajistit oba tyto případy. Zobrazení informaci pomocí nástrojů operačního systému by sice umožňovalo nenarušený běh testů, ale přehlednost zobrazených výsledků by byla pravděpodobně nižší. Proto je zobrazení výsledků implementováno pomocí externí SWT aplikace, která umožňuje nenarušený průběh testů a komfortní zobrazení výsledků.
+  Při zobrazování dat je nutné, aby nedocházelo k~narušování běhu testů a zároveň byly informace o~běžících testech viditelné uživateli. V~případě zobrazování informací o~probíhajících testech přímo v~testované instanci Eclipse IDE by bylo velmi problematické zajistit oba tyto případy. Zobrazení informaci pomocí nástrojů operačního systému by sice umožňovalo nenarušený běh testů, ale přehlednost zobrazených výsledků by byla pravděpodobně nižší. Proto je zobrazení výsledků implementováno pomocí externí SWT aplikace, která umožňuje nenarušený průběh testů a komfortní zobrazení výsledků.
 
-  Velmi důležitou částí návrhu je způsob předávání dat mezi částí získávající informace o~testech a částí, která tyto informace zobrazuje. To lze řešit například externím souborem nebo pomocí síťové komunikace typu klient-server. V~aplikaci je z~důvodu možnosti připojení klientské aplikace k~vzdálenému serveru zvolen způsob komunikace typu klient-server.
+  Velmi důležitou částí návrhu je způsob předávání dat mezi částí získávající informace o~testech a částí, která tyto informace zobrazuje. To lze řešit například externím souborem nebo pomocí síťové komunikace typu klient-server. V~aplikaci je z~důvodu možnosti připojení klientské aplikace ke~vzdálenému serveru zvolen způsob komunikace typu klient-server.
 
-  Aplikace TRV se skládá ze dvou samostatných částí\,--\,zásuvného modulu InRunJUnit a SWT aplikace TRView\,(viz obrázek \ref{fig:TRV_architecture}). InRunJUnit je nainstalován jako jeden ze zásuvných modulů platformy Eclipse a slouží k~získání a zpracování výsledků ze zásuvného modulu JUnit. Zároveň slouží jako server, ke kterému lze připojovat klientské aplikace. TRView zpracovává a zobrazuje data o~probíhajících testech uživateli. Tyto data získává pomocí soketů přijatých ze serveru. \emph{JDT}\,(\emph{Java Development Tools}) a \emph{PDE}\,(\emph{Plug-in Development Environment}) jsou zásuvné moduly, které rozšiřují funkcionalitu platformy Eclipse\,--\,JDT přidává nástroje pro práci s~Javou a PDE přidává funkcionalitu potřebnou pro vývoj zásuvných modulů. Platforma Eclipse je popsána v~kapitole \ref{chapter:eclipse_ide}.
+  Aplikace TRV se skládá ze dvou samostatných částí\,--\,zásuvného modulu InRunJUnit a SWT aplikace TRView\,(viz obrázek \ref{fig:TRV_architecture}). InRunJUnit je nainstalován jako jeden ze zásuvných modulů platformy Eclipse a slouží k~získání a zpracování výsledků ze zásuvného modulu JUnit. Zároveň slouží jako server, ke kterému lze připojovat klientské aplikace. TRView zpracovává data o~probíhajících testech a zobrazuje je uživateli. Tato data přijímá pomocí soketů ze serveru vytvořeného v zásuvném modulu InRunJUnit. \emph{JDT}\,(\emph{Java Development Tools}) a \emph{PDE}\,(\emph{Plug-in Development Environment}) jsou zásuvné moduly, které rozšiřují funkcionalitu platformy Eclipse. JDT přidává nástroje pro práci s~Javou a PDE přidává funkcionalitu potřebnou pro vývoj zásuvných modulů. Platforma Eclipse je popsána v~kapitole \ref{chapter:eclipse_ide}.
 
   \begin{figure}
     \includegraphics[width=\textwidth, center]{obrazky-figures/TRV_architecture.pdf}
@@ -38,13 +38,7 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
   \end{figure}
 
     \subsection{Návrh architektury zásuvného modulu InRunJUnit}
-    Integrace zásuvného modulu InRunJUnit do platformy Eclipse je znázorněna na obrázku \ref{fig:inrunjunit_eclipse_integration}. Zásuvný modul se skládá ze dvou částí\,--\,\emph{listeneru} a serveru. Listener slouží pro zachycení výsledků ze zásuvného modulu JUnit. Opakem listeneru je potom \emph{notifier}, jehož účelem je informovat listener o~nových datech. Listener je pomocí bodu rozšíření poskytovaného zásuvným modulem JUnit zaregistrován mezi ostatní listenery. Poté, co se spustí JUnit za účelem testování, si JUnit zjistí které zásuvné moduly jsou k~bodu rozšíření připojeny a automaticky je informuje o~průběhu testů. Server se stará o~vytvoření serveru, komunikaci s~klienty, vytvoření relevantních dat ve formě řetězce a jejich posílání všem připojeným klientům. Při posílání dat také specifikuje fázi testování\footnote{Může se jednat o~zahájení (případně ukončení) testovací sady nebo testovacího případu.}, ze které data pochází.
-
-      \begin{figure}
-	\includegraphics[width=\textwidth, center]{obrazky-figures/inrunjunit_eclipse_integration.pdf}
-	\caption{Znázornění integrace zásuvného modulu InRunJUnit v~platformě Eclipse.}
-	\label{fig:inrunjunit_eclipse_integration}
-      \end{figure}
+    Integrace zásuvného modulu InRunJUnit do platformy Eclipse je znázorněna na obrázku \ref{fig:TRV_architecture}. Zásuvný modul se skládá ze dvou částí\,--\,\emph{listeneru} a serveru. Listener slouží pro zachycení výsledků ze zásuvného modulu JUnit. Opakem listeneru je potom \emph{notifier}, jehož účelem je informovat listener o~nových datech. Listener je pomocí bodu rozšíření poskytovaného zásuvným modulem JUnit zaregistrován mezi ostatní listenery. Poté, co se spustí JUnit za účelem testování, si JUnit zjistí, které zásuvné moduly jsou k~bodu rozšíření připojeny, a automaticky je informuje o~průběhu testů. Serverová část zásuvného modulu se stará o~vytvoření serveru, komunikaci s~klienty, vytvoření relevantních dat ve formě řetězců a jejich posílání všem připojeným klientům. Při posílání dat také specifikuje fázi testování\footnote{Může se jednat o~zahájení (případně ukončení) testovací sady nebo testovacího případu.}, ze které data pochází.
 
     \subsection{Návrh architektury aplikace TRView}
     Aplikace TRView se také skládá ze dvou částí\,--\,klienta a GUI. Klientská část umožňuje připojení k~serveru a ukládání přijatých výsledků. Při přijetí dat ze serveru také inicializuje zpracování a zobrazení průběhu testů do GUI. GUI se stará o~vytvoření a obsluhu grafického uživatelského rozhraní\,--\,obsahuje komponenty sloužící pro připojení k~serveru a zobrazuje důležité informace o~průběhu testů. To zahrnuje:
@@ -56,11 +50,11 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
      \item počet přeskočených testů
      \item stromovou strukturu jednotlivých testovacích případů s:
      \begin{itemize}
-      \item rozlišením který test je aktivní
-      \item rozlišením výsledku testovacího případu
-      \item časem udávajícím trvání testovacího případu
+      \item rozlišením, který test je aktivní.
+      \item rozlišením výsledku testovacího případu.
+      \item časem udávajícím trvání testovacího případu.
      \end{itemize}
-     \item zobrazení \emph{stack strace} pro neúspěšné testy
+     \item zobrazení zásobníku volání (\emph{angl. stack trace}) pro neúspěšné testy
     \end{itemize}
 
     \noindent
@@ -71,13 +65,13 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
     \begin{itemize}
      \item rychlost komunikace
      \item možnost komunikace po síti
-     \item počet možných klientů\,(instancí aplikace TRView) připojených k~zásuvnému modulu InRUnJUnit
+     \item počet možných klientů\,(instancí aplikace TRView) připojených k~zásuvnému modulu InRunJUnit
      \item oboustrannost komunikace
     \end{itemize}
-    
+
     \noindent
-    V~aplikaci TRV je komunikace vyřešena pomocí klient-server modelu předávajícího informace pomocí soketů. Tento přístup poskytuje jednoduché a zároveň kompletní řešení uvedených problémů. Zpracováním dat v~zásuvném modulu InRunJUnit lze posílat pouze relevantní data a tak minimalizovat objem posílaných dat a zrychlit komunikaci. Navíc tento model umožňuje připojení klientské aplikace po síti a řeší tak jednoduše problém s~aktivitou oken. Díky paralelnímu programování lze připojit více klientských aplikací a zároveň umožnit oboustrannou komunikaci mezi všemi klienty a serverem. Oboustranná komunikace slouží k~korektnímu ukončování jak serveru, tak klienta. V~případě ukončení klienta je nutno oznámit serveru, že tomuto klientovi již nemá posílat data. V~případě ukončení serveru je nutno oznámit všem klientům, že nemají čekat na další data. Oboustrannou komunikaci by však bylo možno využít i pro budoucí rozšíření, například pro kontrolu běhu testů z~klientské aplikace.
-    
+    V~aplikaci TRV je komunikace vyřešena pomocí klient-server modelu předávajícího informace pomocí soketů. Tento přístup poskytuje jednoduché a zároveň kompletní řešení uvedených problémů. Zpracováním dat v~zásuvném modulu InRunJUnit lze posílat pouze relevantní data a tak minimalizovat objem posílaných dat a zrychlit komunikaci. Navíc tento model umožňuje připojení klientské aplikace po síti a řeší tak jednoduše problém s~aktivitou oken. Díky vícevláknové implementaci lze připojit více klientských aplikací a zároveň umožnit oboustrannou komunikaci mezi všemi klienty a serverem. Oboustranná komunikace slouží ke~korektnímu ukončování jak serveru, tak klienta. V~případě ukončení klienta je nutno oznámit serveru, že tomuto klientovi již nemá posílat data. V~případě ukončení serveru je nutno oznámit všem klientům, že nemají čekat na další data. Oboustrannou komunikaci by však bylo možno využít i pro budoucí rozšíření, například pro kontrolu běhu testů z~klientské aplikace.
+
     \begin{figure}
       \includegraphics[width=\textwidth, center]{obrazky-figures/TRV_run_from_gui.pdf}
       \caption{Znázornění funkce aplikace TRV při spuštění testů z~GUI Eclipse IDE.}
@@ -133,11 +127,11 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	  \caption{Zdrojový kód manifestu plugin.xml zásuvného modulu InRunJunit.}
 	  \label{code:plugin.xml}
 	\end{figure}
-     
+
       \subsubsection{Implementace listeneru}
-	Balíček \texttt{listener} obsahuje pouze jednu třídu Java\,--\,\texttt{org.\-mcoufal.\-inrunjunit.\-listener.\-JUnitListenerEP}. Funkce této třídy je znázorněna na obrázku \ref{fig:listener_flowchart}. Instance třídy JUnitListenerEP je automaticky vytvořena zásuvným modulem JUnit, a to díky deklaraci připojení k~bodu rozšíření \texttt{org.\-eclipse.\-jdt.\-junit.\-testRunListeners}. Při inicializaci si tato instance vytváří nový server, který je obsluhován dalším vláknem. Metody listeneru jsou poté volány pokaždé, když začne příslušná fáze v~testování. To umožní při zavolání této metody zpracovat výsledky přijaté jako parametr dané metody a inicializovat jejich poslání pomocí dříve vytvořeného serveru. Pokud je zavolána metoda spojená s~koncem testovací sady, je po předání výsledků serveru zároveň inicializováno jeho ukončení.
+	Balíček \texttt{listener} obsahuje pouze jednu třídu\,--\,\texttt{org.\-mcoufal.\-inrunjunit.\-listener.\-JUnitListenerEP}. Funkce této třídy je znázorněna na obrázku \ref{fig:listener_flowchart}. Instance třídy JUnitListenerEP je automaticky vytvořena zásuvným modulem JUnit, a to díky deklaraci připojení k~bodu rozšíření \texttt{org.\-eclipse.\-jdt.\-junit.\-testRunListeners}. Při inicializaci si tato instance vytváří nový server, který je obsluhován dalším vláknem. Metody listeneru jsou poté volány pokaždé, když začne příslušná fáze v~testování. To umožní při zavolání této metody zpracovat výsledky přijaté jako parametr dané metody a inicializovat jejich poslání pomocí dříve vytvořeného serveru. Pokud je zavolána metoda spojená s~koncem testovací sady, je po předání výsledků serveru zároveň zahájeno jeho ukončení. Pro úspěšné ukončení serveru je nejdříve nutno zrušit případné blokující operace (v tomto případě \texttt{ServerSocket.accept()}), a poté porušit podmínku cyklu ve kterém server obsluhuje nově připojené klienty.
 	
-	Nejdůležitějším krokem implementace třídy \texttt{JUnitListenerEP} je rozšíření třídy \texttt{org.\-eclipse.\-jdt.\-junit.\-TestRunListener}. Přepsáním (\emph{angl. override}) metod této třídy je dosaženo kontroly nad jednotlivými metodami, které rámec JUnit volá a tak informuje listener o~průběhu testování.
+	Nejdůležitějším krokem implementace třídy \texttt{JUnitListenerEP} je rozšíření třídy \texttt{org.\-eclipse.\-jdt.\-junit.\-TestRunListener}. Přepsáním (\emph{angl. override}) metod této třídy je dosaženo kontroly nad jednotlivými metodami, které rámec JUnit volá a tak informuje listener o~průběhu testování. Více o způsobu získávání dat pomocí listeneru je uvedeno v sekci \ref{section:rozsireni_ramce_junit}.
 	
 	\begin{figure}
 	  \includegraphics[width=\textwidth, height=0.8\textheight, keepaspectratio, center]{obrazky-figures/inrunjunit_listener_flowchart.pdf}
@@ -154,7 +148,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	  \label{fig:resultsserver_flowchart}
 	\end{figure}
 
-	Hlavním účelem třídy \texttt{ClientHandler} je obsluha klienta a přenos dat (viz Obrázek \ref{fig:clientHandler_flowchart}). Jakmile dojde k~inicializaci a úspěšnému spojení s~klientem, posílá se počáteční soubor dat. Tento soubor obsahuje všechna data zachycená pomocí listeneru do doby, než došlo k~připojení klienta. Nedochází tak k~ztrátě dat v~případě, že se klient připojí až v~průběhu testů. Dále se již posílají jen nově zachycená data (odesílání těchto dat inicializuje \texttt{JUnitListenerEP} prostřednictvím instance \texttt{ResultsServer}). Díky tomuto modelu komunikace nedochází k~posílání irelevantních dat a zbytečnému zatížení síťové komunikace. Při zachycení dat z~fáze ukončení testovací sady dojde k~poslání dat klientovi a poté se ClientHandler ukončí.V případě ukončení uživatelem z~grafického uživatelského rozhraní se nejdříve dojde k~výjimce při posílání dat a ClientHandler se ukončí.
+	Hlavním účelem třídy \texttt{ClientHandler} je obsluha klienta a přenos dat (viz Obrázek \ref{fig:clientHandler_flowchart}). Jakmile dojde k~inicializaci a úspěšnému spojení s~klientem, posílá se počáteční soubor dat. Tento soubor obsahuje všechna data zachycená pomocí listeneru do doby, než došlo k~připojení klienta. Nedochází tak ke~ztrátě dat v~případě, že se klient připojí až v~průběhu testů. Dále se již posílají jen nově zachycená data (odesílání těchto dat inicializuje \texttt{JUnitListenerEP} prostřednictvím instance \texttt{ResultsServer}). Díky tomuto modelu komunikace nedochází k~posílání irelevantních dat a zbytečnému zatížení síťové komunikace. Při zachycení dat z~fáze ukončení testovací sady dojde k~poslání dat klientovi a poté se \texttt{ClientHandler} ukončí.V případě ukončení uživatelem z~grafického uživatelského rozhraní se nejdříve dojde k~výjimce při posílání dat a \texttt{ClientHandler} se ukončí.
 
 	\begin{figure}
 	  \centering
@@ -178,7 +172,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
     Implementace aplikace TRView je rozdělena do dvou balíčků\,--\,\texttt{view} a \texttt{client}. Balíček \texttt{view} zajišťuje vytvoření a obsluhu grafického uživatelského rozhraní a zároveň poskytuje metody pro zpracování a zobrazení dat získaných pomocí balíčku \texttt{client}. Balíček \texttt{client} se stará o~komunikaci se serverem a inicializaci zobrazení dat uživateli. 
     
       \subsubsection{Implementace balíčku \texttt{view}}
-      Balíček \texttt{view} obsahuje dvě třídy\,--\,\texttt{TRView} a \texttt{ResultsParser}. Třída \texttt{TRView} tvoří základ aplikace\,--\,inicializuje a vytváří grafické uživatelské rozhraní aplikace a definuje chování pro akce, které nastaly v~GUI (akce provedené uživatelem pomocí myši nebo klávesnice). Pokud uživatel zadá IP adresu a port serveru, na kterém běží testy, stiskem tlačítka \texttt{CONNECT} se resetuje GUI, ukončí se instance stávajícího klienta \texttt{ResultsClient} (pokud byl již nějaký vytvořen) a vytvoří se nové vlákno zajišťující jeho funkci. V~případě označení některého z~testovacích případů se zobrazí jeho stack trace. Pokud uživatel ukončí aplikaci, inicializuje se konec klienta \texttt{ResultsClient} a aplikace se ukončí. Chování implementované v~třídě TRView je znázorněno na obrázku \ref{fig:trview_flowchart}.
+      Balíček \texttt{view} obsahuje dvě třídy\,--\,\texttt{TRView} a \texttt{ResultsParser}. Třída \texttt{TRView} tvoří základ aplikace\,--\,inicializuje a vytváří grafické uživatelské rozhraní aplikace a definuje chování pro akce, které nastaly v~GUI (akce provedené uživatelem pomocí myši nebo klávesnice). Pokud uživatel zadá IP adresu a port serveru, na kterém běží testy, stiskem tlačítka \texttt{CONNECT} se resetuje GUI, ukončí se instance stávajícího klienta \texttt{ResultsClient} (pokud byl již nějaký vytvořen) a vytvoří se nové vlákno zajišťující jeho funkci. V~případě označení některého z~testovacích případů se zobrazí výpis zásobníku volání. Pokud uživatel ukončí aplikaci, zahájí se ukončení klienta \texttt{ResultsClient} a aplikace se ukončí. Pro úspěšné ukončení klienta je nejdříve nutno zrušit případné blokující operace (v tomto případě \texttt{Socket.getInputStream()}), a poté porušit podmínku cyklu ve kterém klient přijímá data ze serveru. Chování implementované v~třídě TRView je znázorněno na obrázku \ref{fig:trview_flowchart}.
 
       \begin{figure}
 	\includegraphics[width=\textwidth, height=\textheight, keepaspectratio, center]{obrazky-figures/trview_trview_flowchart.pdf}
@@ -198,7 +192,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	 \item[Popisků:] slouží k~identifikaci jednotlivých komponent (říkají tak uživateli, jaký je význam dat dané komponenty)
 	 \item[Textových polí:] slouží pro zobrazení informací (počet chyb, běhů testů, atd.) nebo pro zadávání informací uživatelem (IP adresa serveru, port serveru).
 	 \item[Stromová struktura:] je nejdůležitější část GUI aplikace. Do této struktury se zobrazuje průběh testů jednotlivých testovacích případů. Pro každý uzel ve stromu je zobrazena příslušná ikona (viz tabulka \ref{tab:trview_icons}) informující o~jeho stavu.
-	 \item[Stack trace:] textový záznam zobrazující výpis metod které byly volány, než došlo u~vybraného testovacího případu k~chybě. Pokud žádná chyba nenastala, textové pole obsahuje pouze řetězec informující uživatele o~tom, že stack trace je prázdný.
+	 \item[Zásobník volání (\emph{angl. stack trace}):] textový záznam zobrazující výpis metod, které byly volány než došlo u~vybraného testovacího případu k~chybě. Pokud žádná chyba nenastala, textové pole obsahuje pouze řetězec informující uživatele o~tom, že je zásobník volání prázdný.
       \end{description}
 
       \begin{table}
@@ -224,10 +218,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
       \caption{Seznam ikon použitých v~grafickém uživatelském rozhraní aplikace TRView.}
       \end{table}
 
-      Třída \texttt{ResultsParser} obsahuje metody, které na vstupu zpracovávají instance třídy \texttt{ResultsData} a zobrazují je do GUI. Díky fázi uvedené v~objektu \texttt{ResultsData} lze poznat, v~jaké fázi testování byla data zachycena a podle toho data zpracovat a zobrazit. Jednotlivé fáze jsou definovány v~třídě \texttt{JUnitListenerEP} zásuvného modulu InRunJunit.
+      Třída \texttt{ResultsParser} obsahuje metody, které na vstupu zpracovávají instance třídy \texttt{ResultsData} a zobrazují je do GUI. Díky fázi uvedené v~objektu \texttt{ResultsData} lze poznat, v~jaké fázi testování byla data zachycena a podle toho data zpracovat a zobrazit. Jednotlivé fáze jsou definovány v~třídě \texttt{JUnitListenerEP} zásuvného modulu InRunJUnit.
 
       \subsubsection{Implementace balíčku \texttt{client}}
-      Balíček \texttt{client} obsahuje pouze třídu \texttt{ResultsClient}. Funkce implementovaná touto třídou je znázorněna na obrázku \ref{fig:resultsclient_flowchart}. Instance třídy \texttt{ResultsClient} vzniká po zadání detailů připojení a stisku tlačítka \texttt{CONNECT} uživatelem. Instance se poté zkusí připojit k~serveru na zadané IP adrese a portu. Pokud se připojení nezdaří, je uživateli vypsáno oznámení o~chybě. Pokud proběhne připojení úspěšně, dochází k~přijetí a zpracování počátečního souboru dat. Spojení mezi klientem a serverem je postaveno na spojované službě TCP a tak by nemělo docházet ke ztrátě dat. Pokud ovšem dojde k~závažnějšímu problému na síti, je uživateli zobrazeno oznámení o~chybě a \texttt{ResultsClient} je ukončen. Poté klient čeká na další data. Jakmile data obdrží, inicializuje jejich zpracování a zobrazení pomocí třídy \texttt{ResultsParser}. Jelikož upravujeme komponenty vytvořené jiným vláknem, je zapotřebí zajistit aby byl kód vykonán vláknem obsluhujícím GUI a nedocházelo tak k~chybě typu \emph{Invalid Thread Access}. Proto je tato operaci prováděna pomocí synchronizace vláken (viz obrázek \ref{code:syncExec}). SWT poskytuje metodu \texttt{syncExec()}, která pozastaví průběh současného vlákna, a argument typu Runnable této metody předá vláknu obsluhujícího GUI. Jakmile je to možné, vlákno obsluhující GUI vykoná tento kód a dále pokračuje ve své práci. Po vykonání kódu je vlákno ze kterého byla metoda \texttt{syncExec()} volána zase spuštěno \cite{codeaffine-asyncexec}. V~případě zachycení dat s~fází konce testovací sady se stejným způsobem inicializuje zpracování a zobrazení dat a poté se klient ukončí. Aktivní zůstává pouze vlákno obsluhující GUI.
+      Balíček \texttt{client} obsahuje pouze třídu \texttt{ResultsClient}. Funkce implementovaná touto třídou je znázorněna na obrázku \ref{fig:resultsclient_flowchart}. Instance třídy \texttt{ResultsClient} vzniká po zadání detailů připojení a stisku tlačítka \texttt{CONNECT} uživatelem. Instance se poté zkusí připojit k~serveru na zadané IP adrese a portu. Pokud se připojení nezdaří, je uživateli vypsáno oznámení o~chybě. Pokud proběhne připojení úspěšně, dochází k~přijetí a zpracování počátečního souboru dat. Spojení mezi klientem a serverem je postaveno na spojované službě TCP a tak by nemělo docházet ke ztrátě dat. Pokud ovšem dojde k~závažnějšímu problému na síti, je uživateli zobrazeno oznámení o~chybě a \texttt{ResultsClient} je ukončen. Poté klient čeká na další data. Jakmile data obdrží, inicializuje jejich zpracování a zobrazení pomocí třídy \texttt{ResultsParser}. Jelikož upravujeme komponenty vytvořené jiným vláknem, je zapotřebí zajistit aby byl kód vykonán vláknem obsluhujícím GUI a nedocházelo tak k~chybě typu \emph{Invalid Thread Access}. Proto je tato operace prováděna pomocí synchronizace vláken (viz obrázek \ref{code:syncExec}). SWT poskytuje metodu \texttt{syncExec()}, která pozastaví průběh současného vlákna, a argument této metody předá vláknu obsluhujícího GUI. Jakmile je to možné, vlákno obsluhující GUI vykoná kód daný argumentem metody a dále pokračuje ve své práci. Po vykonání kódu je vlákno, ze kterého byla metoda \texttt{syncExec()} volána, zase spuštěno \cite{codeaffine-asyncexec}. V~případě zachycení dat s~fází konce testovací sady se stejným způsobem inicializuje zpracování a zobrazení dat a poté se klient ukončí. Aktivní zůstává pouze vlákno obsluhující GUI.
 
       	\lstset{language=java}
 	\begin{figure}
