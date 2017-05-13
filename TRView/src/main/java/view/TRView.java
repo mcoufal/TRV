@@ -43,6 +43,10 @@ public class TRView {
 	private static int portNum;
 	// client for receiving results from results server
 	private static ResultsClient resClient = null;
+	// auto scrolling option
+	private static Boolean autoScroll;
+	// lazy tree expansion option
+	private static Boolean lazyTreeExpansion;
 
 	// variables for GUI
 	private static Text txtServerIP;
@@ -75,8 +79,8 @@ public class TRView {
 	private static MenuItem disconnectItem;
 	private static MenuItem reconnectItem;
 	private static MenuItem exitItem;
-	private static MenuItem onTopItem;
-	private static MenuItem resizableItem;
+	private static MenuItem autoScrollItem;
+	private static MenuItem lazyTreeExpansionItem;
 	// PREFERENCES
 	private static final Point minimumShellSize = new Point(300, 212);
 	private static final Point defaultShellSize = new Point(400, 312);
@@ -173,6 +177,20 @@ public class TRView {
 			}
 		});
 
+		// Menu -> Options -> Auto-scroll
+		autoScrollItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				autoScroll = autoScrollItem.getSelection();
+			}
+		});
+
+		// Menu -> Options -> Lazy tree expansion
+		lazyTreeExpansionItem.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				lazyTreeExpansion = lazyTreeExpansionItem.getSelection();
+			}
+		});
+
 		/*--- application runtime ---*/
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -257,12 +275,14 @@ public class TRView {
 		// Options menu
 		optionsMenu = new Menu(shell, SWT.DROP_DOWN);
 		optionsMenuHeader.setMenu(optionsMenu);
-		onTopItem = new MenuItem(optionsMenu, SWT.CHECK);
-		onTopItem.setText("On-top");
-		onTopItem.setSelection(true);
-		resizableItem = new MenuItem(optionsMenu, SWT.CHECK);
-		resizableItem.setText("Resizable");
-		resizableItem.setSelection(true);
+		autoScrollItem = new MenuItem(optionsMenu, SWT.CHECK);
+		autoScrollItem.setText("Auto-scroll");
+		autoScrollItem.setSelection(true);
+		autoScroll = true;
+		lazyTreeExpansionItem = new MenuItem(optionsMenu, SWT.CHECK);
+		lazyTreeExpansionItem.setText("Lazy tree expansion");
+		lazyTreeExpansionItem.setSelection(false);
+		lazyTreeExpansion = false;
 		// set shell's menu bar
 		shell.setMenuBar(menuBar);
 
@@ -391,20 +411,19 @@ public class TRView {
 				clearGuiData();
 				// get server information
 				serverIP = txtServerIP.getText();
-				if (serverIP != null){
-					try{
+				if (serverIP != null) {
+					try {
 						portNum = Integer.parseInt(txtPort.getText());
 						// create new client
 						resClient = new ResultsClient(serverIP, portNum);
 						resClient.start();
 						// close connect shell
 						// connectShell.close();
-					} catch (NumberFormatException nfe){
+					} catch (NumberFormatException nfe) {
 						lblWarning.setText("Port number is not valid!");
 						lblWarning.setForeground(display.getSystemColor(SWT.COLOR_RED));
 					}
-				}
-				else {
+				} else {
 					lblWarning.setText("IP Adress is not valid!");
 					lblWarning.setForeground(display.getSystemColor(SWT.COLOR_RED));
 				}
@@ -431,10 +450,12 @@ public class TRView {
 
 	/**
 	 * Disposes all items in tree structure given by node TreeItem.
+	 *
 	 * @param item
 	 */
 	private static void disposeTreeItemsRecurse(TreeItem item) {
-		if (item == null) return;
+		if (item == null)
+			return;
 		for (TreeItem child : item.getItems()) {
 			disposeTreeItemsRecurse(child);
 		}
@@ -459,6 +480,20 @@ public class TRView {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @return true if auto-scroll is enabled, false otherwise.
+	 */
+	public static Boolean getAutoScroll() {
+		return autoScroll;
+	}
+
+	/**
+	 * @return true if lazy tree expansion is enabled, false otherwise.
+	 */
+	public static Boolean getLazyTreeExpansion() {
+		return lazyTreeExpansion;
 	}
 
 	/**
