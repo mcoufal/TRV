@@ -1,8 +1,7 @@
 # makefile pro preklad LaTeX verze Bc. prace
 # makefile for compilation of the thesis
-# (c) 2008 Michal Bidlo
-# E-mail: bidlom AT fit vutbr cz
-# Edited by: dytrych AT fit vutbr cz
+# Autori / Authors: 2008 Michal Bidlo, 2016 Jaroslav Dytrych
+# E-mail: dytrych AT fit vutbr cz
 #===========================================
 # asi budete chtit prejmenovat / you will probably rename:
 CO=xcoufa08-Pohled-na-stav-JUnit-pro-testovanou-instanci-eclipse
@@ -14,10 +13,13 @@ pdf: $(CO).pdf
 $(CO).ps: $(CO).dvi
 	dvips $(CO)
 
+draft: $(CO)*.tex
+	pdflatex $(CO)
+
 $(CO).pdf: clean
-	pdflatex $(CO)
+	pdflatex -draftmode $(CO)
 	bibtex $(CO)
-	pdflatex $(CO)
+	pdflatex -draftmode $(CO)
 	pdflatex $(CO)
 
 $(CO).dvi: $(CO).tex $(CO).bib
@@ -32,8 +34,7 @@ clean:
 	rm -f *~
 
 pack:
-	#tar -czvf $(CO).tar.gz *.tex *.bib *.bst ./template-fig/* ./bib-styles/* ./cls/* zadani.pdf $(CO).pdf Makefile Changelog
-	tar -czvf $(CO).tar.gz *.tex *.bib ./template-fig/* ./bib-styles/*  zadani.pdf $(CO).pdf Makefile
+	tar czvf $(CO).tar.gz *.tex *.bib *.bst ./template-fig/* ./bib-styles/* ./cls/* zadani.pdf $(CO).pdf Makefile Changelog
 
 rename:
 	mv $(CO).tex $(NAME).tex
