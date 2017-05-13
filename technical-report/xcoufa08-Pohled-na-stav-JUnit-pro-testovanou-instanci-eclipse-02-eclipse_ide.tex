@@ -16,16 +16,16 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
   \noindent
   Zásuvné moduly se v~základu dělí podle funkce do několika skupin \cite{Plugins}:
   \begin{description}
-    \item[Core:] skupina nízkoúrovňových zásuvných modulů zajišťujících základní funkce jako jsou zpracování rozšíření zásuvných modulů a zdrojových kódů.
-    \item[SWT\,(Standard Widget Toolkit):] knihovna nástrojů pro manipulaci s~uživatelským rozhraním, která poskytuje API nezávislé na operačním systému.
-    \item[JFace:] knihovna přidávající další funkcionalitu jako nástavbu k~SWT.
+    \item[Core:] skupina nízkoúrovňových zásuvných modulů zajišťujících základní funkce jako jsou zpracování a rozšíření zásuvných modulů a zdrojových kódů.
+    \item[SWT\,(\emph{Standard Widget Toolkit}):] knihovna nástrojů pro manipulaci s~uživatelským rozhraním, která poskytuje API nezávislé na operačním systému.
+    \item[JFace:] knihovna přidávající další funkcionalitu jako nástavbu nad SWT.
     \item[GEF:] rámec poskytující prostředí pro vývoj grafických editorů.
     \item[Workbench:] skupina zásuvných modulů poskytujících funkcionalitu specifickou přímo pro Eclipse IDE, jako je manipulace s~projekty nebo grafickými prvky (pohledy, perspektivami, atd.).
     \item[Team:] skupina zásuvných modulů poskytujících podporu pro správu verzí v~Eclipse IDE.
     \item[Help:] poskytuje dokumentaci k~jednotlivým prvkům Eclipse IDE.
-    \item[JDT\,(Java Development Tools)\footnotemark:] \footnotetext{\url{http://www.eclipse.org/jdt/}} přidává podporu pro vývoj Java aplikací a navíc do Eclipse IDE přidává perspektivy, pohledy, průvodce a další nástroje pro práci s~Javou.
-    \item[PDE\,(Plug-in Development Enviroment)\footnotemark:] \footnotetext{\url{http://www.eclipse.org/pde/}} skupina zásuvných modulů poskytujících různé nástroje\,(pohledy, editory, atd.) pro práci se zásuvnými moduly a jejich manifesty.
-    \item[Mylyn:] poskytuje rámec pro správu úkolů a životního cyklu aplikace (Application Lifecycle Management)
+    \item[JDT\,(\emph{Java Development Tools})\footnotemark:] \footnotetext{\url{http://www.eclipse.org/jdt/}} přidává podporu pro vývoj Java aplikací a navíc do Eclipse IDE přidává perspektivy, pohledy, průvodce a další nástroje pro práci s~Javou.
+    \item[PDE\,(\emph{Plug-in Development Enviroment})\footnotemark:] \footnotetext{\url{http://www.eclipse.org/pde/}} skupina zásuvných modulů poskytujících různé nástroje\,(pohledy, editory, atd.) pro práci se zásuvnými moduly a jejich manifesty.
+    \item[Mylyn:] poskytuje rámec pro správu úkolů a životního cyklu aplikace (\emph{Application Lifecycle Management})
   \end{description}
 
   \begin{figure}
@@ -78,15 +78,15 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
     \subsection{Model zásuvných modulů}
     %********************************
-    Eclipse IDE při startu prohledá všechny adresáře se zásuvnými moduly a vytvoří vlastní model obsahující každý nalezený zásuvný modul. Tento model se vytváří pomocí manifestů zásuvných modulů tak, aby Elipse nemusel načítat celé zásuvné modely a ušetřil tak čas a místo. Informace o~jednotlivých nainstalovaných zásuvných modulech jsou uloženy v~balíčcích\,(\emph{angl. bundles}). Získáváním informací přes rozhraní těchto balíčků zajistíme, aby se zásuvné moduly nenačítaly, dokud nejsou opravdu zapotřebí.
+    Eclipse IDE při startu prohledá všechny adresáře se zásuvnými moduly a vytvoří vlastní model obsahující každý nalezený zásuvný modul. Tento model se vytváří pomocí manifestů zásuvných modulů tak, aby Elipse nemusel načítat celé zásuvné moduly a ušetřil tak čas a místo. Informace o~jednotlivých nainstalovaných zásuvných modulech jsou uloženy v~balíčcích\,(\emph{angl. bundles}). Získáváním informací přes rozhraní těchto balíčků zajistíme, aby se zásuvné moduly nenačítaly, dokud nejsou opravdu zapotřebí.
 
     Původně mělo Eclipse IDE vlastní mechanismus pro běh aplikace, ale to znemožnilo použití již vytvořených technologií v~jiných oblastech jako Avalon\footnote{\url{https://avalon.apache.org}} nebo JMX\footnote{\url{http://www.oracle.com/technetwork/articles/java/javamanagement-140525.html}}. Proto byl nakonec nahrazen mechanismem pro běh aplikace založeném na technologii OSGi Alliance, která poskytuje model s~detailní specifikací a podporuje dynamické chování \cite{Plugins}.
 
     \subsection{Vytvoření zásuvného modulu}
     %**************************************
-    Pro vytvoření zásuvného modulu poskytuje platforma Eclipse zásuvný modul PDE, který poskytuje mnoho užitečných nástrojů pro tvorbu, manipulaci a distribuci zásuvných modulů. Platforma Eclipse poskytuje mnoho variant konfigurací, jaké lze stáhnout a instalovat. Zásuvný modul PDE je součástí například Eclipse SDK, Eclipse Classic a Eclipse Standard. Eclipse PDE lze také zpětně doinstalovat například pomocí \emph{Eclipse marketplace}\footnote{\url{https://marketplace.eclipse.org/content/eclipse-pde-plug-development-environment}}.
+    Pro vytvoření zásuvného modulu poskytuje platforma Eclipse zásuvný modul PDE, který poskytuje užitečné nástroje pro tvorbu, manipulaci a distribuci zásuvných modulů. Platforma Eclipse poskytuje mnoho variant konfigurací, jaké lze stáhnout a instalovat. Zásuvný modul PDE je součástí například Eclipse SDK, Eclipse Classic a Eclipse Standard. Eclipse PDE lze také zpětně doinstalovat například pomocí \emph{Eclipse marketplace}\footnote{\url{https://marketplace.eclipse.org/content/eclipse-pde-plug-development-environment}}.
 
-    V~PDE má každý zásuvný modul svůj vlastní projekt. Tento projekt lze vytvořit pomocí průvodce, nebo konvertovat již existující projekt na projekt se zásuvným modulem. Pro tvorbu nového projektu stačí použít průvodce \emph{New Plug-in Project}, vyplnit základní informace o~projektu, informace o~zásuvném modulu\footnote{Jednotlivé položky k~vyplnění jsou blíže popsány v~sekci \ref{section:manifesty_zasuvneho_modulu}} a dokončit průvodce \cite{Blewitt:Eclipse4}.
+    V~PDE má každý zásuvný modul svůj vlastní projekt. Tento projekt lze vytvořit pomocí průvodce (\emph{angl. wizard}), nebo konvertovat již existující projekt na projekt se zásuvným modulem. Pro tvorbu nového projektu stačí použít průvodce \emph{New Plug-in Project}, vyplnit základní informace o~projektu, zadat informace o~zásuvném modulu\footnote{Jednotlivé položky k~vyplnění jsou blíže popsány v~sekci \ref{section:manifesty_zasuvneho_modulu}} a dokončit průvodce \cite{Blewitt:Eclipse4}.
 
     \subsection{Manifesty zásuvného modulu}
     \label{section:manifesty_zasuvneho_modulu}
@@ -101,11 +101,11 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 
       Identifikátor\,(\emph{Bundle-SymbolicName}) slouží k~jednoznačné identifikaci daného balíčku. Většinou se jako identifikátor balíčku používá Javová konvence pro pojmenování balíčků: \texttt{com.<název společnosti>.<komponenta>[.<část komponenty>]}, kde část dané komponenty\,(například '\texttt{ui}' nebo '\texttt{core}') se uvádí v~případě větších komponent, kde jsou jednotlivé balíčky rozděleny. U~tohoto identifikátoru bývá ještě uvedena direktiva OSGi \texttt{singleton}, která udává zda může být v~platformě instalováno více verzí daného zásuvného modulu současně \cite{Blewitt:Eclipse4}.
 
-      Verze\,(\emph{Bundle-Version}) slouží k~jednoznačné identifikaci verze daného balíčku. V~případě shody identifikátorů je vždy vybrán balíček s~novějším číslem verze. Toto číslo se skládá ze 3 číslic oddělených tečkami a v~případě potřeby i alfanumerického řetězce použitelného pro užší specifikaci\,(například '\texttt{1.2.3.beta}'). První číslo označuje majoritní verzi produktu, druhé minoritní verzi produktu a třetí slouží k~označení úrovně služeb\footnote{více k~číslování balíčků lze nalézt na \url{https://wiki.eclipse.org/Version_Numbering}}.
+      Verze\,(\emph{Bundle-Version}) slouží k~jednoznačné identifikaci verze daného balíčku. V~případě shody identifikátorů je vždy vybrán balíček s~novějším číslem verze. Toto číslo se skládá ze 3 číslic oddělených tečkami a v~případě potřeby i alfanumerického řetězce použitelného pro užší specifikaci\,(například '\texttt{1.2.3.beta}'). První číslo označuje majoritní verzi produktu, druhé minoritní verzi produktu a třetí slouží k~označení úrovně služeb\footnote{Více k~číslování balíčků lze nalézt na \url{https://wiki.eclipse.org/Version_Numbering}.}.
 
-      Spouštěč\,(\emph{Bundle-Activator}) je volitelná část manifestu která umožňuje specifikovat třídu implementující rozhraní \texttt{BundleActivator} a poskytuje tak metody \texttt{start()} a \texttt{stop()}, které jsou přínosné pro správu životního cyklu balíčku.
+      Spouštěč\,(\emph{Bundle-Activator}) je volitelná část manifestu, která umožňuje specifikovat třídu implementující rozhraní \texttt{BundleActivator} a poskytuje tak metody \texttt{start()} a \texttt{stop()}, které jsou přínosné pro správu životního cyklu balíčku.
 
-      \emph{Bundle-ClassPath} je záznam využitý pro seznam balíčků a knihoven, které mají být do zásuvného modulu přidány. Modul tak může být instalován sám o~sobě bez nutnosti stahování dalších balíčků nebo knihoven\footnote{Takto přidané balíčky však výrazně zvětšují velikost výsledného zásuvného modulu.}.
+      \emph{Bundle-ClassPath} je záznam využitý pro seznam balíčků a knihoven, které mají být do zásuvného modulu přidány. Modul tak může být instalován sám o~sobě bez nutnosti stahování dalších balíčků nebo knihoven. Takto přidané balíčky však výrazně zvětšují velikost výsledného zásuvného modulu.
 
       Záznam s~exportovanými balíčky\,(\emph{Export-Package}) je podmnožina z~Bundle-ClassPath obsahující balíčky, které mají být viditelné pro ostatní balíčky zásuvných modulů.
 
@@ -124,6 +124,7 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 	\end{lstlisting}
 	\caption{Příklad zdrojového kódu s~definicí bodu rozšíření.}
 	\label{code:extension_point_declaration}
+	\vspace{1em}
       \end{figure}
 
       Dále je zde možno definovat, který zásuvný modul chceme stávajícím modulem rozšířit\,--\,k tomu slouží rozšíření zásuvného modulu\,(viz obrázek \ref{code:extension_declaration}). Obsah bloku \texttt{<extension point>} je dán bodem rozšíření na který se připojujeme. V~případě obrázku \ref{code:extension_declaration} jde o~připojení na bod rozšíření \texttt{org.eclipse.ui.views}, který umožňuje přidání vlastního pohledu. K~tomu je třeba specifikovat kategorii\,(v případě že vytváříme novou) a zároveň jednotlivé parametry implementovaného pohledu.
@@ -147,4 +148,5 @@ V~následující kapitole je popsána struktura Eclipse IDE a částí, ze kter�
 	\end{lstlisting}
 	\caption{Příklad zdrojového kódu s~připojením na bod rozšíření \texttt{org.eclipse.ui.views}.}
 	\label{code:extension_declaration}
+	\vspace{1em}
       \end{figure}
