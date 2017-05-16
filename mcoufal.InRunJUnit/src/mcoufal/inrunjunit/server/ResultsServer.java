@@ -127,7 +127,6 @@ public class ResultsServer extends Thread {
 	 */
 	public void endConnections() {
 		for (ClientHandler client : clientThreads) {
-			// FIXME: end handler isn't enough, there is some blocking operation
 			client.endHandler();
 		}
 	}

@@ -14,10 +14,9 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
 
   V~rámci návrhu bylo třeba zvážit způsoby, jakými lze data o~probíhajících testech získávat a jak lze tyto data zobrazovat. Ve společnosti \emph{Red Hat} se používají pro testování rámce JUnit a \emph{RedDeer}\footnote{\url{https://github.com/jboss-reddeer}}. RedDeer je rámec pro testování zásuvných modulů Eclipse IDE a využívá k~tomu rámec JUnit. Pomocí implementace vlastního runneru dostává kontrolu nad probíhajícími testy. To umožňuje definovat například pořadí spuštěných testů, vytvářet vlastní anotace, nebo definovat nové fáze probíhající v~rámci testování.
 
-  Data tedy lze získávat z~obou zásuvných modulů\,--\,JUnitu i RedDeeru. JUnit ovšem narozdíl od RedDeeru poskytuje možnost připojit se pomocí bodu rozšíření\\\texttt{org.eclipse.jdt.junit.testRunListeners} a tak umožňuje širší použití výsledné aplikace. Vytvořený zásuvný modul není třeba explicitně přidávat v~kódu rámce nebo testů, ale je automaticky spuštěn.
+  Data tedy lze získávat z~obou zásuvných modulů\,--\,JUnitu i RedDeeru. JUnit ovšem narozdíl od RedDeeru poskytuje možnost připojit se pomocí bodu rozšíření \texttt{org.ecli\-pse.jdt.ju\-nit.test\-Run\-Listeners} a tak umožňuje širší použití výsledné aplikace. Vytvořený zásuvný modul není třeba explicitně přidávat v~kódu rámce nebo testů, ale je automaticky spuštěn.
   \\
-  \\
-  \noindent
+  \\\noindent
   Možností, jak zobrazit informace zachycené z~zásuvného modulu JUnit, je několik:
   \begin{enumerate}
    \item pomocí pohledu\,(nebo jiné komponenty Eclipse Workbench) přímo v~instanci Eclipse IDE s~běžícími testy
@@ -25,6 +24,7 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
    \item pomocí nástrojů operačního systému\,(notifikace, terminál)
   \end{enumerate}
 
+  \noindent
   Při zobrazování dat je nutné, aby nedocházelo k~narušování běhu testů a zároveň byly informace o~běžících testech viditelné uživateli. V~případě zobrazování informací o~probíhajících testech přímo v~testované instanci Eclipse IDE by bylo velmi problematické zajistit oba tyto případy. Zobrazení informaci pomocí nástrojů operačního systému by sice umožňovalo nenarušený běh testů, ale přehlednost zobrazených výsledků by byla pravděpodobně nižší. Proto je zobrazení výsledků implementováno pomocí externí SWT aplikace, která umožňuje nenarušený průběh testů a komfortní zobrazení výsledků.
 
   Velmi důležitou částí návrhu je způsob předávání dat mezi částí získávající informace o~testech a částí, která tyto informace zobrazuje. To lze řešit například externím souborem nebo pomocí síťové komunikace typu klient-server. V~aplikaci je z~důvodu možnosti připojení klientské aplikace ke~vzdálenému serveru, kde testy probíhají, zvolen způsob síťové komunikace typu klient-server.
@@ -60,7 +60,7 @@ Tato kapitola detailně popisuje architekturu, implementaci, způsob testování
     \noindent
     V~případě, že testy a klientská aplikace poběží na jednom systému (viz obrázek \ref{fig:TRV_run_from_gui}), je třeba vzít v~úvahu problém aktivního okna. V~původní instanci je z~Eclipse Workbench pomocí zásuvného modulu JUnit spuštěn projekt obsahující zdrojové soubory testů. Zásuvný modul JUnit uvědomí zásuvný modul InRunJUnit o~zahájení testů. Zároveň pomocí runneru řídí a sleduje průběh testování. Je spuštěna nová instance Eclipse IDE, ve které probíhají testy. Tato instance používá vlastní pracovní plochu i ostatní zdroje. Při každé klíčové fázi testování uvědomí zásuvný modul JUnit modul InRunJUnit o~změně. Zásuvný modul InRunJUnit mezitím vytvoří server, ustanoví spojení s~případnými klienty aplikace TRView a průběžně jim posílá vybraná data.
 
-    Některé testy vyžadují pro nalezení a otestování komponent aktivitu daného okna. To může způsobit překrytí okna aplikace TRView a tak znemožnit zobrazení informací o~probíhajících testech uživateli. Proto je okno aplikace TRView vytvořeno \uv{vždy nahoře}(\emph{angl. always on top}). Okno je tak vždy viditelné, i když není právě aktivní. Přesto je třeba dát pozor, aby při průběhu testů bylo aktivní okno s~testovanou instancí Eclipse IDE\,--\,například interakcí s~aplikaci TRView by mohlo dojít ke ztrátě aktivity okna testované instance.
+    Některé testy vyžadují pro nalezení a otestování komponent aktivitu daného okna. To může způsobit překrytí okna aplikace TRView a tak znemožnit zobrazení informací o~probíhajících testech uživateli. Proto je okno aplikace TRView vytvořeno \uv{vždy nahoře} (\emph{angl. always on top}). Okno je tak vždy viditelné, i když není právě aktivní. Přesto je třeba dát pozor, aby při průběhu testů bylo aktivní okno s~testovanou instancí Eclipse IDE\,--\,například interakcí s~aplikaci TRView by mohlo dojít ke ztrátě aktivity okna testované instance.
 
     \begin{figure}
       \includegraphics[width=\textwidth, center]{obrazky-figures/TRV_run_from_gui.pdf}
@@ -109,7 +109,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	  \label{code:manifest.mf}
 	\end{figure}
 	
-	Manifest \texttt{plugin.xml} obsahuje pouze informaci, že třída \texttt{com.\-mcoufal.\-inrunjunit.\-listener.\-JUnitListenerEP} implementuje potřebné rozhraní pro bod rozšíření \texttt{org.\-eclipse.\-jdt.\-junit.\-testRunListeners} (viz obrázek \ref{code:plugin.xml}). Tato informace umožňuje, aby byl implementovaný listener načten a informován zásuvným modulem JUnit o~průběhu testování. První dva řádky specifikují pouze verzi jazyka XML, ve kterém je manifest zapsán, a verzi Eclipse IDE, ve které byl zásuvný modul vyvíjen.
+	Manifest \texttt{plugin.xml} obsahuje pouze informaci, že třída \texttt{com.mcoufal.in\-run\-ju\-nit.lis\-tener.JU\-nit\-ListenerEP} implementuje potřebné rozhraní pro bod rozšíření \texttt{org.ecli\-pse.jdt.ju\-nit.test\-Run\-Lis\-teners} (viz obrázek \ref{code:plugin.xml}). Tato informace umožňuje, aby byl implementovaný listener načten a informován zásuvným modulem JUnit o~průběhu testování. První dva řádky specifikují pouze verzi jazyka XML, ve kterém je manifest zapsán, a verzi Eclipse IDE, ve které byl zásuvný modul vyvíjen.
 
 	\lstset{language=xml}
 	\begin{figure}[h]
@@ -129,9 +129,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	\end{figure}
 
       \subsubsection{Implementace listeneru}
-	V~balíčku \texttt{listener} je obsažena pouze jedna třída\,--\,\texttt{org.\-mcoufal.\-inrunjunit.\-listener.\-JUnitListenerEP}. Funkce této třídy je znázorněna v~diagramu na obrázku \ref{fig:listener_flowchart}. Instance třídy JUnitListenerEP je automaticky vytvořena zásuvným modulem JUnit, a to díky deklaraci připojení k~bodu rozšíření \texttt{org.\-eclipse.\-jdt.\-junit.\-testRunListeners}. Při inicializaci si tato instance vytváří nový server, který je obsluhován dalším vláknem. Metody listeneru jsou poté volány pokaždé, když začne příslušná fáze v~testování. To umožní při zavolání této metody zpracovat výsledky přijaté jako parametr dané metody a inicializovat jejich poslání pomocí dříve vytvořeného serveru. Pokud je zavolána metoda spojená s~koncem testovací sady, je po předání výsledků serveru zároveň zahájeno jeho ukončení. Pro úspěšné ukončení serveru je nejdříve nutno zrušit případné blokující operace (v~tomto případě \texttt{ServerSocket.accept()}), a poté porušit podmínku cyklu, ve kterém server obsluhuje nově připojené klienty.
+	V~balíčku \texttt{listener} je obsažena pouze jedna třída\,--\,\texttt{org.mcoufal.in\-run\-ju\-nit.lis\-ten\-er.JU\-nit\-Lis\-tenerEP}. Funkce této třídy je znázorněna v~diagramu na obrázku \ref{fig:listener_flowchart}. Instance třídy JUnitListenerEP je automaticky vytvořena zásuvným modulem JUnit, a to díky deklaraci připojení k~bodu rozšíření \texttt{org.\-eclipse.\-jdt.\-junit.\-testRunListeners}. Při inicializaci si tato instance vytváří nový server, který je obsluhován dalším vláknem. Metody listeneru jsou poté volány pokaždé, když začne příslušná fáze v~testování. To umožní při zavolání této metody zpracovat výsledky přijaté jako parametr dané metody a inicializovat jejich poslání pomocí dříve vytvořeného serveru. Pokud je zavolána metoda spojená s~koncem testovací sady, je po předání výsledků serveru zároveň zahájeno jeho ukončení. Pro úspěšné ukončení serveru je nejdříve nutno zrušit případné blokující operace (v~tomto případě \texttt{ServerSocket.accept()}), a poté porušit podmínku cyklu, ve kterém server obsluhuje nově připojené klienty.
 	
-	Nejdůležitějším krokem implementace třídy \texttt{JUnitListenerEP} je rozšíření třídy \texttt{org.\-eclipse.\-jdt.\-junit.\-TestRunListener}. Přepsáním (\emph{angl. override}) metod této třídy je dosaženo kontroly nad jednotlivými metodami, které rámec JUnit volá a tak informuje listener o~průběhu testování. Více o~způsobu získávání dat pomocí listeneru je uvedeno v~sekci \ref{section:rozsireni_ramce_junit}.
+	Nejdůležitějším krokem implementace třídy \texttt{JUnitListenerEP} je rozšíření třídy \texttt{org.ecli\-pse.jdt.ju\-nit.Test\-Run\-Lis\-ten\-er}. Přepsáním (\emph{angl. override}) metod této třídy je dosaženo kontroly nad jednotlivými metodami, které rámec JUnit volá a tak informuje listener o~průběhu testování. Více o~způsobu získávání dat pomocí listeneru je uvedeno v~sekci \ref{section:rozsireni_ramce_junit}.
 	
 	\begin{figure}
 	  \includegraphics[width=\textwidth, height=0.8\textheight, keepaspectratio, center]{obrazky-figures/inrunjunit_listener_flowchart.pdf}
@@ -143,7 +143,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 	Hlavní třídou definující chování serveru je třída \texttt{ResultsServer} (viz obrázek \ref{fig:resultsserver_flowchart}). Tato třída má na starosti vytvoření serveru a správu klientů. Po vytvoření serveru na portu číslo 7357 se čeká na připojení klienta. Na každého připojeného klienta si ukládá odkaz a zároveň vytváří nové vlákno, které má na starosti obsluhu daného klienta. Tato obsluha je implementována ve třídě \texttt{ClientHandler}. Díky vytvořenému seznamu odkazů na jednotlivé klienty umožňuje třída \texttt{JUnitListenerEP} inicializovat posílání dat jednotlivým klientům a zároveň pomocí více vláken umožňuje obsluhu více klientů najednou. V~případě zachycení dat spojených s~ukončením testovací sady je po poslání dat server ukončen. Pro názornost je v~diagramu na obrázku ukončení serveru zaznačeno, ve skutečnosti však ukončení serveru probíhá asynchronně.
 	
 	\begin{figure}
-	  \includegraphics[width=\textwidth, height=0.5\textheight, keepaspectratio, center]{obrazky-figures/inrunjunit_resultsserver_flowchart.pdf}
+	  \includegraphics[width=\textwidth, height=0.6\textheight, keepaspectratio, center]{obrazky-figures/inrunjunit_resultsserver_flowchart.pdf}
 	  \caption{Diagram znázorňující funkci implementovaného serveru \texttt{ResultsServer} zajišťujícího komunikaci mezi zásuvným modulem InRunJUnit a aplikací TRView.}
 	  \label{fig:resultsserver_flowchart}
 	\end{figure}
@@ -271,7 +271,7 @@ TRView.getDisplay().syncExec(new Runnable() {
 
     \subsection{Použití při testování Eclipse IDE v~Red Hat}
     %******************************************************
-    Testování Eclipse IDE probíhá z~velké části automatizovaně. Testovací sady jsou spouštěny oproti jednotlivým verzím operačních systémů Linux, Windows a macOS, s~různými verzemi OpenJDK nebo OracleJDK. Tyto testy jsou spouštěny buď manuálně, nebo po splnění nastavených podmínek pomocí serveru \emph{Jenkins}\footnote{\url{https://jenkins.io/}}. K~průběhu takto spuštěných testů bohužel chybí pořádná zpětná vazba\,--\,lze se orientovat pouze podle výpisů v~terminálu, které jsou nepřehledné a navíc jsou zahlceny dalšími pro testy irelevantními daty. Testy jsou spuštěny příkazem \texttt{java}\footnote{Příklad spuštění z~konzole lze najít na \url{https://wiki.eclipse.org/SWTBot/Automate_test_execution}.} a nevzniká tak druhé okno s~GUI Eclipse IDE. Tento způsob spuštění zachycuje diagram na obrázku \ref{fig:TRV_run_from_term}. Je spuštěna pouze jedna instance Eclipse IDE s parametry definujícími mimo jiné umístění pracovní plochy, identifikaci balíčku s~implementovanými testy a nastavení parametrů pro cílovou platformu, na které testy poběží. Zásuvný modul InRunJUnit funguje na pozadí v~rámci aplikace řídící spuštěné testy.
+    Testování Eclipse IDE probíhá z~velké části automatizovaně. Testovací sady jsou spouštěny oproti jednotlivým verzím operačních systémů Linux, Windows a macOS, s~různými verzemi OpenJDK nebo OracleJDK. Tyto testy jsou spouštěny buď manuálně, nebo po splnění nastavených podmínek pomocí serveru \emph{Jenkins}\footnote{\url{https://jenkins.io/}}. K~průběhu takto spuštěných testů bohužel chybí pořádná zpětná vazba\,--\,lze se orientovat pouze podle výpisů v~terminálu, které jsou nepřehledné a navíc jsou zahlceny dalšími pro testy irelevantními daty. Testy jsou spuštěny příkazem \texttt{java}\footnote{Příklad spuštění z~konzole lze najít na \url{https://wiki.eclipse.org/SWTBot/Automate_test_execution}.} a nevzniká tak druhé okno s~GUI Eclipse IDE. Tento způsob spuštění zachycuje diagram na obrázku \ref{fig:TRV_run_from_term}. Je spuštěna pouze jedna instance Eclipse IDE s~parametry definujícími mimo jiné umístění pracovní plochy, identifikaci balíčku s~implementovanými testy a nastavení parametrů pro cílovou platformu, na které testy poběží. Zásuvný modul InRunJUnit funguje na pozadí v~rámci aplikace řídící spuštěné testy.
 
     \begin{figure}
 	\includegraphics[width=\textwidth, center]{obrazky-figures/TRV_run_from_cli.pdf}
