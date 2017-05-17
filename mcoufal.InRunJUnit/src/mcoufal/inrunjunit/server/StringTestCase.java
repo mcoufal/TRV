@@ -56,4 +56,14 @@ public class StringTestCase implements Serializable {
 	public String getTestSuite() {
 		return testSuite;
 	}
+
+	/**
+	 * Prints StringTestCase values to standard output.
+	 */
+	public void print() {
+		System.out.println(String.format("[Test case name]: %s", name));
+		System.out.println(String.format("[Test case java file]: %s", javaFile));
+		System.out.println(String.format("[Test case package name]: %s", packageName));
+		System.out.println(String.format("[Test case test suite name]: %s", testSuite));
+	}
 }

@@ -117,7 +117,7 @@ public class ResultsServer extends Thread {
 		return servSock;
 	}
 
-	/* FIXME: will need synchronization! */
+	/* TODO: will need synchronization! */
 	public void handlerExit(ClientHandler handler) {
 		clientThreads.remove(handler);
 	}

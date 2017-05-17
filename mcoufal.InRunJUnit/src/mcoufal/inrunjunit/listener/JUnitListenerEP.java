@@ -28,10 +28,7 @@ public class JUnitListenerEP extends TestRunListener {
 	}
 
 	/**
-	 * Constructor. Initializes and starts ResultsServer thread.
-	 *
-	 * TODO: add 'debug' option: tests can't start before TRView is connected
-	 * (pause this thread probably) - will need some *global* variable
+	 * Constructor. Initializes thread.
 	 */
 	public JUnitListenerEP() {
 		// TODO: here is space to make DEBUG mode!

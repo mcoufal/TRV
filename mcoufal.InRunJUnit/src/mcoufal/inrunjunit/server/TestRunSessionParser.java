@@ -13,7 +13,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 
 /**
- * TODO
+ * This class is used to get wanted data from ITestRunSession instance. It
+ * stores list of StringTestCase instances found in ITestRunSession.
  *
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
@@ -42,10 +43,12 @@ public class TestRunSessionParser {
 												sTestCaseJavaFile = unit.getElementName().substring(0,
 														unit.getElementName().indexOf('.'));
 												sTestCasePackageName = frag.getElementName();
-												// find test suite (test run) name
+												// find test suite (test run)
+												// name
 												int helpIndex = session.getTestRunName().indexOf(' ');
 												if (helpIndex > 0)
-													sTestCaseTestSuite = session.getTestRunName().substring(0, helpIndex);
+													sTestCaseTestSuite = session.getTestRunName().substring(0,
+															helpIndex);
 												else
 													sTestCaseTestSuite = session.getTestRunName();
 												testCases.add(new StringTestCase(sTestCaseName, sTestCaseJavaFile,

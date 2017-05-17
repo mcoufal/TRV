@@ -24,7 +24,6 @@ public class StringTestRunSession implements Serializable {
 	// test case
 	private List<StringTestCase> testCases = new ArrayList<StringTestCase>();
 
-
 	/**
 	 * Creates StringTestRunSession instance containing string data of
 	 * ITestRunSession object.
@@ -50,7 +49,7 @@ public class StringTestRunSession implements Serializable {
 	}
 
 	/**
-	 * TODO not complete
+	 * Prints StringTestRunSession values to standard output.
 	 */
 	public void print() {
 		System.out.println("[testRunSession]: " + testRunSession);
@@ -59,6 +58,9 @@ public class StringTestRunSession implements Serializable {
 		System.out.println("[failureTrace]: " + failureTrace);
 		testResultNoChildren.print();
 		testResultWithChildren.print();
+		for (StringTestCase t : testCases) {
+			t.print();
+		}
 	}
 
 	/**

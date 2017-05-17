@@ -24,7 +24,7 @@ public class StringTestCaseElement implements Serializable {
 	private String testRunSession;
 
 	/**
-	 * TODO: initialize, handle nulls, comments
+	 * Constructor. Creates StringTestCase element instance.
 	 *
 	 * @param testCaseElement
 	 */
@@ -155,26 +155,5 @@ public class StringTestCaseElement implements Serializable {
 	 */
 	public String getTestRunSession() {
 		return testRunSession;
-	}
-
-	/**
-	 * TODO: remove when done
-	 *
-	 * @param testCaseElement
-	 */
-	public static void printCaseElement(ITestCaseElement testCaseElement) {
-		System.out.println("Test Case Element: " + testCaseElement.toString());
-		System.out.println("Test Class Name: " + testCaseElement.getTestClassName());
-		System.out.println("Test Method Name: " + testCaseElement.getTestMethodName());
-		System.out.println("Elapsed Time: " + testCaseElement.getElapsedTimeInSeconds() + "s");
-		// System.out.println("<Failure Trace>: " +
-		// testCaseElement.getFailureTrace().toString());
-		// System.out.println("<Parent Container>: " +
-		// testCaseElement.getParentContainer().toString());
-		// System.out.println("<Progress State>: " +
-		// testCaseElement.getProgressState().toString());
-		System.out.println("<Test Result>(with children): " + testCaseElement.getTestResult(true).toString());
-		System.out.println("<Test Result>(without children): " + testCaseElement.getTestResult(false).toString());
-		System.out.println("<Test Run Session>: " + testCaseElement.getTestRunSession().toString());
 	}
 }

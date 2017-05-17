@@ -107,7 +107,7 @@ public class ClientHandler extends Thread {
 				System.err.println("ClientHandler@" + this.getId() + ": Failed to send data to client: "
 						+ clientSocket.getInetAddress().getHostName());
 				// log.info("Removing client from list of clients...");
-				// FIXME: needs to use synchronizations, else throws
+				// TODO: needs to use synchronizations, else throws
 				// ConcurrentModificationException
 				// server.handlerExit(handler);
 				endHandler();
