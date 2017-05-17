@@ -244,7 +244,7 @@ public class TRView {
 	 * Initiates GUI.
 	 */
 	private static void createGUI() {
-		log.info("Creating GUI");
+		log.info("creating GUI");
 
 		// shell and display
 		display = Display.getDefault();
@@ -370,7 +370,7 @@ public class TRView {
 		lblServerIP.setText("Server IP:");
 		txtServerIP = new Text(connectShell, SWT.BORDER);
 		txtServerIP.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
-		// TODO: Pre-set values - DEBUG PURPOSES - DELETE WHEN DONE
+		// pre-set values
 		txtServerIP.setText("127.0.0.1");
 
 		// port number
@@ -379,7 +379,7 @@ public class TRView {
 		lblPort.setText("Port:");
 		txtPort = new Text(connectShell, SWT.BORDER);
 		txtPort.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true, 1, 1));
-		// TODO: Pre-set values - DEBUG PURPOSES - DELETE WHEN DONE
+		// pre-set values
 		txtPort.setText("7357");
 
 		// cancel button

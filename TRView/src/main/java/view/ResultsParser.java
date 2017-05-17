@@ -5,7 +5,6 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.TreeItem;
-import org.jboss.reddeer.common.logging.Logger;
 
 import mcoufal.inrunjunit.server.ResultsData;
 import mcoufal.inrunjunit.server.StringTestCase;
@@ -19,8 +18,6 @@ import mcoufal.inrunjunit.server.StringTestRunSession;
  * @author Martin Coufal, xcoufa08@stud.fit.vutbr.cz
  */
 public class ResultsParser {
-	// set up logger
-	private final static Logger log = Logger.getLogger(ResultsParser.class);
 
 	/**
 	 * This method processes test results in initial data set from ResultsServer
@@ -29,7 +26,6 @@ public class ResultsParser {
 	 * @param initialDataSet
 	 */
 	public static void parseAndDisplay(List<ResultsData> initialDataSet) {
-		log.info("parsing initial data set: " + initialDataSet.toString());
 		// for every result in the list : parse and display results
 		for (ResultsData resultsData : initialDataSet) {
 			parseAndDisplay(resultsData);
@@ -72,7 +68,6 @@ public class ResultsParser {
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseFinished(StringTestCaseElement testCaseElement) {
-		log.debug("parsing CASE FINISHED");
 		StringTestCase tc = testCaseElement.getTestCase();
 		int errNum = Integer.parseInt(TRView.getTxtErrors().getText());
 		int failNum = Integer.parseInt(TRView.getTxtFailures().getText());
@@ -125,7 +120,6 @@ public class ResultsParser {
 	 * @param testCaseElement
 	 */
 	private static void parseAndDisplayCaseStarted(StringTestCaseElement testCaseElement) {
-		log.info("parsing CASE STARTED");
 		StringTestCase tc = testCaseElement.getTestCase();
 
 		// tree expansion settings
@@ -161,7 +155,6 @@ public class ResultsParser {
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionFinished(StringTestRunSession testRunSession) {
-		log.info("parsing SESSION FINISHED");
 		String testRunName = testRunSession.getTestRunName();
 		TreeItem testSuiteItem = findTreeItemSuite(testRunName);
 		if (testSuiteItem != null)
@@ -184,7 +177,6 @@ public class ResultsParser {
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionStarted(StringTestRunSession testRunSession) {
-		log.info("parsing SESSION STARTED");
 		// tree expansion settings
 		if (!TRView.getLazyTreeExpansion()) {
 			for (TreeItem t : TRView.getTree().getItems())
@@ -206,13 +198,11 @@ public class ResultsParser {
 	 * @param testRunSession
 	 */
 	private static void parseAndDisplaySessionLaunched(StringTestRunSession testRunSession) {
-		log.debug("parsing SESSION LAUNCHED");
 		List<StringTestCase> testCases = testRunSession.getTestCases();
 		TreeItem parentNodeItem = null;
 		// parsing
 		// set number of runs, errors, failures and ignored
 		int numberOfRuns = testCases.size();
-		log.debug("NUMBER OF RUNS: " + numberOfRuns);
 		TRView.getTxtRuns().setText("0/" + numberOfRuns);
 		TRView.getTxtErrors().setText("0");
 		TRView.getTxtFailures().setText("0");
@@ -221,15 +211,12 @@ public class ResultsParser {
 		// create tree of a test run
 		// for every test case
 		for (StringTestCase tc : testCases) {
-			log.debug(String.format("parsing TC - [%s][%s][%s][%s]", tc.getName(), tc.getJavaFile(),
-					tc.getPackageName(), tc.getTestSuite()));
 			// test suite already exists
 			if (findTreeItemSuite(tc.getTestSuite()) != null) {
 				// package already exists
 				if (findTreeItemPackage(tc.getPackageName()) != null) {
 					// java file already exists
 					if (findTreeItemJavaFile(tc.getJavaFile()) != null) {
-						log.debug("Java File node already exists");
 						parentNodeItem = findTreeItemJavaFile(tc.getJavaFile());
 						TreeItem testCaseItem = new TreeItem(parentNodeItem, 0);
 						testCaseItem.setText(tc.getName());
@@ -238,7 +225,6 @@ public class ResultsParser {
 					}
 					// java file doesn't exists
 					else {
-						log.debug("Java File doesn't exist");
 						parentNodeItem = findTreeItemPackage(tc.getPackageName());
 						TreeItem javaFileItem = new TreeItem(parentNodeItem, 0);
 						javaFileItem.setText(tc.getJavaFile());
@@ -252,7 +238,6 @@ public class ResultsParser {
 				}
 				// package doesn't exist
 				else {
-					log.debug("package doesn't exists");
 					parentNodeItem = findTreeItemSuite(tc.getTestSuite());
 					TreeItem packageItem = new TreeItem(parentNodeItem, 0);
 					packageItem.setText(tc.getPackageName());
@@ -269,7 +254,6 @@ public class ResultsParser {
 				}
 				// test suite doesn't exist
 			} else {
-				log.debug("Test suite node doesn't exist");
 				TreeItem suiteItem = new TreeItem(TRView.getTree(), 0);
 				suiteItem.setText(tc.getTestSuite());
 				suiteItem.setImage(new Image(TRView.getDisplay(), TRView.class.getResourceAsStream("/tsuite.png")));
