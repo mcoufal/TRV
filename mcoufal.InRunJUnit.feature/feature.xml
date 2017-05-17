@@ -17,7 +17,7 @@
    </license>
 
    <plugin
-         id="mcoufal.InRunJUnit"
+         id="com.mcoufal.inrunjunit"
          download-size="0"
          install-size="0"
          version="0.0.0"
